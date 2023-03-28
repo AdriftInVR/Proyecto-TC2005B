@@ -1,4 +1,8 @@
 <%- include('partials/header.ejs') %>
-<%- include('partials/navbar.ejs') %>
-    <h1>Hello world from Import!!</h1>
+<%- include('partials/navbar.ejs', {
+    active: active
+}) %>
+    <i class="fa-solid fa-inbox"></i>
+    <h1 style="display: inline;">IMPORT DATA</h1>
+    
 <%- include('partials/endHTML.ejs') %>
