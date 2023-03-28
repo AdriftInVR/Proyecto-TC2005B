@@ -5,19 +5,27 @@ control.getLogin = (req, res) => {
 };
 
 control.getProjects = (req, res) => {
-    res.render('home')
+    res.render('home', {
+        active: 'projects'
+    })
 };
 
 control.getProject = (req, res) => {
-    res.render('project')
+    res.render('project', {
+        active: 'projects'
+    })
 };
 
 control.getTasks = (req, res) => {
-    res.render('tasks')
+    res.render('tasks', {
+        active: 'projects'
+    })
 };
 
 control.getUsers = (req, res) => {
-    res.render('users')
+    res.render('users', {
+        active: 'users'
+    })
 };
 
 control.getDashboard = (req, res) => {
@@ -25,7 +33,9 @@ control.getDashboard = (req, res) => {
 };
 
 control.getImport = (req, res) => {
-    res.render('import')
+    res.render('import', {
+        active: 'import'
+    })
 };
 
 module.exports = control
