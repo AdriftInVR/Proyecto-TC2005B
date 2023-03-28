@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "release": "node index.js",
-    "css": "tailwindcss build public/css/styles.css -o public/css/tailwind.css",
-    "start": "nodemon index.js"
+    "css": "tailwindcss build public/css/styles.css -o public/css/tailwind.css"
   },
   "repository": {
     "type": "git",
