@@ -24,7 +24,7 @@ control.getTasks = (req, res) => {
 
 control.getUsers = (req, res) => {
     res.render('users', {
-        active: 'projects'
+        active: 'users'
     })
 };
 
@@ -34,7 +34,7 @@ control.getDashboard = (req, res) => {
 
 control.getImport = (req, res) => {
     res.render('import', {
-        active: 'projects'
+        active: 'import'
     })
 };
 
