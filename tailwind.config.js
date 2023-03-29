@@ -6,7 +6,12 @@ module.exports = {
   ],
   theme: {
     extend: {
-      
+      width: {
+        'main': '83.4vw',
+      },
+      height: {
+        'main': '90vh',
+      }
     },
   },
   plugins: [],
