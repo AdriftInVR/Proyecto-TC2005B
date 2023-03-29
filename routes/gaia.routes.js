@@ -8,6 +8,7 @@ const gaiaController = require('../controllers/gaia.controller');
 router.get('/login', gaiaController.getLogin);
 router.get('/', gaiaController.getProjects);
 router.get('/project', gaiaController.getProject);
+router.get('/project/epics', gaiaController.getEpics);
 router.get('/project/tasks', gaiaController.getTasks);
 router.get('/users', gaiaController.getUsers);
 router.get('/dashboard', gaiaController.getDashboard);

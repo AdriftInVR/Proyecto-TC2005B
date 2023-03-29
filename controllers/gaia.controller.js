@@ -16,6 +16,12 @@ control.getProject = (req, res) => {
     })
 };
 
+control.getEpics = (req, res) => {
+    res.render('project_epics', {
+        active: 'projects'
+    })
+};
+
 control.getTasks = (req, res) => {
     res.render('tasks', {
         active: 'projects'
