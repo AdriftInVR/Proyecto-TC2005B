@@ -4,10 +4,6 @@ control.getLogin = (req, res) => {
     res.render('login')
 };
 
-control.getMenu = (req, res) => {
-    res.render('menu')
-}
-
 control.getProjects = (req, res) => {
     res.render('home', {
         active: 'projects'

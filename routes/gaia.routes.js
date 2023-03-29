@@ -9,7 +9,6 @@ const gaiaController = require('../controllers/gaia.controller');
 //Get routes
 
 router.get('/login', gaiaController.getLogin);
-router.get('/menu', auth, gaiaController.getMenu);
 router.get('/', auth, gaiaController.getProjects);
 router.get('/project', auth, gaiaController.getProject);
 router.get('/project/tasks', auth, gaiaController.getTasks);

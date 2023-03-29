@@ -26,7 +26,7 @@ app.use(auth(config));
 // req.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
     if (req.oidc.isAuthenticated()) {
-        res.redirect('/gaia/menu');
+        res.redirect('/gaia/');
     } else {
         res.redirect('/gaia/login');    
     }
