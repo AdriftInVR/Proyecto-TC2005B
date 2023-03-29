@@ -38,4 +38,8 @@ control.getImport = (req, res) => {
     })
 };
 
+control.postImport = () => {
+    
+}
+
 module.exports = control
