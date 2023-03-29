@@ -5,7 +5,9 @@ module.exports = {
     './views/partials/*.ejs'
   ],
   theme: {
-    extend: {},
+    extend: {
+      
+    },
   },
   plugins: [],
 }

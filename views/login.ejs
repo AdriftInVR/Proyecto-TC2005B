@@ -1,12 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - GAIA</title>
-    <link rel="stylesheet" href="tailwind.css">
-</head>
-<body>
-    <h1>Hello world from Login!!</h1>
+<%- include('partials/header.ejs') %>
+
+    <div style="background-color:#0B0B42; height: 90vh; width: 100vw;">
+        <div style="background-color:#9087F7; border-radius: 40px; height: 85vh; 
+        width: 94vw; position: absolute; top: 53%; left: 50%; transform: translate(-50%, -50%);"
+        class="parent">
+            <div class="child1" style="text-align: center; width: 45%; 
+            height: 100%; float: left; background-image: url(/img/gaia_logo_completo.png); 
+            background-size: cover; background-position: center center; border-radius: 4.5%">
+            </div>
+            <div class="child2" style="
+            width: 55%; height: 100%; float: left; 
+            display: flex; align-items: center; justify-content: center;">
+
+                <div style="position:absolute;">
+                    <p class="text-5xl text-gray-900 dark:text-white">Welcome</p>
+                </div>
+                <div style="position:relative; top: 70px">
+                    <button type="button" class="text-white bg-gradient-to-br 
+                    from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 
+                    focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 
+                    font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Login</button>
+                </div>  
+            </div>
+        </div>
+    </div>
+   
 <%- include('partials/endHTML.ejs') %>
