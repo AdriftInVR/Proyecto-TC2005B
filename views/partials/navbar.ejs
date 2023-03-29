@@ -1,31 +1,33 @@
-<nav class="nave">
-    <img src="/img/Gaia.png" alt="gaia" class="gaia">            
-    <div class="nav-menu" id="nav">
-        <div class="nav-menu-item <% if (active == 'projects') { %>active<% } %>" id="project" onclick="activeProject()">
-            <a href="/gaia/" class="nav-menu-project">
-                <span class="project">
-                    <i class="fa-solid fa-file-lines" style='font-size:25px'></i>
-                </span>
-                <p class="letra" id="projec">Projects</p>            
-            </a>
+<div class="flex w-full flex-row">
+    <nav class="nave flex-1">
+        <img src="/img/Gaia.png" alt="gaia" class="gaia">            
+        <div class="nav-menu" id="nav">
+            <div class="nav-menu-item <% if (active == 'projects') { %>active<% } %>" id="project" onclick="activeProject()">
+                <a href="/gaia/" class="nav-menu-project">
+                    <span class="project">
+                        <i class="fa-solid fa-file-lines" style='font-size:25px'></i>
+                    </span>
+                    <p class="letra" id="projec">Projects</p>            
+                </a>
+            </div>
+    
+            <div class="nav-menu-item <% if (active == 'users') { %>active<% } %>" id="user" onclick="activeUser()">
+                <a href="/gaia/users/" class="nav-menu-project ">                              
+                    <span class="users">
+                        <i class="fa-sharp fa-solid fa-list" style='font-size:20px'></i>
+                    </span>
+                    <p class="letra">Users</p>
+                </a>
+            </div>
+    
+            <div class="nav-menu-item <% if (active == 'import') { %>active<% } %>" id="data">
+                <a href="/gaia/import/" class="nav-menu-project " onclick="activeData()">                
+                    <span class="data">
+                        <i class='fas fa-layer-group' style='font-size:23px'></i>
+                    </span>
+                    <p class="letra">DataSheet</p>
+                </a>
+            </div>
         </div>
+    </nav>
 
-        <div class="nav-menu-item <% if (active == 'users') { %>active<% } %>" id="user" onclick="activeUser()">
-            <a href="/gaia/users/" class="nav-menu-project ">                              
-                <span class="users">
-                    <i class="fa-sharp fa-solid fa-list" style='font-size:20px'></i>
-                </span>
-                <p class="letra">Users</p>
-            </a>
-        </div>
-
-        <div class="nav-menu-item <% if (active == 'import') { %>active<% } %>" id="data">
-            <a href="/gaia/import/" class="nav-menu-project " onclick="activeData()">                
-                <span class="data">
-                    <i class='fas fa-layer-group' style='font-size:23px'></i>
-                </span>
-                <p class="letra">DataSheet</p>
-            </a>
-        </div>
-    </div>
-</nav>
