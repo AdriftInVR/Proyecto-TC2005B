@@ -1,3 +1,5 @@
+//Base de datos
+const Ticket = require('../models/tickets.model');
 const fs = require('fs');
 control = []
 
@@ -6,9 +8,19 @@ control.getLogin = (req, res) => {
 };
 
 control.getProjects = (req, res) => {
-    res.render('home', {
-        active: 'projects'
+    Ticket.fetchAll()
+    .then(([rows, fieldData]) => {
+        console.log(rows);
+        
+        res.render('home', { active: 'projects',
+            nombre: rows,
+            //ultimo_ticket: req.session.ultimo_ticket || '', 
+        });
     })
+    .catch(err => {
+        console.log(err);
+     });
+    
 };
 
 control.getProject = (req, res) => {
@@ -67,6 +79,7 @@ control.processCsv=(req,res)=>{
 
     
 };
+
 
 control.postImport = (request, response, next) => {
     response.render('import',{active: 'import',result:'succes' || 'err'});
