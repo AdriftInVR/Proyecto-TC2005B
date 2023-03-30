@@ -68,7 +68,7 @@ header{
 /*Navbar*/
 .nave{
     font-family: sans-serif;
-    background-color: white;
+    background-color: #d4d4d8;
     width: 15vw;
     height: 90vh;
     display:inline-flex;
@@ -117,3 +117,137 @@ header{
 .active .nav-menu-project{
     color: rgb(138, 43, 226);
 }
+
+/*Import popup succes*/
+
+.overlay {
+    background: rgba(0,0,0,0.3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+
+.overlay.active {
+    visibility: visible;
+}
+
+.popup {
+    background-color: white;
+    box-shadow: 0em 0em 0.313em 0em rgba(0,0,0,0.3);
+    border-radius: 0.188em;
+    font-family: 'Roboto', serif;
+    padding: 1.25em;
+    text-align: center;
+    width: 37.5em;
+
+    transition: .3s ease all;
+    transform: scale(0.7);
+    opacity: 0;
+}
+
+.popup .btn-close-popup {
+    font-size: 1em;
+    line-height: 1em;
+    display: block;
+    text-align: right;
+    color:black;
+    transition: .3s ease all;
+}
+
+.popup .btn-close-popup:hover {
+    color: blue;
+}
+
+.popup h4 {
+    font-size: 2.25em;
+    font-weight: 600;
+    margin-bottom: 0.625em;
+    color: chartreuse;
+    /*opacity: 0;*/
+}
+
+.popup h3 {
+    font-size: 1.625em;
+    font-weight: 300;
+    margin-bottom: 2.5em;
+    background-color: chartreuse;
+    border-radius: 0.625em;
+    padding: 0.938em 1.875em;
+    /*opacity: 0;*/
+}
+
+/*Import popup animation*/
+
+.popup.active {opacity: 1; transform: scale(1);}
+
+/*Import popup error*/
+
+.overlayerr {
+    background: rgba(0,0,0,0.3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+
+.overlayerr.active {
+    visibility: visible;
+}
+
+.popuperr {
+    background-color: white;
+    box-shadow: 0em 0em 0.313em 0em rgba(0,0,0,0.3);
+    border-radius: 0.188em;
+    font-family: 'Roboto', serif;
+    padding: 1.25em;
+    text-align: center;
+    width: 37.5em;
+
+    transition: .3s ease all;
+    transform: scale(0.7);
+    opacity: 0;
+}
+
+.popuperr .btn-close-popuperr {
+    font-size: 1em;
+    line-height: 1em;
+    display: block;
+    text-align: right;
+    color:black;
+    transition: .3s ease all;
+}
+
+.popuperr .btn-close-popuperr:hover {
+    color: blue;
+}
+
+.popuperr h4 {
+    font-size: 2.25em;
+    font-weight: 600;
+    margin-bottom: 0.625em;
+    color: red;
+    /*opacity: 0;*/
+}
+
+.popuperr h3 {
+    font-size: 1.625em;
+    font-weight: 300;
+    margin-bottom: 2.5em;
+    background-color: red;
+    border-radius: 0.625em;
+    padding: 0.938em 1.875em;
+    /*opacity: 0;*/
+}
+
+.popuperr.active {opacity: 1; transform: scale(1);}
