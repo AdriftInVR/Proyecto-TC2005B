@@ -1,7 +1,10 @@
 //Base de datos
 const Ticket = require('../models/tickets.model');
+const Estatus = require('../models/status.model');
+const Fase = require('../models/fase.model');
 const fs = require('fs');
 control = []
+const db = require('../util/database');
 
 control.getLogin = (req, res) => {
     res.render('login')
@@ -56,6 +59,7 @@ control.postImport = (request, response, next) => {
 };
 
 control.processCsv=(req,res)=>{
+    //get data from data.csv
     filePath = './public/files/data.csv';
     const fileText = fs.readFileSync(filePath).toString();
     const allLines = fileText.split('\n');
@@ -63,7 +67,11 @@ control.processCsv=(req,res)=>{
     
     const dataLines = allLines.slice(1);
     const fieldNames = header.split(',');
-
+    for(let i=0;i<fieldNames.length;i++){
+        fieldNames[i] = fieldNames[i].replace(/\s+/g, '');
+        fieldNames[i] = fieldNames[i].replace('(', '');
+        fieldNames[i] = fieldNames[i].replace(')', '');
+    }
     let objList = [];
 
     for(let i=0; i<dataLines.length;i++){
@@ -75,8 +83,50 @@ control.processCsv=(req,res)=>{
         }
         objList.push(obj);
     }
+    console.log('Data from CSV was readed');
 
+    //Send data to database
+
+    //Data to table ticket
+    let entries = [];
+    for(let i=0; i<dataLines.length; i++){        
+        let ticketInsert = {
+            idTicket: objList[i].issueid,
+            nombre:  objList[i].summary
+        }        
+        entries.push(ticketInsert);
+    }    
+    console.log('Data list for Tickets was created');
+    Ticket.add(entries)
+
+    //Data to table fase
+    entries = [];
+    estados = [];
+    Estatus.fetchAll()
+    .then(([rows, fieldData]) => {
+        for(let i=0;i<rows.length;i++){
+            estados.push(rows[i].descripcion);
+        }
+        for(let i=0; i<dataLines.length; i++){
+            let state = 1;
+            for(let j=0;j<estados.length;j++){
+                if(objList[i].status == estados[j]){
+                    state = j+1;
+                    break;
+                }
+            }
     
+            let rowInsert = {
+                idTicket:  objList[i].issueid,
+                idEstatus: state
+            } 
+            entries.push(rowInsert);
+        }        
+    }) 
+    .catch(err => {
+        console.log(err);
+    });
+    Fase.add(entries)
 };
 
 

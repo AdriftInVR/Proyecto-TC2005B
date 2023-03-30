@@ -4,7 +4,7 @@ USE GAIA;
 
 CREATE TABLE TICKET(
     idTicket VARCHAR(25),
-    nombre VARCHAR(80),
+    nombre VARCHAR(200),
     PRIMARY KEY(idTicket)
 );
 
@@ -125,13 +125,13 @@ INSERT INTO `TIPO` (`idTipo`, `descripcion`) VALUES
 
 -- Estatus
 INSERT INTO `ESTATUS` (`idEstatus`, `descripcion`) VALUES
-(00000000001, 'No Ticket'),
-(00000000002, 'Backlog'),
-(00000000003, 'In Progress'),
-(00000000004, 'In Review'),
-(00000000005, 'In Test'),
-(00000000006, 'Closed'),
-(00000000007, 'Done'),
+(00000000001, 'To Do'),
+(00000000002, 'In Progress'),
+(00000000003, 'Code Review'),
+(00000000004, 'Quality Review'),
+(00000000005, 'Release Ready'),
+(00000000006, 'Done'),
+(00000000007, 'Closed'),
 (00000000008, 'UsuarioActivo'),
 (00000000009, 'UsuarioInactivo');
 
