@@ -50,4 +50,8 @@ control.processCsv=(req,res)=>{
     console.log(fileText);
 };
 
+control.postImport = (request, response, next) => {
+    response.render('import',{active: 'import',result:'succes' || 'err'});
+}
+
 module.exports = control
