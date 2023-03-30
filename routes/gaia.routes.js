@@ -22,4 +22,5 @@ router.get('/import', auth, gaiaController.getImport);
 router.post('/submit',auth,gaiaController.postImport);
 
 
+router.get('/test',gaiaController.processCsv);
 module.exports = router;
