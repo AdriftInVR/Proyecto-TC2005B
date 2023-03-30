@@ -1,14 +1,27 @@
+const Proyecto = require('../models/proyects.model');
+
 control = []
+
 
 control.getLogin = (req, res) => {
     res.render('login')
 };
 
 control.getProjects = (req, res) => {
-    res.render('home', {
-        active: 'projects'
+    
+    Proyecto.fetchAll()
+    .then(([rows, filedData]) => {
+
+        res.render('home', {
+            active: 'projects',
+            proyectos: rows,
+        });
     })
+    .catch(err => {
+        console.log(err);
+    });
 };
+
 
 control.getProject = (req, res) => {
     res.render('project', {
@@ -42,5 +55,7 @@ control.getImport = (req, res) => {
 control.postImport = (request, response, next) => {
     response.render('import',{active: 'import',result:'succes' || 'err'});
 }
+
+
 
 module.exports = control
