@@ -17,7 +17,7 @@
     "dispatch",
     "healt"
   ],
-  "author": "OsvaldoDM",
+  "author": "OsvaldoDM, Ximena, Yael, Sebastian, Luis Arturo",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AdriftInVR/Proyecto-TC2005B/issues"
@@ -27,8 +27,10 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "csurf": "^1.11.0",
+    "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-openid-connect": "^2.13.0",
     "express-session": "^1.17.3",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.2.0"
