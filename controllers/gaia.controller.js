@@ -34,12 +34,13 @@ control.getDashboard = (req, res) => {
 
 control.getImport = (req, res) => {
     res.render('import', {
-        active: 'import'
-    })
+        active: 'import',
+        result:'void'
+    });
 };
 
-control.postImport = () => {
-    
+control.postImport = (request, response, next) => {
+    response.render('import',{active: 'import',result:'succes' || 'err'});
 }
 
 module.exports = control

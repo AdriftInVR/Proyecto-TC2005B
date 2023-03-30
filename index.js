@@ -12,13 +12,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
-        callback(null, 'public/files');
+        callback(null,'public/files');
     },
         filename: (request, file, callback) => {
-            callback(null, new Date().toISOString() + '-' + file.originalname);
+            callback(null,"data.csv");
         },
 });
-app.use(multer({ storage: fileStorage }).single('dropzone-file')); 
+app.use(multer({ storage: fileStorage }).single('import')); 
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');

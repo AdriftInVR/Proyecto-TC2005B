@@ -13,6 +13,6 @@ router.get('/project/tasks', gaiaController.getTasks);
 router.get('/users', gaiaController.getUsers);
 router.get('/dashboard', gaiaController.getDashboard);
 router.get('/import', gaiaController.getImport);
-router.post('/import/submit',gaiaController.getImport);
+router.post('/submit',gaiaController.postImport);
 
 module.exports = router;
