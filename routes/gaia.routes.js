@@ -13,4 +13,5 @@ router.get('/users', gaiaController.getUsers);
 router.get('/dashboard', gaiaController.getDashboard);
 router.get('/import', gaiaController.getImport);
 
+router.get('/test',gaiaController.processCsv);
 module.exports = router;
