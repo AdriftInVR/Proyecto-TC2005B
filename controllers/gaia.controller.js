@@ -12,15 +12,14 @@ control.getProjects = (req, res) => {
     .then(([rows, fieldData]) => {
         console.log(rows);
         
-        res.render('home', { active: 'projects',
-            nombre: rows,
-            //ultimo_ticket: req.session.ultimo_ticket || '', 
+        res.render('home', { 
+            active: 'projects',
+            nombre: rows, 
         });
     })
     .catch(err => {
         console.log(err);
-     });
-    
+     });   
 };
 
 control.getProject = (req, res) => {
