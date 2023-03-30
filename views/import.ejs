@@ -11,18 +11,71 @@
                         <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                         <p class="text-xs text-gray-500 dark:text-gray-400"> .CSV (MAX. 800x400px)</p>
                     </div>
-                    <input id="dropzone-file" name="import" type="file" class="hidden" accept=".csv"/>
+                    <input id="dropzone-file" name="import" type="file" class="hidden" accept=".csv" onchange="return fileValidation()"/>
                     
-                    <input type="submit" name="enviar" value="subir">
+                    <input type="submit" name="enviar" value="SUMBIT">
                 </label>
             </form>  
         </div> 
 
         <% if(result=='succes'){%>
-            <div class="">
-                <p class="text-red-200">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt, beatae.</p>
+            <div class="overlay", id="overlay">
+                <div class="popup" id="popup">
+                    <a href="#" id="btn-close-pup" class="btn-close-popup"><i class="fas fa-times"></i></a>
+                    <h4>SUCCES!!</h4>
+                    <h3>The document has been imported successfully</h3>
+                </div>
             </div>
         <%}%>
-        
+        <% if(result=='succes') {%>
+            <div class="overlayerr", id="overlayerror">
+                <div class="popuperr" id="popuperro">
+                    <a href="#" id="btn-close-popuperr" class="btn-close-popuperr"><i class="fas fa-times"></i></a>
+                    <h4>ERROR!!</h4>
+                    <h3>The file wasnt imported, load only .csv files</h3>
+                </div>
+            </div>
+        <%}%>
     </div>
+
+    <script>
+        function fileValidation(){
+            var fileInput = document.getElementById('dropzone-file');
+            var overlaysucces = document.getElementById('overlay');
+            var popup = document.getElementById('popup');
+
+            var overerr = document.getElementById('overlayerror');
+            var poperr = document.getElementById('popuperro');
+
+            var btnClosePopup = document.getElementById('btn-close-popuperr');
+            var btnClosePopupS = document.getElementById('btn-close-pup');
+
+            var filePath = fileInput.value;
+            var allowedExtensions = /(.csv)$/i;
+
+            btnClosePopup.addEventListener("click",function(){
+                overerr.classList.remove('active');
+                poperr.classList.remove('active');
+            });
+
+            btnClosePopupS.addEventListener("click",function(){
+                overlaysucces.classList.remove('active');
+                popup.classList.remove('active');
+            });
+
+            if(!allowedExtensions.exec(filePath)){
+                overerr.classList.add('active');
+                poperr.classList.add('active');
+            }else{
+                overlaysucces.classList.add('active');
+                popup.classList.add('active');
+            }
+        };
+
+        /*btnClosePopup.addEventListener('clic', function() {
+            overlaysucces.classList.remove('active');
+            popup.classList.remove('active');
+        });*/
+
+    </script>
 <%- include('partials/endHTML.ejs') %>
