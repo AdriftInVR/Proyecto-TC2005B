@@ -45,9 +45,27 @@ control.postImport = (request, response, next) => {
 };
 
 control.processCsv=(req,res)=>{
-    filePath = '/files/data.csv';
+    filePath = './public/files/data.csv';
     const fileText = fs.readFileSync(filePath).toString();
-    console.log(fileText);
+    const allLines = fileText.split('\n');
+    const header = allLines[0];
+    
+    const dataLines = allLines.slice(1);
+    const fieldNames = header.split(',');
+
+    let objList = [];
+
+    for(let i=0; i<dataLines.length;i++){
+        let obj = {};
+        const data = dataLines[i].split(',');
+        for(let j=0; j < fieldNames.length;j++){
+            const fieldName = fieldNames[j].toLowerCase();
+            obj[fieldName] = data[j];
+        }
+        objList.push(obj);
+    }
+
+    
 };
 
 control.postImport = (request, response, next) => {
