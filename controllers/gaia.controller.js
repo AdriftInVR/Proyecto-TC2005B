@@ -62,14 +62,16 @@ control.getImport = (req, res) => {
 };
 
 control.postImport = (request, response, next) => {
+    control.processCsv(request,response);
     response.render('import',{active: 'import',result:'succes' || 'err'});
 };
+
 
 control.processCsv=(req,res)=>{
     //get data from data.csv
     filePath = './public/files/data.csv';
     let fileText = fs.readFileSync(filePath).toString();
-    
+    fileText = fileText.trimEnd();
     let open = false;
     for(let i=0;i<fileText.length;i++){
         if(fileText[i]==`"` && open==false){

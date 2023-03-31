@@ -14,7 +14,7 @@ module.exports = class Tarea {
             //     if(rows.affectedRows>0)console.log('Se inserto')
             // })
             .catch(err => {
-                console.log(err);
+                //console.log(err);
             });
         }        
     }

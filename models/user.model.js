@@ -13,17 +13,20 @@ module.exports = class User {
             //     if(rows.affectedRows>0)console.log('Se inserto')
             // })
             .catch(err => {
-                console.log(err);
+                //console.log(err);
             });
             db.execute(`INSERT INTO ESTADO_LABORAL(idUsuario) SELECT ? WHERE NOT EXISTS(SELECT 1 FROM ESTADO_LABORAL WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].idUsuario])
             .catch(err => {
-                console.log(err);
+                //console.log(err);
             });            
             db.execute(`INSERT INTO RESPONSABLE(idUsuario, idTarea) SELECT ?,? WHERE NOT EXISTS(SELECT 1 FROM RESPONSABLE WHERE idTarea = ?);`,[data[i].idUsuario,data[i].idTarea,data[i].idTarea])
             .catch(err => {
-                console.log(err);
+                //console.log(err);
             });
-
         }
+        db.execute(`SELECT * FROM TICKET`)
+        .then(([rows, fieldData]) => {
+            console.log('Database are ready');
+        })
     }
 }
