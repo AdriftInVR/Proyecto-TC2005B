@@ -1,9 +1,9 @@
-//Base de datos
+ //Base de datos
 const Ticket = require('../models/tickets.model');
 const Estatus = require('../models/status.model');
 const Fase = require('../models/fase.model');
 const fs = require('fs');
-const Proyecto = require('../models/proyects.model');
+const Proyecto = require('../models/projects.model');
 
 control = []
 const db = require('../util/database');
@@ -30,8 +30,10 @@ control.getProjects = (req, res) => {
 
 
 control.getProject = (req, res) => {
+    projectName = req.params.prj;
     res.render('project', {
-        active: 'projects'
+        active: 'projects',
+        projectName: projectName
     })
 };
 
@@ -212,6 +214,14 @@ control.processCsv=(req,res)=>{
 
 control.postImport = (request, response, next) => {
     response.render('import',{active: 'import',result:'succes' || 'err'});
+}
+
+control.postProject = (req, res, next) =>{
+    const nombre = req.body.projectName;
+    const newProject = new Proyecto(nombre);    
+    console.log(newProject)
+    newProject.save()
+    res.redirect('/');
 }
 
 

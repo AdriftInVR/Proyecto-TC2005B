@@ -17,7 +17,7 @@ CREATE TABLE ESTATUS(
 CREATE TABLE FASE(
     idTicket VARCHAR(25),
     idEstatus INT,
-    fechaCambio TIMESTAMP,
+    fechaCambio TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(idTicket, idEstatus, fechaCambio),
     FOREIGN KEY (idTicket) REFERENCES TICKET(idTicket),
     FOREIGN KEY (idEstatus) REFERENCES ESTATUS(idEstatus)
@@ -25,8 +25,8 @@ CREATE TABLE FASE(
 
 CREATE TABLE PROYECTO(
     idTicket VARCHAR(25),
-    fechaInicio DATE,
-    duracion INT,
+    fechaInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    duracion INT DEFAULT 0,
     PRIMARY KEY(idTicket),
     FOREIGN KEY (idTicket) REFERENCES TICKET(idTicket)
 );
@@ -69,7 +69,7 @@ CREATE TABLE USUARIO(
 CREATE TABLE RESPONSABLE(
     idUsuario VARCHAR(25),
     idTarea VARCHAR(25),
-    fechaAsignacion TIMESTAMP,
+    fechaAsignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(idUsuario, idTarea, fechaAsignacion),
     FOREIGN KEY(idUsuario) REFERENCES USUARIO(idUsuario),
     FOREIGN KEY(idTarea) REFERENCES TAREA(idTicket)
@@ -78,7 +78,7 @@ CREATE TABLE RESPONSABLE(
 CREATE TABLE TRABAJA(
     idProyecto VARCHAR(25),
     idUsuario VARCHAR(25),
-    fechaAsignacion TIMESTAMP,
+    fechaAsignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     efectividadAsignada INT,
     PRIMARY KEY(idProyecto, idUsuario, fechaAsignacion),
     FOREIGN KEY(idProyecto) REFERENCES PROYECTO(idTicket),
@@ -88,7 +88,7 @@ CREATE TABLE TRABAJA(
 CREATE TABLE ESTADO_LABORAL(
     idUsuario VARCHAR(25),
     idEstatus INT,
-    fechaCambio TIMESTAMP,
+    fechaCambio TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(idUsuario, idEstatus, fechaCambio),
     FOREIGN KEY(idUsuario) REFERENCES USUARIO(idUsuario),
     FOREIGN KEY (idEstatus) REFERENCES ESTATUS(idEstatus)

@@ -3,15 +3,6 @@
     active: active
 }) %>
 
-<%const query = `
-    SELECT nombre, puntosAgiles, front_back
-    FROM tarea t, responsable r, trabaja tr, usuario u
-    WHERE u.idUsuario= tr.idUsuario
-    AND u.idUsuario = r.idUsuario
-    AND r.idTarea = t.idTicket
-    AND idProyecto= 2
-    GROUP BY nombre
-`;%>
 
 
 
@@ -19,7 +10,7 @@
         
 
         <div class="flex justify-center">
-            <p class="m-8 text-2xl"> </p><!--id="projectName"-->
+            <p class="m-8 text-2xl"><%=projectName%></p><!--id="projectName"-->
         </div>
     
 

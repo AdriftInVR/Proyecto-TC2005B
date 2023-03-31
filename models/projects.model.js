@@ -2,7 +2,7 @@ const db = require('../util/database');
 
 module.exports = class Proyecto {
     constructor(_newProyecto) {
-        this.nombre = _newProyecto.nombre;
+        this.nombre = _newProyecto;
     }
 
     save() {
@@ -18,12 +18,26 @@ module.exports = class Proyecto {
             return result;
         }
 
-        id_temporal = makeid(6);
+        let id_temporal = makeid(6);
 
-        return db.execute(`
+        db.execute(`
             INSERT INTO TICKET (idTicket, nombre)
             VALUES (?, ?)
-        `, [id_temporal, this.nombre]);
+        `, [id_temporal, this.nombre])
+        
+
+        db.execute(`
+            INSERT INTO PROYECTO (idTicket)
+            VALUES (?)
+        `, [id_temporal])
+        .then(([rows, fieldData]) => {
+        console.log('Ya se guardo carnal')
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+        
     }
 
     static fetchAll() {
@@ -35,7 +49,7 @@ module.exports = class Proyecto {
     }
 
 
-    
+
     
 
 }
