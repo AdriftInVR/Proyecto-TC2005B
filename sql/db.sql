@@ -25,16 +25,16 @@ CREATE TABLE FASE(
 
 CREATE TABLE PROYECTO(
     idTicket VARCHAR(25),
-    fechaInicio DATE,
-    duracion INT,
+    fechaInicio TIMESTAMP,
+    duracion INT DEFAULT 0,
     PRIMARY KEY(idTicket),
     FOREIGN KEY (idTicket) REFERENCES TICKET(idTicket)
 );
 
 CREATE TABLE EPIC(
     idTicket VARCHAR(25),
-    perteneProyecto VARCHAR(25),
-    asignacionProEpi DATE,
+    perteneProyecto VARCHAR(25) DEFAULT '1',
+    asignacionProEpi TIMESTAMP,
     PRIMARY KEY(idTicket),
     FOREIGN KEY (idTicket) REFERENCES TICKET(idTicket),
     FOREIGN KEY(perteneProyecto) REFERENCES PROYECTO(idTicket)
@@ -49,9 +49,9 @@ CREATE TABLE TIPO(
 CREATE TABLE TAREA(
     idTicket VARCHAR(25),
     perteneceEpic VARCHAR(25),
-    asignacionEpiTar DATE,
-    fechaFin DATE,
-    puntosAgiles INT,
+    asignacionEpiTar TIMESTAMP,
+    fechaFin DATE ,
+    puntosAgiles FLOAT DEFAULT 0.0,
     esTipo INT,
     front_back INT,
     PRIMARY KEY(idTicket),
@@ -87,7 +87,7 @@ CREATE TABLE TRABAJA(
 
 CREATE TABLE ESTADO_LABORAL(
     idUsuario VARCHAR(25),
-    idEstatus INT,
+    idEstatus INT DEFAULT 8,
     fechaCambio TIMESTAMP,
     PRIMARY KEY(idUsuario, idEstatus, fechaCambio),
     FOREIGN KEY(idUsuario) REFERENCES USUARIO(idUsuario),
@@ -95,7 +95,7 @@ CREATE TABLE ESTADO_LABORAL(
 );
 
 INSERT INTO `TICKET` (`idTicket`, `nombre`) VALUES
-(00000000001, 'Software para restaurante'),
+(00000000001, 'Proyect Default'),
 (00000000002, 'Base de dato para escuela'),
 (00000000003, 'Aplicacion android'),
 (00000000004, 'Software para meseros'),
@@ -163,7 +163,7 @@ INSERT INTO `FASE` (`idTicket`, `idEstatus`, `fechaCambio`) VALUES
 
 -- Proyectos
 INSERT INTO `PROYECTO` (`idTicket`, `fechaInicio`, `duracion`) VALUES
-(00000000001, '2023-01-01', 300),
+(00000000001, '2023-01-01', 0),
 (00000000002, '2022-09-21', 350),
 (00000000003, '2023-03-15', 400);
 
