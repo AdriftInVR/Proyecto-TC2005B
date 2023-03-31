@@ -19,55 +19,65 @@ module.exports = class Proyecto {
         }
 
 
-        let r1 = db.execute(`
-                    SELECT *
-                    FROM PROYECTO p, TICKET t 
-                    WHERE p.idTicket = t.idTicket
-                    GROUP BY nombre;
+        db.execute(`
+            SELECT *
+            FROM PROYECTO p, TICKET t 
+            WHERE p.idTicket = t.idTicket
+            GROUP BY nombre;
+        `,)
+        .then(([rows, fieldData])=>{
+            for(let i=0;i<rows.length;i++){
+                if(rows[i].nombre ==this.nombre){
+                    this.nombre='';
+                    break;
+                }
+            }
+            if (this.nombre == "" || this.nombre==undefined){ //Falta no repetir nombre
+                    console.log('No se puede guardar')
+            } else {
+                let id_temporal = makeid(6);
+
+                db.execute(`
+                    INSERT INTO TICKET (idTicket, nombre)
+                    VALUES (?, ?)
+                `, [id_temporal, this.nombre])
+                
+
+                db.execute(`
+                    INSERT INTO PROYECTO (idTicket)
+                    VALUES (?)
+                `, [id_temporal])
+                .then(([rows, fieldData]) => {
+                
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
+                
+                /*db.execute(`
+                    SELECT nombre, puntosAgiles, front_back
+                    FROM tarea t, responsable r, trabaja tr, usuario u
+                    WHERE u.idUsuario= tr.idUsuario
+                    AND u.idUsuario = r.idUsuario
+                    AND r.idTarea = t.idTicket
+                    AND idProyecto= (?)
+                    GROUP BY nombre
                 `,)
+                .then(([rows, fieldData]) => {
+                
+                })
+                .catch(err => {
+                    console.log(err);
+                });*/
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+        })
 
 
-        if (this.nombre == " " && r1 == this.nombre){ //Falta no repetir nombre
-                console.log('No se puede guardar')
-        } else {
-            console.log('Si se guardo')
-            let id_temporal = makeid(6);
-
-            db.execute(`
-                INSERT INTO TICKET (idTicket, nombre)
-                VALUES (?, ?)
-            `, [id_temporal, this.nombre])
-            
-
-            db.execute(`
-                INSERT INTO PROYECTO (idTicket)
-                VALUES (?)
-            `, [id_temporal])
-            .then(([rows, fieldData]) => {
-            console.log('Ya se guardo carnal')
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
-            
-            db.execute(`
-                SELECT nombre, puntosAgiles, front_back
-                FROM tarea t, responsable r, trabaja tr, usuario u
-                WHERE u.idUsuario= tr.idUsuario
-                AND u.idUsuario = r.idUsuario
-                AND r.idTarea = t.idTicket
-                AND idProyecto= (?)
-                GROUP BY nombre
-            `,)
-            .then(([rows, fieldData]) => {
-            console.log('Ya se guardo carnal')
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        }
-
+        
 
     }
 
