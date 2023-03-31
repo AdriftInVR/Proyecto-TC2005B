@@ -31,7 +31,6 @@ control.getProjects = (req, res) => {
     });
 };
 
-
 control.getProject = (req, res) => {
     res.render('project', {
         active: 'projects'
