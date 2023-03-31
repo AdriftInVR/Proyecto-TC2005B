@@ -1,7 +1,11 @@
 <%- include('partials/header.ejs') %>
     <h1>Showing Status Pie for Project <span id="titleHere"></id></h1>
 <body>
-    <div><canvas id ='FrontBackAP'></canvas>
+    <div>
+        <canvas id ='weeklyAP'></canvas>
+    </div>
+    <div>
+        <canvas id ='FrontBackAP'></canvas>
     </div>
     <div>
         <canvas id="statusPie"></canvas>
@@ -25,9 +29,30 @@
         })
 </script>
 
+
 <script>
     // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
-    const ctx = document.getElementById('statusPie');
+    const ap = document.getElementById('weeklyAP');
+
+    const APchart = {
+        labels: ['You','Are','The',"'Ocean's",'Gray','Waves'],
+        datasets: [{
+            data: [65, 59, 80, 81, 56, 55],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+    const config = {
+        type: 'line',
+        data: APchart,
+    };
+    new Chart(ap, config);
+</script>
+
+<script>
+    // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
+    const pie = document.getElementById('statusPie');
 
     fetch('/data/project/status/' + 1, {
             method: 'GET',
@@ -43,7 +68,7 @@
                 data_labels.push(tag.Nombre);
                 data_count.push(tag.Cantidad);
             }
-            const chart = {
+            const PIEchart = {
                 labels: data_labels,
                 datasets: [{
                     data: data_count,
@@ -57,8 +82,8 @@
             };
             const config = {
                 type: 'pie',
-                data: chart,
+                data: PIEchart,
             };
-            new Chart(ctx, config);
+            new Chart(pie, config);
         })
 </script>
