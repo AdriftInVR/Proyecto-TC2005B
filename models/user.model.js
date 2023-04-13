@@ -29,4 +29,6 @@ module.exports = class User {
             console.log('Database are ready');
         })
     }
+
+    
 }

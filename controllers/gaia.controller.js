@@ -47,9 +47,19 @@ control.getTasks = (req, res) => {
 };
 
 control.getUsers = (req, res) => {
-    res.render('users', {
-        active: 'users'
+
+    User.fetchAll()
+    .then(([rows, fieldData]) => {
+        res.render('users', {
+            active: 'users',
+            users: rows,
+        });
     })
+    .catch(error => {
+        console.log(error);
+    });
+
+    
 };
 
 control.getDashboard = (req, res) => {
