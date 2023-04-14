@@ -2,5 +2,95 @@
 <%- include('partials/navbar.ejs', {
     active: active
 }) %>
-    <h1 style="display: inline;">Hello world from Home!!</h1>
+
+<div class="w-main flex justify-center inline-block">
+    
+    <div>
+
+        <% if (proyectos.length > 0) { %>
+        <div class="overflow-x-auto rounded-lg pt-56">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Start date
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Estimated duration
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Progress
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <% for (let proyecto of proyectos) { %>
+                        <tr class ="bg-white dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <a href="/gaia/project/<%= proyecto.nombre%>"><%= proyecto.nombre  %></a>
+                            </th>
+                            <td class="px-6 py-4">
+                                <%= proyecto.fechainicio %>
+                            </td>
+                            <td class="px-6 py-4">
+                                <%= proyecto.duracion %>
+                            </td>
+                            <td class="px-6 py-4">
+                                -
+                            </td>
+                        </tr>
+                    <% } %>
+                   
+                </tbody>
+            </table>
+        </div>
+        <% }  else { %>
+            <div class="flex justify-center items-center">
+                <p class="text-5xl">
+                    No proyects yet
+                </p>
+            </div>
+        <% } %>
+    </div>
+
+
+    <!-- NEW PROJECT BUTTON -->
+    <div class="fixed bottom-16 right-28">
+        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        New Project
+        </button>        
+    </div>
+    
+
+    <!-- CREATING NEW PROJECT -->
+    <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
+        <div class="relative w-full h-full max-w-md md:h-auto">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="authentication-modal">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="px-6 py-6 lg:px-8">
+                    <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Creating new project</h3>
+                    <form class="space-y-6" action="/gaia/" method="POST" onsubmit="return validar()">
+                        <div>
+                            <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New project's name</label>
+                            <div class="mb-6">
+                                <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <input type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Create project" />
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
 <%- include('partials/endHTML.ejs') %>
