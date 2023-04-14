@@ -10,44 +10,44 @@
         <% if (proyectos.length > 0) { %>
             <div class="overflow-x-auto rounded-lg h-screen flex items-center justify-center">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Start date
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Estimated duration
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Progress
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    <% for (let proyecto of proyectos) { %>
-                        <tr class ="bg-white dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="/gaia/project/<%= proyecto.nombre%>"><%= proyecto.nombre  %></a>
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Name
                             </th>
-                            <td class="px-6 py-4">
-                                <%= proyecto.fechainicio %>
-                            </td>
-                            <td class="px-6 py-4">
-                                <%= proyecto.duracion %>
-                            </td>
-                            <td class="px-6 py-4">
-                                -
-                            </td>
+                            <th scope="col" class="px-6 py-3">
+                                Start date
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Estimated duration
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Progress
+                            </th>
                         </tr>
-                    <% } %>
-                   
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        
+                        <% for (let proyecto of proyectos) { %>
+                            <tr class ="bg-white dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <a href="/gaia/project/<%= proyecto.nombre%>"><%= proyecto.nombre  %></a>
+                                </th>
+                                <td class="px-6 py-4">
+                                    <%= proyecto.fechainicio %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= proyecto.duracion %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    -
+                                </td>
+                            </tr>
+                        <% } %>
+                    
+                    </tbody>
+                </table>
+            </div>
         <% }  else { %>
             <div class="flex justify-center items-center">
                 <p class="text-5xl">
