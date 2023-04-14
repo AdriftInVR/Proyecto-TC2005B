@@ -13,15 +13,15 @@ module.exports = class User {
             //     if(rows.affectedRows>0)console.log('Se inserto')
             // })
             .catch(err => {
-                //console.log(err);
+                console.log({sql:err.sql, msg:err.sqlMessage});
             });
-            db.execute(`INSERT INTO ESTADO_LABORAL(idUsuario) SELECT ? WHERE NOT EXISTS(SELECT 1 FROM ESTADO_LABORAL WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].idUsuario])
+            db.execute(`INSERT INTO ESTADO_LABORAL(idUsuario, idEstatus) SELECT ?,8 WHERE NOT EXISTS(SELECT 1 FROM ESTADO_LABORAL WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].idUsuario])
             .catch(err => {
-                //console.log(err);
+                console.log({sql:err.sql, msg:err.sqlMessage});
             });            
             db.execute(`INSERT INTO RESPONSABLE(idUsuario, idTarea) SELECT ?,? WHERE NOT EXISTS(SELECT 1 FROM RESPONSABLE WHERE idTarea = ?);`,[data[i].idUsuario,data[i].idTarea,data[i].idTarea])
             .catch(err => {
-                //console.log(err);
+                console.log({sql:err.sql, msg:err.sqlMessage});
             });
         }
         db.execute(`SELECT * FROM TICKET`)

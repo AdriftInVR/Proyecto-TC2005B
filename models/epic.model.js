@@ -13,7 +13,7 @@ module.exports = class Epic {
             //     if(rows.affectedRows>0)console.log('Se inserto')
             // })
             .catch(err => {
-                //console.log(err);
+                console.log({sql:err.sql, msg:err.sqlMessage});
             });
         }        
     }
