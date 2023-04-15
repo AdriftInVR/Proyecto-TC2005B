@@ -15,11 +15,11 @@ router.get('/project/:prj', auth, gaiaController.getProject);
 router.get('/tasks', auth, gaiaController.getTasks);
 router.get('/users', auth, gaiaController.getUsers);
 router.get('/dashboard', auth, gaiaController.getDashboard);
-router.get('/import', auth, gaiaController.getImport);
+router.get('/import/:result', auth, gaiaController.getImport);
 
 
 //Post routes
-router.post('/submit',auth,gaiaController.postImport);
+router.post('/import',auth,gaiaController.postImport);
 router.post('/',auth,gaiaController.postProject);
 
 

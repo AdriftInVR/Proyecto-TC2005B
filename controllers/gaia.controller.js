@@ -11,7 +11,6 @@ const Tarea = require('../models/tarea.model');
 control = []
 const db = require('../util/database');
 
-
 control.getLogin = (req, res) => {
     res.render('login')
 };
@@ -56,20 +55,22 @@ control.getDashboard = (req, res) => {
     res.render('dashboard')
 };
 
-control.getImport = (req, res) => {
+control.getImport = (req, res) => {    
     res.render('import', {
         active: 'import',
-        result:'void'
+        state: req.params.result || false
     });
 };
 
+let result = 'na';
 control.postImport = (request, response, next) => {
     control.processCsv(request,response);
-    response.render('import',{active: 'import',result:'succes' || 'err'});
+    response.redirect('/gaia/import/'+result);
 };
 
 
-control.processCsv=(req,res)=>{
+control.processCsv=(req,res)=>{   
+    result = 'succes';
     //get data from data.csv
     filePath = './public/files/data.csv';
     let fileText = fs.readFileSync(filePath).toString();
@@ -121,7 +122,7 @@ control.processCsv=(req,res)=>{
         }        
         entries.push(ticketInsert);
     }
-    Ticket.add(entries)    
+    Ticket.add(entries);
     //Data to table fase
     entries = [];
     estados = [];
@@ -148,6 +149,7 @@ control.processCsv=(req,res)=>{
     }) 
     .catch(err => {
         console.log(err);
+        result = err
     });
     Fase.add(entries);
 

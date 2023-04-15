@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const session = require('express-session');
 const csrf = require('csurf');
@@ -42,6 +43,7 @@ app.get('/profile', requiresAuth(), (req, res) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
 
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
