@@ -218,6 +218,4 @@ control.postProject = (req, res, next) =>{
     res.redirect('/');
 }
 
-
-
 module.exports = control
