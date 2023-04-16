@@ -68,14 +68,13 @@ control.getDashboard = (req, res) => {
 
 control.getImport = (req, res) => {
     res.render('import', {
-        active: 'import',
-        result:'void'
+        active: 'import'
     });
 };
 
 control.postImport = (request, response, next) => {
     control.processCsv(request,response);
-    response.render('import',{active: 'import',result:'succes' || 'err'});
+    response.redirect('/gaia/import');
 };
 
 

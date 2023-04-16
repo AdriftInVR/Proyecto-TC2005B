@@ -1,3 +1,25 @@
+<<<<<<< HEAD
+5000,Vamos Mexico
+5001,Aztec�n
+5002,CIT Campeche
+5003,Mexico sin ti no estamos completos
+5004,Educando en Coahuila
+5005,Infonavit Durango
+5006,Reconstrucci�n del templo de Guadalupe
+5007,Construcci�n de plaza Magnolias
+5008,Televisa en acci�n
+5009,Disco Atlantic
+5010,Construcci�n de Hospital Infantil
+5011,Remodelaci�n de aulas del IPP
+5012,Restauraci�n de instalaciones del CEA
+5013,Reparaci�n de la plaza Sonora
+5014,Remodelaci�n de Soriana
+5015,CIT Yucatan
+5016,Ampliaci�n de la carretera a la huasteca
+5017,Reparaci�n de la carretera del sol
+5018,Tu cambio por la educacion
+5019,Queretaro limpio
+=======
 Issue key,Issue id,Summary,Issue Type,Custom field (Story Points),Status,Custom field (Epic Link),Epic Link Summary,Updated,Assignee,Assignee Id,Labels,Labels,Labels
 PART-2355,24413,PartnerMarketsPage.js / fix flaky test,Task,,To Do,PART-234,Express Tech Excellence,14/Mar/23 10:03 AM,Kevin Anderson,62cdf0d01e326fd93012992d,part/Frontend,,
 PART-2353,24358,Remove flag (BE) - care_requests_page,Task,,To Do,PART-234,Express Tech Excellence,13/Mar/23 12:20 PM,,,part/Backend,,
@@ -98,3 +120,4 @@ PART-235,21047,Fix Dependabot alerts,Task,,To Do,PART-234,Express Tech Excellenc
 PART-191,21039,Database problems - Clean up care request,Task,,Canceled,PART-234,Express Tech Excellence,02/Mar/23 2:05 PM,,,,,
 PART-190,21038,Database problems - Clean up care request statuses,Task,,To Do,PART-234,Express Tech Excellence,02/Mar/23 2:05 PM,Bernardo Gomez-Romero,61c9eb457c6f980070deda99,,,
 PART-180,20754,"Client: add location, channel and all_status endpoints to MSW",Task,2.0,To Do,PART-234,Express Tech Excellence,02/Mar/23 1:49 PM,Giorgi Gelashvili,62cdef6c6eba71983721e037,part/Frontend,part/nse,
+>>>>>>> 92db18aaa21de55c1d9639e7fe7bec6512f9b35e
