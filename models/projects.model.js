@@ -2,7 +2,8 @@ const db = require('../util/database');
 
 module.exports = class Proyecto {
     constructor(_newProyecto) {
-        this.nombre = _newProyecto;
+        this.nombre = _newProyecto.nombre;
+        this.fechaInicio = _newProyecto.fechaInicio;
     }
 
     save() {
@@ -43,9 +44,9 @@ module.exports = class Proyecto {
                 `, [id_temporal, this.nombre])
 
                 db.execute(`
-                    INSERT INTO PROYECTO (idTicket)
-                    VALUES (?)
-                `, [id_temporal])
+                    INSERT INTO PROYECTO (idTicket, fechaInicio)
+                    VALUES (?, ?)
+                `, [id_temporal, this.fechaInicio])
                 .then(([rows, fieldData]) => {
                 
                 })
@@ -83,14 +84,14 @@ module.exports = class Proyecto {
         `,[dato]);
     }
 
-    static epic(dato){
+    static epics(epic){
         return db.execute(`
             SELECT nombre
             FROM ticket t, epic e, proyecto p
             WHERE t.idTicket = e.idTicket
             AND perteneProyecto = p.idTicket 
-            AND t.nombre = (?);
-        `,[dato]);
+            AND perteneProyecto = (?);
+        `,[epic]);
     }
 
 }

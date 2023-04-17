@@ -40,13 +40,11 @@ control.getProject = (req, res) => {
             datos: rows,
             projectName: projectName
         });
-        
     })
     .catch(err => {
         console.log(err);
     });
 };
-
 
 control.getEpic = (req, res) => {
     projectName = req.params.prj;
@@ -57,7 +55,6 @@ control.getEpic = (req, res) => {
             epics: rows,
             projectName: projectName
         });
-        
     })
     .catch(err => {
         console.log(err);
@@ -237,13 +234,15 @@ control.processCsv=(req,res)=>{
 };
 
 control.postProject = (req, res, next) =>{
-    const nombre = req.body.projectName;
-    const newProject = new Proyecto(nombre);    
+    const data = {
+        nombre : req.body.projectName,
+        fechaInicio : req.body.projectStart
+    };
+    
+    const newProject = new Proyecto(data);    
     console.log(newProject)
     newProject.save()
     res.redirect('/');
 }
-
-
 
 module.exports = control
