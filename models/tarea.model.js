@@ -1,10 +1,6 @@
 const db = require('../util/database');
 
 module.exports = class Tarea {
-
-    static fetchAll() {
-        return db.execute('SELECT * FROM TAREA');
-    }
     
     static add(data){        
         for(let i=0;i<data.length;i++){            
@@ -18,4 +14,16 @@ module.exports = class Tarea {
             });
         }        
     }
+
+    static fetchAll() {
+        return db.execute(`
+        SELECT t.nombre, ta.puntosAgiles
+        FROM ticket t, fase f, tarea ta
+        WHERE t.idTicket = f.idTicket
+        AND t.idTicket = ta.idTicket
+        AND f.idEstatus = ?
+        `);
+    }
+
+
 }

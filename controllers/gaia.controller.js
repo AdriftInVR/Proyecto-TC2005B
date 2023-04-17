@@ -34,10 +34,35 @@ control.getProjects = (req, res) => {
 
 control.getProject = (req, res) => {
     projectName = req.params.prj;
-    res.render('project', {
-        active: 'projects',
-        projectName: projectName
+    Proyecto.datos(projectName)
+    .then(([rows, filedData]) => {
+        res.render('project', {
+            active: 'projects',
+            datos: rows,
+            projectName: projectName
+        });
+        
     })
+    .catch(err => {
+        console.log(err);
+    });
+};
+
+
+control.getEpic = (req, res) => {
+    projectName = req.params.prj;
+    Proyecto.epics(projectName)
+    .then(([rows, filedData]) => {
+        res.render('project', {
+            active: 'projects',
+            epics: rows,
+            projectName: projectName
+        });
+        
+    })
+    .catch(err => {
+        console.log(err);
+    });
 };
 
 control.getTasks = (req, res) => {

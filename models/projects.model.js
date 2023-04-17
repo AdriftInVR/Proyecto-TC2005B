@@ -15,7 +15,7 @@ module.exports = class Proyecto {
               result += characters.charAt(Math.floor(Math.random() * characters.length));
               counter += 1;
             }
-            return result;
+            return result;
         }
 
 
@@ -41,7 +41,6 @@ module.exports = class Proyecto {
                     INSERT INTO TICKET (idTicket, nombre)
                     VALUES (?, ?)
                 `, [id_temporal, this.nombre])
-                
 
                 db.execute(`
                     INSERT INTO PROYECTO (idTicket)
@@ -54,43 +53,44 @@ module.exports = class Proyecto {
                     console.log(err);
                 });
 
-                
-                /*db.execute(`
-                    SELECT nombre, puntosAgiles, front_back
-                    FROM tarea t, responsable r, trabaja tr, usuario u
-                    WHERE u.idUsuario= tr.idUsuario
-                    AND u.idUsuario = r.idUsuario
-                    AND r.idTarea = t.idTicket
-                    AND idProyecto= (?)
-                    GROUP BY nombre
-                `,)
-                .then(([rows, fieldData]) => {
-                
-                })
-                .catch(err => {
-                    console.log(err);
-                });*/
             }
         })
         .catch(err=>{
             console.log(err);
         })
-
-
         
-
     }
 
     static fetchAll() {
         return db.execute(`
             SELECT t.nombre, p.fechainicio, p.duracion
             FROM TICKET t, PROYECTO p
-            WHERE  t.idTicket = p.idTicket
+            WHERE  t.idTicket = p.idTicket;
         `);
     }
-
-
-
     
+    static datos(dato){
+        return db.execute(`
+            SELECT u.nombre, puntosAgiles, front_back
+            FROM tarea t, responsable r, trabaja tr, usuario u, proyecto p, ticket ti
+            WHERE u.idUsuario= tr.idUsuario
+            AND u.idUsuario = r.idUsuario
+            AND r.idTarea = t.idTicket
+            AND tr.idProyecto = p.idTicket
+            AND p.idTicket = ti.idTicket
+            AND ti.nombre= (?)
+            GROUP BY u.nombre;
+        `,[dato]);
+    }
+
+    static epic(dato){
+        return db.execute(`
+            SELECT nombre
+            FROM ticket t, epic e, proyecto p
+            WHERE t.idTicket = e.idTicket
+            AND perteneProyecto = p.idTicket 
+            AND t.nombre = (?);
+        `,[dato]);
+    }
 
 }
