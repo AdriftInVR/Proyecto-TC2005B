@@ -31,7 +31,6 @@ control.getProjects = (req, res) => {
     });
 };
 
-
 control.getProject = (req, res) => {
     projectName = req.params.prj;
     res.render('project', {

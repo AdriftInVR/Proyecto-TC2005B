@@ -1,0 +1,34 @@
+const fs = require('fs');
+//Base de datos
+const Ticket = require('../models/tickets.model');
+const Estatus = require('../models/status.model');
+const Fase = require('../models/fase.model');
+const Proyecto = require('../models/proyects.model');
+const Epic = require('../models/epic.model');
+const User = require('../models/user.model');
+const Tarea = require('../models/tarea.model');
+
+control = []
+const db = require('../util/database');
+
+exports.getStatus = (req, res) => {
+    Proyecto.fetchStatus(req.params.idProyecto)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
+
+exports.getNotTitle = (req, res) => {
+    Proyecto.fetchNotTitle(req.params.idProyecto)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({project: rows[0]})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
