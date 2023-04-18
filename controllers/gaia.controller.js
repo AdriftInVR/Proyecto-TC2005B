@@ -46,13 +46,20 @@ control.getTasks = (req, res) => {
     })
 };
 
-control.getUsers = (req, res) => {
+control.getUsers = async (req, res) => {
 
     User.fetchAll()
-    .then(([rows, fieldData]) => {
+    .then(async ([usuarios, fieldData]) => {
+
+        let usuarios_proyectos = [];
+
+        for (let usuario of usuarios) {
+            [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
+            usuarios_proyectos[usuario.nombre] = proyectos;
+        }
         res.render('users', {
             active: 'users',
-            users: rows,
+            usuarios_proyectos: usuarios_proyectos,
         });
     })
     .catch(error => {

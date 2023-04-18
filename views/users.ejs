@@ -8,15 +8,13 @@
     <!-- lista de usuarios-->
 
     <div class="fixed top-48 right-48 justify-center w-3/5" id="accordion-collapse" data-accordion="collapse">
-
-    <% if (users.length > 0) { %>
+    <% if (usuarios_proyectos) { %>
         <% let num = 1; %>
-        <% for(let user of users) { %>
-            
+        <% for(let user in usuarios_proyectos) { %>
             
             <h2 id="accordion-collapse-heading-<%= num%>">
                 <button type="button" class="bg-gradient-to-br from-blue-500 to-blue-400 flex items-center justify-between w-full p-5 font-medium text-left text-white border border-b-0 border-blue-900 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-blue-900 dark:border-blue-900 dark:text-blue-900 bg-blue-900 dark:hover:bg-blue-900" data-accordion-target="#accordion-collapse-body-<%= num%>" aria-expanded="true" aria-controls="accordion-collapse-body-<%= num %>">
-                <span class="text-white"><%= user.nombre  %> </span>
+                <span class="text-white"><%= user  %> </span>
                 <svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                 </button>
             </h2>
@@ -29,7 +27,11 @@
                             <!-- Proyectos del usuario en cuestion -->
 
                                 <div>
-                                    
+                                    <% if (usuarios_proyectos[user]) { %>
+                                        <% for(let proyecto of usuarios_proyectos[user]) { %> 
+                                            <%= proyecto.nombre %> <br>
+                                        <% } %>
+                                    <% } %>
                                 </div>
 
                         </div>
@@ -52,7 +54,7 @@
             <% num = num + 1; %>
         <% } %>
     <% } else { %>
-
+        No users in the datbase... How in the hell did you manage to get here without been a user?
     <% } %>
     </div>
 
