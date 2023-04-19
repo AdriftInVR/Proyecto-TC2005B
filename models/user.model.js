@@ -24,9 +24,6 @@ module.exports = class User {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
         }
-        db.execute(`SELECT * FROM TICKET`)
-        .then(([rows, fieldData]) => {
-            console.log('Database are ready');
-        })
+        3
     }
 }
