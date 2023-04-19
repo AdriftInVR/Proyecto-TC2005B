@@ -18,4 +18,18 @@ module.exports = class Tarea {
             });
         }        
     }
+/*
+    static epicTask(epic){
+        console.log("Estás en epicTask!!");
+        return db.execute(`
+        SELECT nombre
+        FROM ticket t, epic e, proyecto p
+        WHERE t.idTicket = e.idTicket
+        AND perteneProyecto = p.idTicket 
+        AND perteneProyecto IN (SELECT idTicket
+                                   FROM ticket
+                                   WHERE nombre = (?));
+        `,[epic]);
+    }
+    */
 }

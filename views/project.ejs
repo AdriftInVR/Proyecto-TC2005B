@@ -28,7 +28,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+                         
                             <% for (let dato of datos) { %>
                                 <tr>
                                     <th scope="row" class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -42,6 +42,7 @@
                                     </td>
                                 </tr>
                             <% } %>
+
                         </tbody>
                         </table>
                     </div>
@@ -75,7 +76,7 @@
                                     <% for (let epic of epics) { %>
                                         <tr>
                                             <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                <%= epic.nombre %>
+                                                <a href="/gaia/tasks/<%= epic.idTicket%>"><%= epic.nombre %></a>
                                             </td>
                                         </tr>
                                     <% } %>
