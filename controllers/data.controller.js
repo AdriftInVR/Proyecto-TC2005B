@@ -32,3 +32,14 @@ exports.getNotTitle = (req, res) => {
             res.status(500).json({message: "Internal Server Error"});
         });
 };
+
+exports.getArea = (req, res) => {
+    Proyecto.fetchArea(req.params.idProyecto)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};

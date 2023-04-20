@@ -35,14 +35,14 @@ module.exports = class Proyecto {
 
     static fetchNotTitle(projectID) {
         return db.execute(`
-            SELECT idTicket FROM proyecto p
+            SELECT idTicket FROM PROYECTO p
             WHERE p.idTicket = ?
         `, [projectID]);
     }
 
     static fetchStatus(projectID) {
         return db.execute(`
-            SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM estatus s, fase f, tarea t, epic e, proyecto p
+            SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM ESTATUS s, FASE f, TAREA t, EPIC e, PROYECTO p
             WHERE s.idEstatus = f.idEstatus
             AND f.idTicket = t.idTicket
             AND t.perteneceEpic = e.idTicket
@@ -52,4 +52,17 @@ module.exports = class Proyecto {
         `, [projectID]);
     }
 
+    static fetchArea(projectID) {
+        return db.execute(`
+            SELECT t.front_back, COUNT(t.idTicket) as 'Complete'
+            FROM TAREA t, EPIC e, PROYECTO p, FASE f, ESTATUS s
+            WHERE t.idTicket = f.idTicket
+            AND f.idEstatus = s.idEstatus
+            AND t.perteneceEpic = e.idTicket
+            AND (s.descripcion = 'Done' OR s.descripcion = 'Closed')
+            AND e.perteneProyecto = p.idTicket
+            AND p.idTicket = ?
+            GROUP BY t.front_back
+        `)
+    }
 }

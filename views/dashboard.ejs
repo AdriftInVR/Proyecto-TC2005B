@@ -87,3 +87,41 @@
             new Chart(pie, config);
         })
 </script>
+
+<script>
+    // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
+    const frontback = document.getElementById('FrontBackAP');
+
+    fetch('/data/project/status/' + 1, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            let data_labels = [];
+            let data_count = [];
+            for (let tag of data.status) {
+                data_labels.push(tag.Nombre);
+                data_count.push(tag.Cantidad);
+            }
+            const PIEchart = {
+                labels: data_labels,
+                datasets: [{
+                    data: data_count,
+                    backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+            const config = {
+                type: 'pie',
+                data: PIEchart,
+            };
+            new Chart(pie, config);
+        })
+</script>
