@@ -11,7 +11,7 @@ const gaiaController = require('../controllers/gaia.controller');
 
 router.get('/login', gaiaController.getLogin);
 router.get('/project/:prj', auth, gaiaController.getProject);
-router.get('/tasks/:prj', auth, gaiaController.getTasks);
+router.get('/tasks/:epc', auth, gaiaController.getTasks);
 router.get('/users', auth, gaiaController.getUsers);
 router.get('/dashboard', auth, gaiaController.getDashboard);
 router.get('/import', auth, gaiaController.getImport);
@@ -20,6 +20,7 @@ router.get('/', auth, gaiaController.getProjects);
 
 //Post routes
 router.post('/submit',auth,gaiaController.postImport);
+router.post('/project',auth,gaiaController.postEpicsDB);
 router.post('/',auth,gaiaController.postProject);
 
 

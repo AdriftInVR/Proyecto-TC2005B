@@ -59,19 +59,20 @@ control.getProject = async (req, res) => {
 
 control.getTasks = (req, res) => {
 
-    projectName = req.params.prj;
-    Tarea.fetchAll(projectName)
+    EpicID = req.params.epc;
+    Tarea.epicTask(EpicID)
     .then(([rows, filedData]) => {
         res.render('tasks', {
             active: 'projects',
             epicTask: rows,
-            projectName: projectName
+            EpicID: EpicID
         });
     })
     .catch(err => {
         console.log(err);
     });
 };
+
 
 control.getUsers = (req, res) => {
     res.render('users', {
@@ -265,5 +266,17 @@ control.postProject = (req, res, next) =>{
     console.log(msgErrorAddProject);
     res.redirect('/');
 }
+
+
+
+control.postEpicsDB = (req, res, next) =>{
+    const epicDato = req.body.EpicID;
+    const newTask = new Tarea(epicDato);    
+    console.log(newTask)
+    newTask.save()
+    res.redirect('/project');
+}
+
+
 
 module.exports = control

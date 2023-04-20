@@ -34,5 +34,24 @@ module.exports = class Proyecto {
         `);
     }
 
+    static fetchNotTitle(projectID) {
+        return db.execute(`
+            SELECT idTicket FROM proyecto p
+            WHERE p.idTicket = ?
+        `, [projectID]);
+    }
+
+    static fetchStatus(projectID) {
+        return db.execute(`
+            SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM estatus s, fase f, tarea t, epic e, proyecto p
+            WHERE s.idEstatus = f.idEstatus
+            AND f.idTicket = t.idTicket
+            AND t.perteneceEpic = e.idTicket
+            AND e.perteneProyecto = p.idTicket
+            AND p.idTicket = ?
+            GROUP BY s.descripcion
+        `, [projectID]);
+    }
+
 }
 

@@ -2,17 +2,8 @@ const db = require('../util/database');
 
 module.exports = class Tarea {
 
-    static fetchAll(epic){
-        console.log("Estás en epicTask!!");
-        return db.execute(`
-        SELECT nombre
-        FROM ticket t, epic e, proyecto p
-        WHERE t.idTicket = e.idTicket
-        AND perteneProyecto = p.idTicket 
-        AND perteneProyecto IN (SELECT idTicket
-                                   FROM ticket
-                                   WHERE nombre = (?));
-        `,[epic]);
+    static fetchAll(){
+        return db.execute('SELECT * FROM TAREA');
     }
     
     static add(data){        
@@ -27,7 +18,7 @@ module.exports = class Tarea {
             });
         }        
     }
-/*
+
     static epicTask(epic){
         console.log("Estás en epicTask!!");
         return db.execute(`
@@ -40,5 +31,5 @@ module.exports = class Tarea {
                                    WHERE nombre = (?));
         `,[epic]);
     }
-    */
+    
 }

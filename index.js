@@ -57,8 +57,10 @@ app.set('views', 'views');
 
 //Middleware
 const gaiaRoutes = require('./routes/gaia.routes');
+const dataRoutes = require('./routes/data.routes');
 const { response } = require('express');
 app.use('/gaia', gaiaRoutes);
+app.use('/data', dataRoutes);
 
 console.log('Is running...')
 app.listen(3000);

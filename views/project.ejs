@@ -38,7 +38,12 @@
                                         <%= dato.efectividadAsignada %>
                                     </td>
                                     <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <%= dato.front_back %>
+                                        <% if(dato.front_back == 1){%>
+                                            <p>Backend</p>
+                                        <%} else if(dato.front_back == 0) { %>
+                                            <p>Frontend</p>
+                                        <% } %>
+                                        
                                     </td>
                                 </tr>
                             <% } %>
@@ -76,7 +81,7 @@
                                     <% for (let epic of epics) { %>
                                         <tr>
                                             <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                <a href="/gaia/tasks/<%= epic.nombre%>"><%= epic.nombre %></a>
+                                                <a href="/gaia/tasks/<%= epic.EpicID%>"><%= epic.nombre %></a>
                                             </td>
                                         </tr>
                                     <% } %>
