@@ -32,7 +32,7 @@ module.exports = class User {
 
     static fetchUserProjects(name) {
         return db.execute(`SELECT t.nombre
-        FROM usuario as u, trabaja as tr, ticket as t
+        FROM USUARIO as u, TRABAJA as tr, TICKET as t
         WHERE u.idUsuario = tr.idUsuario
         AND tr.idProyecto = t.idTicket
         AND u.nombre = ?`,
