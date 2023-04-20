@@ -68,8 +68,9 @@ module.exports = class Proyecto {
             WHERE p.idTicket = t.idTicket
         `);
     }
-    static fetchArea(projectID) {
-        return db.execute(`
+
+    static async fetchCompletePrj(projectID) {
+        return await db.execute(`
             SELECT t.front_back, COUNT(t.idTicket) as 'Complete'
             FROM TAREA t, EPIC e, PROYECTO p, FASE f, ESTATUS s
             WHERE t.idTicket = f.idTicket
@@ -79,6 +80,40 @@ module.exports = class Proyecto {
             AND e.perteneProyecto = p.idTicket
             AND p.idTicket = ?
             GROUP BY t.front_back
-        `)
+        `,[projectID])
+    }
+    
+    static async fetchAllPrj(projectID) {
+        return await db.execute(`
+            SELECT t.front_back, COUNT(puntosAgiles) as 'Completed'
+            FROM TAREA t, EPIC e, PROYECTO p
+            WHERE t.perteneceEpic = e.idTicket
+            AND e.perteneProyecto = p.idTicket
+            AND p.idTicket = ?
+            GROUP BY t.front_back
+        `,[projectID])        
+    }
+
+    static async fetchCompleteEpi(epicID) {
+        return await db.execute(`
+            SELECT t.front_back, COUNT(t.idTicket) as 'Complete'
+            FROM TAREA t, EPIC e, FASE f, ESTATUS s
+            WHERE t.idTicket = f.idTicket
+            AND f.idEstatus = s.idEstatus
+            AND t.perteneceEpic = e.idTicket
+            AND (s.descripcion = 'Done' OR s.descripcion = 'Closed')            
+            AND e.idTicket = ?
+            GROUP BY t.front_back
+        `, [epicID])
+    }
+    
+    static async fetchAllEpi(epicID) {
+        return await db.execute(`
+            SELECT t.front_back, COUNT(puntosAgiles) as 'Completed'
+            FROM TAREA t, EPIC e
+            WHERE t.perteneceEpic = e.idTicket
+            AND e.idTicket = ?
+            GROUP BY t.front_back
+        `, [epicID])
     }
 }

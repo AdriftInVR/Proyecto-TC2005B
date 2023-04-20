@@ -196,20 +196,14 @@
 </script>
 
 <script>
-    function ChartAll() {
-        if (document.getElementById('epicDiv').style.visibility == "hidden") {
-            ProjectPieChart($("#projects").val());
-        } else {
-            EpicPieChart($("#epics").val());
-        }
-    }
-</script>
+    var barChar;
+    function areasBarChart(projectID){
+        if (barChar) {
+            barChar.destroy();
+        }    
 
-<script>
-    // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
-    const frontback = document.getElementById('FrontBackAP');
-
-    fetch('/data/project/status/' + 1, {
+        const bar = document.getElementById('frontBackAP');
+        fetch('/data/project/area/' + projectID, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -217,28 +211,119 @@
         }).then(result => {
             return result.json();
         }).then(data => {
-            let data_labels = [];
-            let data_count = [];
-            for (let tag of data.status) {
-                data_labels.push(tag.Nombre);
-                data_count.push(tag.Cantidad);
-            }
-            const PIEchart = {
+            let data_labels = ['Frontend','Backend'];
+            let data_countComplete = [data.completeFront,data.completeBack];            
+            let data_countTotal = [data.allFront,data.allBack];            
+        
+            const BARchart = {
                 labels: data_labels,
-                datasets: [{
-                    data: data_count,
-                    backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                    ],
-                    hoverOffset: 4
-                }]
+                datasets: [
+                    {
+                        label: 'Completadas',
+                        data: data_countComplete,
+                        backgroundColor: ['rgb(255, 99, 132)'],
+                        hoverOffset: 4
+                    },
+                    {
+                        label: 'Total',
+                        data: data_countTotal,
+                        backgroundColor: ['rgb(54, 162, 235)'],
+                        hoverOffset: 4
+                    }
+                ]
             };
             const config = {
-                type: 'pie',
-                data: PIEchart,
+                type: 'bar',
+                data: BARchart,
+                options: {
+                    plugins: {
+                    title: {
+                        display: true,
+                        text: 'Chart.js Bar Chart - Stacked'
+                    },
+                    },
+                    responsive: true,
+                    scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                    }
+                }
             };
-            new Chart(pie, config);
-        })
+            barChar = new Chart(bar, config);
+        })    
+    }
+    function areasBarChartEpic(epicID){
+        if (barChar) {
+            barChar.destroy();
+        }    
+        const bar = document.getElementById('frontBackAP');
+        fetch('/data/project/epic/area/' + epicID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            let data_labels = ['Frontend','Backend'];
+            let data_countComplete = [data.completeFront,data.completeBack];            
+            let data_countTotal = [data.allFront,data.allBack];               
+        
+            const BARchart = {
+                labels: data_labels,
+                datasets: [
+                    {
+                        label: 'Completadas',
+                        data: data_countComplete,
+                        backgroundColor: ['rgb(255, 99, 132)'],
+                        hoverOffset: 4
+                    },
+                    {
+                        label: 'Total',
+                        data: data_countTotal,
+                        backgroundColor: ['rgb(54, 162, 235)'],
+                        hoverOffset: 4
+                    }
+                ]
+            };
+            const config = {
+                type: 'bar',
+                data: BARchart,
+                options: {
+                    plugins: {
+                    title: {
+                        display: true,
+                        text: 'Chart.js Bar Chart - Stacked'
+                    },
+                    },
+                    responsive: true,
+                    scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                    }
+                }
+            };
+            barChar = new Chart(bar, config);
+        })    
+    }
+</script>
+
+<script>
+    function ChartAll() {
+        if (document.getElementById('epicDiv').style.visibility == "hidden") {
+            ProjectPieChart($("#projects").val());
+            areasBarChart($("#projects").val());
+        } else {
+            EpicPieChart($("#epics").val());
+            areasBarChartEpic($("#epics").val());
+        }
+    }
 </script>

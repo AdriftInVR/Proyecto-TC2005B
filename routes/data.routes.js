@@ -15,4 +15,6 @@ router.get('/project/title/:idProject', dataController.getNotTitle);
 
 router.get('/project/area/:idProyecto', dataController.getArea);
 
+router.get('/project/epic/area/:idEpic', dataController.getAreaEpic);
+
 module.exports = router;
