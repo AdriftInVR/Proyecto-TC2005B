@@ -1,6 +1,19 @@
 const db = require('../util/database');
 
 module.exports = class Tarea {
+
+    static fetchAll(epic){
+        console.log("Estás en epicTask!!");
+        return db.execute(`
+        SELECT nombre
+        FROM ticket t, epic e, proyecto p
+        WHERE t.idTicket = e.idTicket
+        AND perteneProyecto = p.idTicket 
+        AND perteneProyecto IN (SELECT idTicket
+                                   FROM ticket
+                                   WHERE nombre = (?));
+        `,[epic]);
+    }
     
     static add(data){        
         for(let i=0;i<data.length;i++){            
@@ -14,16 +27,18 @@ module.exports = class Tarea {
             });
         }        
     }
-
-    static fetchAll() {
+/*
+    static epicTask(epic){
+        console.log("Estás en epicTask!!");
         return db.execute(`
-        SELECT t.nombre, ta.puntosAgiles
-        FROM ticket t, fase f, tarea ta
-        WHERE t.idTicket = f.idTicket
-        AND t.idTicket = ta.idTicket
-        AND f.idEstatus = ?
-        `);
+        SELECT nombre
+        FROM ticket t, epic e, proyecto p
+        WHERE t.idTicket = e.idTicket
+        AND perteneProyecto = p.idTicket 
+        AND perteneProyecto IN (SELECT idTicket
+                                   FROM ticket
+                                   WHERE nombre = (?));
+        `,[epic]);
     }
-
-
+    */
 }

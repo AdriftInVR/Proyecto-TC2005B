@@ -3,277 +3,287 @@
     active: active
 }) %>
 
-<div class="w-main inline-flex flex-col flex-4">
-    <div class="flex sticky top-0 bg-white">
-        <div class="flex-1">
-            <div class="m-4">
-                <nav class="flex" aria-label="Breadcrumb">
-                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li>
-                        <div class="flex items-center">            
-                        <a href="/gaia/project/:prj" class="ml-1 text-sm font-medium text-gray-900 hover:text-gray-400 md:ml-2 ">Project</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-1 text-sm font-medium text-gray-900 md:ml-2">Tasks</span>
-                        </div>
-                    </li>
-                    </ol>
-                </nav>
-            </div>
-        
-            <div class="m-4">
-                <div class="inline-flex shadow-sm" role="group">
-                    <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
-                    ALL
-                    </button>
-                    <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600 hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
-                    FRONTEND
-                    </button>
-                    <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
-                    BACKEND
-                    </button>
+
+
+    <div class="w-main inline-flex flex-col flex-4">
+        <div class="flex sticky top-0 bg-white">
+            <div class="flex-1">
+                <div class="m-4">
+                    <nav class="flex" aria-label="Breadcrumb">
+                        <% if (epics > 0) { %>
+                            <% for (let epic of epics) { %>
+                                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                                <li>
+                                    <div class="flex items-center">            
+                                    <a href="/gaia/tasks/<%epic.nombre %>" class="ml-1 text-sm font-medium text-gray-900 hover:text-gray-400 md:ml-2 "><% epic.nombre %></a>
+                                    </div>
+                                </li>
+                                <li aria-current="page">
+                                    <div class="flex items-center">
+                                    <svg aria-hidden="true" class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                    <span class="ml-1 text-sm font-medium text-gray-900 md:ml-2">Tasks</span>
+                                    </div>
+                                </li>
+                                </ol>   
+                            <% } %>                     
+                        <% } %>
+                    </nav>
                 </div>
-            </div>        
-        </div>
-
-        <div class="m-4 flex-[3_3_0%] flex justify-center align-center">
             
-            <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
-                class="h-1/2 w-4/5 text-white bg-indigo-900 rounded-l-lg hover:bg-indigo-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
-                type="button">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit, cum?<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
-            <!-- Dropdown menu -->
-            <div id="dropdownHover" class=" z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow max-w-4/5 min-w-44">
-                <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownHoverButton">
-                    <li>
-                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-indigo-900 hover:text-white">Lorem ipsum dmmodi?</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-indigo-900 hover:text-white">Lorem ipsum dmodi?</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-indigo-900 hover:text-white">Lorem ipsum dolor Ad, commodi?</a>
-                    </li>
-                </ul>
+                <div class="m-4">
+                    <div class="inline-flex shadow-sm" role="group">
+                        <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        ALL
+                        </button>
+                        <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600 hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        FRONTEND
+                        </button>
+                        <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        BACKEND
+                        </button>
+                    </div>
+                </div>        
             </div>
-
-        </div>
-    </div>
-        
-    <div class="m-2 p-8 flex flex-row flex-wrap justify-around">
-        
-        <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-blue-200 rounded-lg shadow">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">To do </h5>
+    
+    
             
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Point
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
-                            <th scope="row" class="px-6 py-4 w-14 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
-                                <a href="">fsadasdadasdas..</a>
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td> 
-                        </tr>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- DROPDOWN menu -->
+            <div class="m-4 flex-[3_3_0%] flex justify-center align-center">
+                <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
+                    class="h-1/2 w-4/5 text-white bg-indigo-900 rounded-l-lg hover:bg-indigo-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
+                    type="button">Epics<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="dropdownHover" class=" z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow max-w-4/5 min-w-44">
+                    <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownHoverButton">
+                        
+                        <% for (let epic of epics) { %>
+                            <li>
+                                <a href="/gaia/tasks/<%epic.nombre %>" class="block px-4 py-2 rounded-lg hover:bg-indigo-900 hover:text-white"><%epic.nombre %></a>
+                            </li>
+                        <% } %>
+                        
+                    </ul>
+                </div>
             </div>
+    
+    
+    
         </div>
-
-        <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-yellow-200 rounded-lg shadow">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">In progress </h5>
-                    
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Point
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
-                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
-                                fsadasdadasdas..
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td> 
-                        </tr>
-                    </tbody>
-                </table>
+            
+        <div class="m-2 p-8 flex flex-row flex-wrap justify-around">
+            
+            <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-blue-200 rounded-lg shadow">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">To do </h5>
+                
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Point
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
+                                <th scope="row" class="px-6 py-4 w-14 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
+                                    <a href="">fsadasdadasdas..</a>
+                                </th>
+                                <td class="px-6 py-4">
+                                    Silver
+                                </td> 
+                            </tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-        </div>
-        <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-green-200 rounded-lg shadow">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Code review </h5>
-                    
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Point
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
-                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
-                                fsadasdadasdas..
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td> 
-                        </tr>
-                    </tbody>
-                </table>
+    
+            <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-yellow-200 rounded-lg shadow">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">In progress </h5>
+                        
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Point
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
+                                <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
+                                    fsadasdadasdas..
+                                </th>
+                                <td class="px-6 py-4">
+                                    Silver
+                                </td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
             </div>
-
-        </div>
-        
-        <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-red-200 rounded-lg shadow">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Quality review </h5>
-                    
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Point
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
-                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
-                                fsadasdadasdas..
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td> 
-                        </tr>
-                    </tbody>
-                </table>
+            <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-green-200 rounded-lg shadow">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Code review </h5>
+                        
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Point
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
+                                <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
+                                    fsadasdadasdas..
+                                </th>
+                                <td class="px-6 py-4">
+                                    Silver
+                                </td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
             </div>
-
-        </div>
-        <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-emerald-300 rounded-lg shadow">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Release ready </h5>
-                    
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Point
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
-                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
-                                fsadasdadasdas..
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td> 
-                        </tr>
-                    </tbody>
-                </table>
+            
+            <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-red-200 rounded-lg shadow">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Quality review </h5>
+                        
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Point
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
+                                <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
+                                    fsadasdadasdas..
+                                </th>
+                                <td class="px-6 py-4">
+                                    Silver
+                                </td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
             </div>
-
-        </div>
-        <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-violet-400 rounded-lg shadow">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Done </h5>
-                    
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Point
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
-                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
-                                fsadasdadasdas..
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td> 
-                        </tr>
-                    </tbody>
-                </table>
+            <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-emerald-300 rounded-lg shadow">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Release ready </h5>
+                        
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Point
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
+                                <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
+                                    fsadasdadasdas..
+                                </th>
+                                <td class="px-6 py-4">
+                                    Silver
+                                </td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
             </div>
-
-        </div>
-        <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-indigo-200 rounded-lg shadow">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Closed </h5>
-                    
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Point
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
-                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
-                                fsadasdadasdas..
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td> 
-                        </tr>
-                    </tbody>
-                </table>
+            <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-violet-400 rounded-lg shadow">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Done </h5>
+                        
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Point
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
+                                <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
+                                    fsadasdadasdas..
+                                </th>
+                                <td class="px-6 py-4">
+                                    Silver
+                                </td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
             </div>
-
+            <div href="#" class="block w-1/4 my-2 mx-1 p-6 bg-indigo-200 rounded-lg shadow">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Closed </h5>
+                        
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Point
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-gray-900 dark:text-gray-800 w-14 whitespace-nowrap text-ellipsis overflow-hidden">
+                                <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 whitespace-nowrap dark:text-gray text-ellipsis overflow-hidden">
+                                    fsadasdadasdas..
+                                </th>
+                                <td class="px-6 py-4">
+                                    Silver
+                                </td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
+            </div>
+            
+    
         </div>
-        
-
+    
+            
     </div>
 
-        
-</div>
+
 
 <%- include('partials/endHTML.ejs') %>

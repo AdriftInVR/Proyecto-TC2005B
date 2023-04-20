@@ -1,3 +1,113 @@
 <%- include('partials/header.ejs') %>
-    <h1>Hello world from Dashboard!!</h1>
+    <h1>Showing Status Pie for Project <span id="titleHere"></id></h1>
+<body>
+    <div>
+        <canvas id ='weeklyAP'></canvas>
+    </div>
+    <div>
+        <canvas id ='FrontBackAP'></canvas>
+    </div>
+    <div>
+        <canvas id="statusPie"></canvas>
+    </div>
+    <div>
+        <canvas id="burnupChart"></canvas>
+    </div>
+</body>
+
 <%- include('partials/endHTML.ejs') %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Este script obtiene el ID de un proyecto que esta siendo consultado
+    fetch('/data/project/title/' + 1, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            document.getElementById('titleHere').innerHTML = data.project.idTicket;
+        })
+</script>
+
+<!--BURNIP CHART-->
+
+<script>
+
+const grafica = document.getElementById('burnupChart');
+    const burnChart = {
+        labels: ['You','Are','The',"'Ocean's",'Gray','Waves'],
+        datasets: [{
+            data: [65, 59, 80, 81, 56, 55],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+    const configura = {
+        type: 'line',
+        data: burnChart,
+    };
+    new Chart(grafica, configura);
+
+</script>
+
+<!--FIN BURNIP CHART-->
+
+<script>
+    // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
+    const ap = document.getElementById('weeklyAP');
+    const APchart = {
+        labels: ['You','Are','The',"'Ocean's",'Gray','Waves'],
+        datasets: [{
+            data: [65, 59, 80, 81, 56, 55],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+    const config = {
+        type: 'line',
+        data: APchart,
+    };
+    new Chart(ap, config);
+</script>
+
+<script>
+    // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
+    const pie = document.getElementById('statusPie');
+    fetch('/data/project/status/' + 1, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            let data_labels = [];
+            let data_count = [];
+            for (let tag of data.status) {
+                data_labels.push(tag.Nombre);
+                data_count.push(tag.Cantidad);
+            }
+            const PIEchart = {
+                labels: data_labels,
+                datasets: [{
+                    data: data_count,
+                    backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+            const config = {
+                type: 'pie',
+                data: PIEchart,
+            };
+            new Chart(pie, config);
+        })
+</script>
