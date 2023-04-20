@@ -52,6 +52,22 @@ module.exports = class Proyecto {
         `, [projectID]);
     }
 
+    static fetchEpics(projectID) {
+        return db.execute(`
+            SELECT t.nombre as 'EpicName', e.idTicket as 'EpicID', e.perteneProyecto as 'ProjectID'
+            FROM EPIC e, TICKET t
+            WHERE e.idTicket = t.idTicket
+            AND e.perteneProyecto = ?
+        `, [projectID]);
+    }
+
+    static fetchAllIDs() {
+        return db.execute(`
+            SELECT t.nombre as 'ProjectName', p.idTicket as 'ProjectID'
+            FROM PROYECTO p, TICKET t
+            WHERE p.idTicket = t.idTicket
+        `);
+    }
     static fetchArea(projectID) {
         return db.execute(`
             SELECT t.front_back, COUNT(t.idTicket) as 'Complete'

@@ -32,8 +32,10 @@ control.getProjects = (req, res) => {
 };
 
 control.getProject = (req, res) => {
+    projectName = req.params.prj;
     res.render('project', {
-        active: 'projects'
+        active: 'projects',
+        projectName: projectName
     })
 };
 
@@ -43,26 +45,47 @@ control.getTasks = (req, res) => {
     })
 };
 
-control.getUsers = (req, res) => {
-    res.render('users', {
-        active: 'users'
+control.getUsers = async (req, res) => {
+
+    User.fetchAll()
+    .then(async ([usuarios, fieldData]) => {
+
+        let usuarios_proyectos = [];
+
+        for (let usuario of usuarios) {
+            [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
+            usuarios_proyectos[usuario.nombre] = proyectos;
+        }
+        res.render('users', {
+            active: 'users',
+            usuarios_proyectos: usuarios_proyectos,
+        });
     })
+    .catch(error => {
+        console.log(error);
+    });
+
+    
 };
 
 control.getDashboard = (req, res) => {
-    res.render('dashboard')
+    Proyecto.fetchAllIDs().then(([projects, filedData]) => {
+        res.render('dashboard', {
+            active: 'dashboard',
+            projects: projects,
+        });
+    }).catch(err => {console.log(err)});
 };
 
 control.getImport = (req, res) => {
     res.render('import', {
-        active: 'import',
-        result:'void'
+        active: 'import'
     });
 };
 
 control.postImport = (request, response, next) => {
     control.processCsv(request,response);
-    response.render('import',{active: 'import',result:'succes' || 'err'});
+    response.redirect('/gaia/import');
 };
 
 
@@ -207,5 +230,15 @@ control.processCsv=(req,res)=>{
     
     User.add(entries);
 };
+
+control.postProject = (req, res, next) =>{
+    const nombre = req.body.projectName;
+    const newProject = new Proyecto(nombre);    
+    console.log(newProject)
+    newProject.save()
+    res.redirect('/');
+}
+
+
 
 module.exports = control

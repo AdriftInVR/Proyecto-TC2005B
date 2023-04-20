@@ -1,37 +1,100 @@
 <%- include('partials/header.ejs') %>
-    <h1>Showing Status Pie for Project <span id="titleHere"></id></h1>
+<%- include('partials/spinner.ejs') %>
+    <h1><span id="titleHere">Showing Status Pie for Project </span></h1>
 <body>
+    <span class="loader"></span>
+    <div>    
+        <input type="radio" id="pj" name="graph_selection" value="project" onchange='EpicToggle()' checked>
+        <label for="project">By Project</label>&nbsp;
+        <input type="radio" id="ep" name="graph_selection" value="epic" onchange='EpicToggle()'>
+        <label for="epic">By Epic</label><br>
+    </div>
+    <section id ='projectDiv'>
+        Project: 
+        <select id="projects">
+            <% let i = true %> 
+            <% for (project of projects) { %>
+                <option value="<%= project.ProjectID %>" <% if (i) { %> selected <% i = false  } %>><%= project.ProjectName %></option>
+            <% } %>
+        </select>
+    </section>
+    <section id='epicDiv' style="visibility:hidden">
+        Epics: 
+        <select id="epics">
+            
+        </select>
+    </section>
+    <div>
+        <canvas id ='burnupAP'></canvas>
+    </div>
     <div>
         <canvas id ='weeklyAP'></canvas>
     </div>
     <div>
-        <canvas id ='FrontBackAP'></canvas>
+        <canvas id ='frontBackAP'></canvas>
     </div>
     <div>
         <canvas id="statusPie"></canvas>
     </div>
 </body>
-
 <%- include('partials/endHTML.ejs') %>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Este script obtiene el ID de un proyecto que esta siendo consultado
-    fetch('/data/project/title/' + 1, {
+    // Este script cambia la visibilidad del dropdown de Epics
+    function EpicToggle(flag) {
+        var div = document.getElementById('epicDiv');
+        if (div.style.visibility == "hidden"){
+            div.style.visibility = "visible";
+            ChartAll();
+        }
+        else {
+            div.style.visibility = "hidden";
+            ChartAll();
+        }
+    }
+</script>
+
+<script>
+    // Este script asigna los valores del dropdown de Epics, y los cambia al cambiar el dropdown de proyecto
+    window.onload = (event) => {
+        SetEpicOptions();
+        ChartAll()
+    }
+    $("#projects").change(function (event) {
+        SetEpicOptions();
+        ChartAll();
+    });
+    $("#epics").change(function (event) {
+        ChartAll();
+    });
+    function SetEpicOptions() {
+        epicOptions = '';
+        fetch('/data/project/epics/' + $("#projects").val(), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         }).then(result => {
             return result.json();
-        }).then(data => {
-            document.getElementById('titleHere').innerHTML = data.project.idTicket;
+        }).then(epics => {
+            let j = true;
+            for (let epic of epics.status) {
+                epicOptions += "<option value='" + epic.EpicID + "'";
+                if (j) {
+                    epicOptions += " selected"
+                    j = false;
+                }
+                epicOptions += ">" + epic.EpicName + "</option>";
+            };
+            document.getElementById("epics").innerHTML = epicOptions
         })
+    }
 </script>
 
-
 <script>
-    // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
+    // Estos scripts crean graficas de Linea para los AP completados en una semana
     const ap = document.getElementById('weeklyAP');
 
     const APchart = {
@@ -51,10 +114,14 @@
 </script>
 
 <script>
-    // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
-    const pie = document.getElementById('statusPie');
-
-    fetch('/data/project/status/' + 1, {
+    // Estos scripts crean graficas de Pie para los diferentes estatus de un proyecto o Epic
+    var pieChart;
+    function ProjectPieChart(projectID){
+        if (pieChart) {
+            pieChart.destroy();
+        }    
+        const pie = document.getElementById('statusPie');
+        fetch('/data/project/status/' + projectID, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,8 +151,58 @@
                 type: 'pie',
                 data: PIEchart,
             };
-            new Chart(pie, config);
+            pieChart = new Chart(pie, config);
         })
+    }
+
+    function EpicPieChart(epicID){
+        if (pieChart) {
+            pieChart.destroy();
+        }  
+        const pie = document.getElementById('statusPie');
+        fetch('/data/project/epic/status/' + epicID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            let data_labels = [];
+            let data_count = [];
+            for (let tag of data.status) {
+                data_labels.push(tag.Nombre);
+                data_count.push(tag.Cantidad);
+            }
+            const PIEchart = {
+                labels: data_labels,
+                datasets: [{
+                    data: data_count,
+                    backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+            const config = {
+                type: 'pie',
+                data: PIEchart,
+            };
+            pieChart = new Chart(pie, config);
+        })
+    }
+</script>
+
+<script>
+    function ChartAll() {
+        if (document.getElementById('epicDiv').style.visibility == "hidden") {
+            ProjectPieChart($("#projects").val());
+        } else {
+            EpicPieChart($("#epics").val());
+        }
+    }
 </script>
 
 <script>

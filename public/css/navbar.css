@@ -250,3 +250,29 @@ header{
 }
 
 .popuperr.active {opacity: 1; transform: scale(1);}
+
+/* Inputs */
+
+input[type="file"]{
+    display: none;
+}
+
+.btn-submit{
+    position: relative;
+    display: inline-block;
+    padding: 0.625em 1.25em;
+    color: white;
+    background:rgb(11, 11, 66);
+    letter-spacing: 0.063em;
+    font-size: 1.25em;
+    overflow: hidden;
+    transition: 0.2s;
+    border-radius: 1.563em;
+}
+
+.btn-submit:hover{
+    background: -webkit-linear-gradient(to right, #7329eb, #eb2fde); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #7329eb, #eb2fde); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    box-shadow: 0 0 10px #a945c7, 0 0 40px #a945c7, 0 0 80px #a945c7;
+    transition: 1s;
+}
