@@ -1,7 +1,7 @@
 Issue key,Issue id,Summary,Issue Type,Custom field (Story Points),Status,Custom field (Epic Link),Epic Link Summary,Updated,Assignee,Assignee Id,Labels,Labels,Labels
-PART-2355,24413,PartnerMarketsPage.js / fix flaky test,Task,,To Do,PART-234,Express Tech Excellence,14/Mar/23 10:03 AM,Kevin Anderson,62cdf0d01e326fd93012992d,part/Frontend,,
+PART-2355,24413,PartnerMarketsPage.js / fix flaky test,Task,,In Progress,PART-234,Express Tech Excellence,14/Mar/23 10:03 AM,Kevin Anderson,62cdf0d01e326fd93012992d,part/Frontend,,
 PART-2353,24358,Remove flag (BE) - care_requests_page,Task,,To Do,PART-234,Express Tech Excellence,13/Mar/23 12:20 PM,,,part/Backend,,
-PART-2352,24354,Remove flag (FE) – care_requests_pageFrida,Task,,To Do,PART-234,Express Tech Excellence,13/Mar/23 12:20 PM,,,part/Frontend,,
+PART-2352,24354,Remove flag (FE) – care_requests_page,Task,,To Do,PART-234,Express Tech Excellence,13/Mar/23 12:20 PM,,,part/Frontend,,
 PART-2351,24352,Make GET CRs show and index blueprints consitent ,Task,2,In Progress,PART-289,NSE - P4,14/Mar/23 10:02 AM,Bernardo Gomez-Romero,61c9eb457c6f980070deda99,part/Backend,,
 PART-2350,24087,Create hook/careRequests dir,Task,0.5,Code Review,PART-234,Express Tech Excellence,14/Mar/23 10:03 AM,Kevin Anderson,62cdf0d01e326fd93012992d,part/Frontend,,
 PART-2349,24050,optimize account access,Task,,To Do,PART-234,Express Tech Excellence,10/Mar/23 2:51 PM,Giorgi Gelashvili,62cdef6c6eba71983721e037,part/Frontend,,

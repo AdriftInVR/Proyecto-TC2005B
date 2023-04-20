@@ -6,24 +6,29 @@ module.exports = class User {
         return db.execute('SELECT * FROM USUARIO');
     }
     
-    static add(data){        
+    static fetchAllRespon() {
+        return db.execute('SELECT * FROM RESPONSABLE');
+    }
+    
+    static async add(data){        
         for(let i=0;i<data.length;i++){
-            db.execute(`INSERT INTO USUARIO(idUsuario,nombre) SELECT ?,? WHERE NOT EXISTS(SELECT 1 FROM USUARIO WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].nombre,data[i].idUsuario])
-            // .then(([rows, fieldData]) => {
-            //     if(rows.affectedRows>0)console.log('Se inserto')
-            // })
+            await db.execute(`INSERT INTO USUARIO(idUsuario,nombre) SELECT ?,? WHERE NOT EXISTS(SELECT 1 FROM ESTADO_LABORAL WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].nombre,data[i].idUsuario])            
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
-            db.execute(`INSERT INTO ESTADO_LABORAL(idUsuario, idEstatus) SELECT ?,8 WHERE NOT EXISTS(SELECT 1 FROM ESTADO_LABORAL WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].idUsuario])
+            await db.execute(`INSERT INTO ESTADO_LABORAL(idUsuario, idEstatus) SELECT ?,8 WHERE NOT EXISTS(SELECT 1 FROM ESTADO_LABORAL WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].idUsuario])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
-            });            
-            db.execute(`INSERT INTO RESPONSABLE(idUsuario, idTarea) SELECT ?,? WHERE NOT EXISTS(SELECT 1 FROM RESPONSABLE WHERE idTarea = ?);`,[data[i].idUsuario,data[i].idTarea,data[i].idTarea])
+            });                        
+        }        
+    }
+
+    static async addRespon(data){
+        for(let i=0;i<data.length;i++){
+            await db.execute(`INSERT INTO RESPONSABLE(idUsuario, idTarea) VALUES (?,?)`,[data[i].idUsuario,data[i].idTarea])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
         }
-        3
     }
 }

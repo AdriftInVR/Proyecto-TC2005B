@@ -187,16 +187,18 @@ control.processCsv = async(req,res)=>{
                     entriesNew.push(ticketInsert);
                 }
             }
-        })        
+        })
         await Ticket.add(entriesNew);
         await Ticket.update(entriesUpt);
         
-        //Data to table fase
-        /*
-        entries = [];
+        //Data to table fase                
+        let entries = [];
+        entriesNew = [], entriesUpt = [];
         estados = [];
+
         await Estatus.fetchAll()
         .then(([rows, fieldData]) => {
+            //adaptate data
             for(let i=0;i<rows.length;i++){
                 estados.push(rows[i].descripcion);
             }
@@ -215,30 +217,125 @@ control.processCsv = async(req,res)=>{
                 }
 
                 entries.push(rowInsert);
-            }
+            }            
         }) 
         .catch(err => {
             console.log(err);
             result = 'err'
-        });
+        });        
         
-        await Fase.add(entries);
+        await Fase.fetchAll()
+        .then(([rows,fieldData])=>{
+            //verify data
+            if(rows.length > 0){                 
+                for(let i=0;i<entries.length;i++){
+                    for(let j=0; j<rows.length;j++){                        
+                        //add only rows that arent into bd
+                        if(entries[i].idTicket == rows[j].idTicket){                                                                    
+                            //check if these rows have same data
+                            let sameRow = true;                            
+                            if(entries[i].idEstatus != rows[j].idEstatus)
+                                sameRow = false;
+                            //if is the same row, that isnt pushed to entries
+                            if(sameRow == false){
+                                let ticketInsert = {
+                                    idTicket: entries[i].idTicket,
+                                    idEstatus:  entries[i].idEstatus
+                                };                                
+                                entriesNew.push(ticketInsert);                                
+                            }
+                            break;
+                        }else if(j == (rows.length - 1)){                            
+                            let ticketInsert = {
+                                idTicket: entries[i].idTicket,
+                                idEstatus:  entries[i].idEstatus
+                            };                          
+                            entriesNew.push(ticketInsert);
+                        }
+                    }
+                }
+            }else{                                           
+                for(let i=0;i<entries.length;i++){
+                    let ticketInsert = {
+                        idTicket: entries[i].idTicket,
+                        idEstatus:  entries[i].idEstatus
+                    };          
+                    entriesNew.push(ticketInsert);
+                }
+            }
+        })
+        await Fase.add(entriesNew);
+
         
         //Data for table EPICS
-        entries = [];
+        entries = [];        
+        //Only rows that are different
         for(let i=0; i<dataLines.length; i++){         
             let ticketInsert = {
                 idTicket: objList[i].customfieldepiclink,
                 nombre:  objList[i].epiclinksummary
             };
-            entries.push(ticketInsert);
+            if(entries.length == 0){
+                entries.push(ticketInsert);
+            }
+            for(let j=0; j<entries.length;j++){
+                if(entries[j].idTicket == ticketInsert.idTicket){                    
+                    break;
+                }else if(j==(entries.length - 1)){                    
+                    entries.push(ticketInsert);
+                }
+            }            
         }
-        // console.log(entries);
-        Ticket.add(entries);
-        Epic.add(entries);
-
+        
+        entriesNew = [], entriesUpt = [];        
+        await Ticket.fetchAll()
+        .then(([rows, fieldData])=>{            
+            if(rows.length > 0){                
+                for(let i=0;i<entries.length;i++){
+                    for(let j=0; j<rows.length;j++){                        
+                        //add only rows that arent into bd
+                        if(entries[i].idTicket == rows[j].idTicket){                            
+                            //check if these rows have same data
+                            let sameRow = true;                            
+                            if(entries[i].nombre != rows[j].nombre)
+                                sameRow = false;
+                            //if is the same row, that isnt pushed to entries
+                            if(sameRow == false){
+                                let ticketInsert = {
+                                    idTicket: entries[i].idTicket,
+                                    nombre:  entries[i].nombre
+                                };                                
+                                entriesUpt.push(ticketInsert);                                
+                            }
+                            break;
+                        }else if(j == (rows.length - 1)){                            
+                            
+                            let ticketInsert = {
+                                idTicket: entries[i].idTicket,
+                                nombre:  entries[i].nombre
+                            };                            
+                            entriesNew.push(ticketInsert);
+                        }
+                    }
+                }
+            }else{                
+                for(let i=0;i<entries.length;i++){                    
+                    let ticketInsert = {
+                        idTicket: entries[i].idTicket,
+                        nombre:  entries[i].nombre
+                    };
+                    entriesNew.push(ticketInsert);
+                }
+            }
+        })        
+        await Ticket.add(entriesNew);
+        await Ticket.update(entriesUpt);
+        await Epic.add(entriesNew);
+        
         //Data for Tasks
+        entriesNew = [], entriesUpt = [];
         entries = [];
+
         for(let i=0; i<dataLines.length; i++){
             //get points
             if(objList[i].customfieldstorypoints == '') objList[i].customfieldstorypoints = 0.0;
@@ -253,7 +350,7 @@ control.processCsv = async(req,res)=>{
             }
             //get front_back
             workarea = 0;
-            if(objList[i].labels11!='part/Frontend') workarea=1;
+            if(objList[i].labels11!='part/Frontend') workarea=1;  
 
             let ticketInsert = {
                 idTicket: objList[i].issueid,
@@ -265,10 +362,76 @@ control.processCsv = async(req,res)=>{
             entries.push(ticketInsert);          
         }
 
-        Tarea.add(entries);
+        await Tarea.fetchAll()
+        .then(([rows, fieldData])=>{
+            if(rows.length > 0){                
+                for(let i=0;i<entries.length;i++){
+                    for(let j=0; j<rows.length;j++){                        
+                        //add only rows that arent into bd
+                        if(entries[i].idTicket == rows[j].idTicket){                                                        
+                            //check if these rows have same data
+                            let sameRow = true;                            
+                            if(entries[i].perteneceEpic != rows[j].perteneceEpic){
+                                sameRow = false;
+                            }
+                                
+                            if(entries[i].puntosAgiles != rows[j].puntosAgiles){
+                                sameRow = false;
+                            }
+                                
+                            if(entries[i].esTipo != rows[j].esTipo){
+                                sameRow = false;
+                            }
+                                
+                            if(entries[i].front_back != rows[j].front_back){
+                                sameRow = false;
+                            }                                                            
+                            
+                            //if is the same row, that isnt pushed to entries
+                            if(sameRow == false){                                
+                                let ticketInsert = {
+                                    idTicket: entries[i].idTicket,
+                                    perteneceEpic: entries[i].perteneceEpic,
+                                    puntosAgiles:  entries[i].puntosAgiles,
+                                    esTipo: entries[i].esTipo,
+                                    front_back: entries[i].front_back
+                                };                                               
+                                entriesUpt.push(ticketInsert);                                
+                            }
+                            break;
+                        }else if(j == (rows.length - 1)){                            
+                            let ticketInsert = {
+                                idTicket: entries[i].idTicket,
+                                perteneceEpic: entries[i].perteneceEpic,
+                                puntosAgiles:  entries[i].puntosAgiles,
+                                esTipo: entries[i].esTipo,
+                                front_back: entries[i].front_back
+                            };                              
+                            entriesNew.push(ticketInsert);
+                        }
+                    }
+                }
+            }else{                           
+                for(let i=0;i<objList.length;i++){
+                    let ticketInsert = {
+                        idTicket: entries[i].idTicket,
+                        perteneceEpic: entries[i].perteneceEpic,
+                        puntosAgiles:  entries[i].puntosAgiles,
+                        esTipo: entries[i].esTipo,
+                        front_back: entries[i].front_back
+                    };       
+                    entriesNew.push(ticketInsert);
+                }
+            }
+        })
+        await Tarea.add(entriesNew);
+        await Tarea.update(entriesUpt);
 
+        
         //Data for USERS, laboral_state  and responsable
         entries = [];
+        entriesNew = [], entriesUpt = [];
+
         for(let i=0; i<dataLines.length; i++){
             if(objList[i].assigneeid != ''){
                 let ticketInsert = {
@@ -280,8 +443,96 @@ control.processCsv = async(req,res)=>{
             }        
         }
         
-        User.add(entries);
-        */
+        await User.fetchAll()
+        .then(([rows, fieldData])=>{
+            if(rows.length > 0){                
+                for(let i=0;i<entries.length;i++){
+                    for(let j=0; j<rows.length;j++){                        
+                        //add only rows that arent into bd
+                        if(entries[i].idUsuario == rows[j].idUsuario){                                                        
+                            //check if these rows have same data
+                            let sameRow = true;                            
+                            if(entries[i].nombre != rows[j].nombre)
+                                sameRow = false;
+                            //if is the same row, that isnt pushed to entries
+                            if(sameRow == false){
+                                let ticketInsert = {
+                                    idUsuario: entries[i].idUsuario,
+                                    idTarea: entries[i].idTarea,
+                                    nombre:  entries[i].nombre
+                                };                               
+                                entriesUpt.push(ticketInsert);                                
+                            }
+                            break;
+                        }else if(j == (rows.length - 1)){                            
+                            let ticketInsert = {
+                                idUsuario: entries[i].idUsuario,
+                                idTarea: entries[i].idTarea,
+                                nombre:  entries[i].nombre
+                            };                                    
+                            entriesNew.push(ticketInsert);
+                        }
+                    }
+                }
+            }else{                                         
+                for(let i=0;i<entries.length;i++){                    
+                    let ticketInsert = {
+                        idUsuario: entries[i].idUsuario,
+                        idTarea: entries[i].idTarea,
+                        nombre:  entries[i].nombre
+                    };         
+                    entriesNew.push(ticketInsert);
+                }
+            }
+        })
+        await User.add(entriesNew);       
+                
+        entriesNew = [], entriesUpt = [];
+        
+        await User.fetchAllRespon()
+        .then(([rows, fieldData])=>{
+            if(rows.length > 0){                
+                for(let i=0;i<entries.length;i++){
+                    for(let j=0; j<rows.length;j++){                        
+                        //add only rows that arent into bd
+                        if(entries[i].idTarea == rows[j].idTarea){                                                        
+                            //check if these rows have same data
+                            let sameRow = true;                            
+                            if(entries[i].idUsuario != rows[j].idUsuario)
+                                sameRow = false;
+                            //if is the same row, that isnt pushed to entries
+                            if(sameRow == false){
+                                let ticketInsert = {
+                                    idUsuario: entries[i].idUsuario,
+                                    idTarea: entries[i].idTarea,
+                                    nombre:  entries[i].nombre
+                                };                
+                                entriesUpt.push(ticketInsert);                                
+                            }
+                            break;
+                        }else if(j == (rows.length - 1)){                            
+                            let ticketInsert = {
+                                idUsuario: entries[i].idUsuario,
+                                idTarea: entries[i].idTarea,
+                                nombre:  entries[i].nombre
+                            };                                   
+                            entriesNew.push(ticketInsert);
+                        }
+                    }
+                }
+            }else{                                         
+                for(let i=0;i<entries.length;i++){                    
+                    let ticketInsert = {
+                        idUsuario: entries[i].idUsuario,
+                        idTarea: entries[i].idTarea,
+                        nombre:  entries[i].nombre
+                    };
+                    entriesNew.push(ticketInsert);
+                }
+            }
+        })
+        await User.addRespon(entriesNew);
+
         console.log('Database are ready');
     }else{
         result = 'err'

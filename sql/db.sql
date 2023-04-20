@@ -33,7 +33,7 @@ CREATE TABLE PROYECTO(
 
 CREATE TABLE EPIC(
     idTicket VARCHAR(25),
-    perteneProyecto VARCHAR(25) DEFAULT '1',
+    perteneProyecto VARCHAR(25),
     asignacionProEpi TIMESTAMP,
     PRIMARY KEY(idTicket),
     FOREIGN KEY (idTicket) REFERENCES TICKET(idTicket),
