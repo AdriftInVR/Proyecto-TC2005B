@@ -77,7 +77,7 @@ module.exports = class Proyecto {
 
     static datos(dato) {
         return db.execute(`
-        SELECT u.nombre, puntosAgiles, front_back
+        SELECT u.nombre, efectividadAsignada, front_back
         FROM tarea t, responsable r, trabaja tr, usuario u, proyecto p, ticket ti
         WHERE u.idUsuario= tr.idUsuario
         AND u.idUsuario = r.idUsuario

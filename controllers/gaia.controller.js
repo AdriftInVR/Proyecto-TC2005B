@@ -46,6 +46,7 @@ control.getProject = async (req, res) => {
         console.log(err);
     }
 
+
     res.render('project', {
         active: 'projects',
         epics: epics,
@@ -57,7 +58,8 @@ control.getProject = async (req, res) => {
 
 
 control.getTasks = (req, res) => {
-    projectName = req.params.prj
+
+    projectName = req.params.prj;
     Tarea.fetchAll(projectName)
     .then(([rows, filedData]) => {
         res.render('tasks', {
@@ -69,7 +71,6 @@ control.getTasks = (req, res) => {
     .catch(err => {
         console.log(err);
     });
-
 };
 
 control.getUsers = (req, res) => {
