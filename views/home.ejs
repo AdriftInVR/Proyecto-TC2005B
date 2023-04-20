@@ -30,19 +30,19 @@
 
                         <div class ="w-full bg-white p-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">                            
                             <a href="/gaia/project/<%= proyecto.nombre%>" class="px-6 py-4 font-medium flex text-gray-900 dark:text-white">
-                                <div class="inline-block w-1/4 flex-1 text-mg">
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6">
                                     <%= proyecto.nombre  %>
                                 </div>
                                 
-                                <div class="inline-block w-1/4 flex-1 text-mg">
-                                    <%= proyecto.fechainicio %>
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6">
+                                    <%= proyecto.fechainicio.toLocaleDateString(); %>
                                 </div>
                                 
-                                <div class="inline-block w-1/4 flex-1 text-mg">
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
                                     <%= proyecto.duracion %>
                                 </div>
 
-                                <div class="inline-block w-1/4 flex-1 text-mg">
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
                                     -
                                 </div>                                
                             </a>                            
