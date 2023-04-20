@@ -31,7 +31,6 @@ control.getProjects = (req, res) => {
     });
 };
 
-
 control.getProject = (req, res) => {
     projectName = req.params.prj;
     Proyecto.datos(projectName)
@@ -41,13 +40,11 @@ control.getProject = (req, res) => {
             datos: rows,
             projectName: projectName
         });
-        
     })
     .catch(err => {
         console.log(err);
     });
 };
-
 
 control.getEpic = (req, res) => {
     projectName = req.params.prj;
@@ -58,17 +55,64 @@ control.getEpic = (req, res) => {
             epics: rows,
             projectName: projectName
         });
-        
     })
     .catch(err => {
         console.log(err);
     });
 };
 
-control.getTasks = (req, res) => {
+
+control.getTasks = async (req, res) => {
+
+    try {
+        [task1, fieldData] = await Tarea.tasktdo();
+        console.log(task1);
+
+        [task2, fieldData] = await Tarea.taskinpro();
+        console.log(task2);
+
+        [task3, fieldData] = await Tarea.taskcode();
+        console.log(task3);
+
+        [task4, fieldData] = await Tarea.taskquality();
+        console.log(task4);
+
+        [task5, fieldData] = await Tarea.taskrelease();
+        console.log(task5);
+
+        [task6, fieldData] = await Tarea.taskdone();
+        console.log(task6);
+
+        [task7, fieldData] = await Tarea.taskclosed();
+        console.log(task7);
+
+    } catch (err) {
+        console.log(err);
+    }
+
     res.render('tasks', {
-        active: 'projects'
+        active: 'projects',
+        tasks1: task1,
+        tasks2: task2,
+        tasks3: task3,
+        tasks4: task4,
+        tasks5: task5,
+        tasks6: task6,
+        tasks7: task7,
+    });
+    
+
+    /*Tarea.estat(req.params.idEstatus)
+    .then(([rows, fieldData]) => {
+        console.log(rows);
+        res.render('tasks', {
+            task: rows,
+            active: 'projects',
+        });
     })
+    .catch(err => {
+        console.log(err);
+    })*/
 };
 
 control.getUsers = (req, res) => {
@@ -236,8 +280,12 @@ control.processCsv=(req,res)=>{
 };
 
 control.postProject = (req, res, next) =>{
-    const nombre = req.body.projectName;
-    const newProject = new Proyecto(nombre);    
+    const data = {
+        nombre : req.body.projectName,
+        fechaInicio : req.body.projectStart
+    };
+    
+    const newProject = new Proyecto(data);    
     console.log(newProject)
     newProject.save()
     res.redirect('/');
