@@ -88,9 +88,4 @@ module.exports = class Proyecto {
             WHERE  t.idTicket = p.idTicket
         `);
     }
-
-
-
-    
-
 }

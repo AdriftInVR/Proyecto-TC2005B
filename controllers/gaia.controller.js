@@ -3,7 +3,7 @@ const fs = require('fs');
 const Ticket = require('../models/tickets.model');
 const Estatus = require('../models/status.model');
 const Fase = require('../models/fase.model');
-const Proyecto = require('../models/projects.model');
+const Proyecto = require('../models/proyects.model');
 const Epic = require('../models/epic.model');
 const User = require('../models/user.model');
 const Tarea = require('../models/tarea.model');
@@ -69,7 +69,12 @@ control.getUsers = async (req, res) => {
 };
 
 control.getDashboard = (req, res) => {
-    res.render('dashboard')
+    Proyecto.fetchAllIDs().then(([projects, filedData]) => {
+        res.render('dashboard', {
+            active: 'dashboard',
+            projects: projects,
+        });
+    }).catch(err => {console.log(err)});
 };
 
 control.getImport = (req, res) => {
