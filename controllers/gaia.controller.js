@@ -7,9 +7,11 @@ const Proyecto = require('../models/projects.model');
 const Epic = require('../models/epic.model');
 const User = require('../models/user.model');
 const Tarea = require('../models/tarea.model');
-
-control = []
 const db = require('../util/database');
+const { normalize } = require('path');
+
+control = [];
+let msgErrorAddProject = false;
 
 
 control.getLogin = (req, res) => {
@@ -17,13 +19,12 @@ control.getLogin = (req, res) => {
 };
 
 control.getProjects = (req, res) => {
-    
     Proyecto.fetchAll()
     .then(([rows, filedData]) => {
-
         res.render('home', {
             active: 'projects',
             proyectos: rows,
+            msgErr: msgErrorAddProject
         });
     })
     .catch(err => {
@@ -31,34 +32,28 @@ control.getProjects = (req, res) => {
     });
 };
 
-control.getProject = (req, res) => {
-    projectName = req.params.prj;
-    Proyecto.datos(projectName)
-    .then(([rows, filedData]) => {
-        res.render('project', {
-            active: 'projects',
-            datos: rows,
-            projectName: projectName
-        });
-    })
-    .catch(err => {
-        console.log(err);
-    });
-};
 
-control.getEpic = (req, res) => {
-    projectName = req.params.prj;
-    Proyecto.epics(projectName)
-    .then(([rows, filedData]) => {
-        res.render('project', {
-            active: 'projects',
-            epics: rows,
-            projectName: projectName
-        });
-    })
-    .catch(err => {
+control.getProject = async (req, res) => {
+    projectName = req.params.prj
+
+    try {
+        [datos, filedData] = await Proyecto.datos(projectName);
+        console.log(datos);
+    
+        [epics, filedData] = await Proyecto.epics(projectName);
+        console.log(epics);
+    } catch (err) {
         console.log(err);
+    }
+
+
+    res.render('project', {
+        active: 'projects',
+        epics: epics,
+        projectName: projectName,
+        datos: datos, 
     });
+    
 };
 
 
@@ -280,15 +275,32 @@ control.processCsv=(req,res)=>{
 };
 
 control.postProject = (req, res, next) =>{
+    msgErrorAddProject = false;
+
     const data = {
         nombre : req.body.projectName,
         fechaInicio : req.body.projectStart
     };
     
     const newProject = new Proyecto(data);    
-    console.log(newProject)
+    
+    if(data.nombre == ''){
+        msgErrorAddProject = "The field name of project are blank";
+    }
+
     newProject.save()
+    .then(([rows,fieldData])=>{
+        for(let i=0;i<rows.length;i++){
+            if(rows[i].nombre == data.nombre){                
+                msgErrorAddProject = "The name introduced has already taken";
+                break;
+            }
+        }
+    });
+    
+    console.log(msgErrorAddProject);
     res.redirect('/');
 }
+
 
 module.exports = control
