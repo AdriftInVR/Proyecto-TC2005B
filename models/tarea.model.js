@@ -15,18 +15,23 @@ module.exports = class Tarea {
         `,[epic]);
     }
     
-    static add(data){        
+    static async add(data){        
         for(let i=0;i<data.length;i++){            
-            db.execute(`INSERT INTO TAREA(idTicket,perteneceEpic,puntosAgiles,esTipo,front_back) 
-            SELECT ?,?,?,?,? 
-            WHERE NOT EXISTS(SELECT 1 FROM TAREA WHERE idTicket = ?);
-            `,[data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back,data[i].idTicket])
-            //.then(([rows, fieldData]) => {
-            //     if(rows.affectedRows>0)console.log('Se inserto')
-            // })
-            //.catch(err => {
-                //console.log(err);
-            //});
+            await db.execute(`INSERT INTO TAREA(idTicket,perteneceEpic,puntosAgiles,esTipo,front_back) VALUES (?,?,?,?,?) `,
+            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+        }        
+    }
+
+    static async update(data){        
+        for(let i=0;i<data.length;i++){            
+            await db.execute(`UPDATE TAREA SET idTicket = ?,perteneceEpic = ?, puntosAgiles = ?,esTipo = ?, front_back = ? WHERE idTicket = ? `,
+            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back, data[i].idTicket])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
         }        
     }
 
