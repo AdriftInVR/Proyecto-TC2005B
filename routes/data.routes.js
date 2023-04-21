@@ -17,4 +17,6 @@ router.get('/project/area/:idProyecto', dataController.getArea);
 
 router.get('/project/epic/area/:idEpic', dataController.getAreaEpic);
 
+router.get('/gaia/taskInfo/:idTask', dataController.getTaskinfo);
+
 module.exports = router;

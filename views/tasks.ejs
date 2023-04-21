@@ -82,9 +82,9 @@
                                 </thead>
                                 <% for (let task1 of tasks1) { %>
                                     <tbody >
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis    hover:bg-blue-400">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis hover:bg-blue-400" onclick="viewDetail(<%= task1.idTicket%>)">
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task1.nombre %></a>
+                                                <a><%= task1.nombre %></a>
                                             </th>
                                             <td class="px-6 py-4 rounded-e-3xl">
                                                 <%= task1.puntosAgiles %>
@@ -125,9 +125,9 @@
     
                             <% for (let task2 of tasks2) { %>
                                 <tbody>
-                                    <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis    hover:bg-amber-400">
+                                    <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis    hover:bg-amber-400" onclick="viewDetail(<%= task2.idTicket%>)">
                                         <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">                                            
-                                            <a href=""><%= task2.nombre %></a>
+                                            <a><%= task2.nombre %></a>
                                         </th>
                                         <td class="px-6 py-4 rounded-e-3xl">
                                             <%= task2.puntosAgiles %>
@@ -165,9 +165,9 @@
                                 </thead>
                                 <% for (let task3 of tasks3) { %>
                                     <tbody>
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-400">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-400" onclick="viewDetail(<%= task3.idTicket%>)">
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task3.nombre %></a>
+                                                <a href="/gaia/taskInfo/<%= task3.idTicket%>"><%= task3.nombre %></a>
                                             </th>
                                             <td class="px-6 py-4 rounded-e-3xl">
                                                 <%= task3.puntosAgiles %>
@@ -205,9 +205,9 @@
                                 </thead>
                                 <% for (let task4 of tasks4) { %>
                                     <tbody>
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-red-400">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-red-400" onclick="viewDetail(<%= task4.idTicket%>)">
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task4.nombre %></a>
+                                                <a href="/gaia/taskInfo/<%= task4.idTicket%>"><%= task4.nombre %></a>
                                             </th>
                                             <td class="px-6 py-4 rounded-e-3xl">
                                                 <%= task4.puntosAgiles %>
@@ -245,9 +245,9 @@
                                 </thead>
                                 <% for (let task5 of tasks5) { %>
                                     <tbody>
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-500">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-500" onclick="viewDetail(<%= task5.idTicket%>)">
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task5.nombre %></a>
+                                                <a href="/gaia/taskInfo/<%= task5.idTicket%>"><%= task5.nombre %></a>
                                             </th>
                                             <td class="px-6 py-4 rounded-e-3xl">
                                                 <%= task5.puntosAgiles %>
@@ -285,9 +285,9 @@
                                 </thead>
                                 <% for (let task6 of tasks6) { %>
                                     <tbody>
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700" onclick="viewDetail(<%= task6.idTicket%>)">
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task6.nombre %></a>
+                                                <a href="/gaia/taskInfo/<%= task6.idTicket%>"><%= task6.nombre %></a>
                                             </th>
                                             <td class="px-6 py-4 rounded-e-3xl">
                                                 <%= task6.puntosAgiles %>
@@ -325,9 +325,9 @@
                                 </thead>
                                 <% for (let task7 of tasks7) { %>
                                     <tbody> 
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-blue-300">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-blue-300" onclick="viewDetail(<%= task7.idTicket%>)">
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task7.nombre %></a>
+                                                <a href="/gaia/taskInfo/<%= task7.idTicket%>"><%= task7.nombre %></a>
                                             </th>
                                             <td class="px-6 py-4 rounded-e-3xl">
                                                 <%= task7.puntosAgiles %>
@@ -351,5 +351,27 @@
 
     
 </div>
+
+
+<script>    
+    function viewDetail(idTarea){               
+        fetch('/gaia/taskInfo/'+idTarea, {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            }
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            if(data){
+                console.log(data);
+                //document.getElementById("resultados").innerHTML = respuesta;
+            }            
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+</script>
+
 
 <%- include('partials/endHTML.ejs') %>
