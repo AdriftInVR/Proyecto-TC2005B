@@ -30,7 +30,7 @@
         <div class="w-2/3">
             
             <div class="p-16">
-                <canvas id ='weeklyAP'></canvas>
+                <canvas id ='burnupAP'></canvas>
             </div>
             <div class="p-16">
                 <canvas id ='frontBackAP'></canvas>
@@ -40,7 +40,7 @@
             </div>
 
             <div class="p-16">
-                <canvas id ='burnupAP'></canvas>
+                <canvas id ='weeklyAP'></canvas>
             </div>
         </div>
     </div>
@@ -131,7 +131,10 @@
                     backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
+                    'rgb(255, 205, 86)',
+                    'rgb(54, 252, 132)',
+                    'rgb(90, 218, 232)',
+                    'rgb(195, 121, 237)'
                     ],
                     hoverOffset: 4
                 }]
@@ -178,7 +181,10 @@
                     backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
+                    'rgb(255, 205, 86)',
+                    'rgb(54, 252, 132)',
+                    'rgb(90, 218, 232)',
+                    'rgb(195, 121, 237)'
                     ],
                     hoverOffset: 4
                 }]
@@ -207,7 +213,7 @@
     var burnupChart;
 
     //Actualiza datos
-    function ProjectPieChart(projectID) {
+    function BurnupLineChart(projectID) {
         if (burnupChart) {
             burnupChart.destroy()
         }
@@ -226,7 +232,7 @@
         })
 
         const APBurnUp = {
-        labels: [1, 3, 5, 8],
+        labels: data_labels,
         datasets: [{
             data: [2, 2, 2, 2, 2],
             fill: false,
@@ -247,6 +253,53 @@
 <script>
     // Estos scripts crean graficas de Linea para los AP completados en una semana
     var APlineChart;
+
+    async function asyncProjectAP(projectID, start, end, APdata) {
+        console.log("calling")
+        const result = await getProjectAP(projectID, start, end, APdata);
+    }
+
+    function getProjectAP(projectID, start, end, APdata) {
+        fetch('/data/project/completeAP/' + projectID + "/" + start.toISOString() + "/" + end.toISOString(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            }).then(result => {
+                return result.json();
+            }).then(data => {
+                if (data.status[0]) {
+                    APdata.push(data.status[0].WeekAP)
+                } else {
+                    APdata.push(0)
+                }
+            }
+        )
+    }
+
+    async function asyncEpicAP(epicID, start, end, APdata) {
+        console.log("calling")
+        const result = await getEpicAP(epicID, start, end, APdata);
+    }
+
+    function getEpicAP(epicID, start, end, APdata) {
+        fetch('/data/project/epic/completeAP/' + epicID + "/" + start.toISOString() + "/" + end.toISOString(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            }).then(result => {
+                return result.json();
+            }).then(data => {
+                if (data.status[0]) {
+                    APdata.push(data.status[0].WeekAP)
+                } else {
+                    APdata.push(0)
+                }
+            }
+        )
+    }
+
     function WeeklyAPLineChart(projectID){
         if (APlineChart) {
             APlineChart.destroy();
@@ -274,21 +327,7 @@
                 if (!fetchLock){
                     fetchLock = true;
                     data_labels.push(i+1);
-                    fetch('/data/project/completeAP/' + projectID + "/" + start.toISOString() + "/" + end.toISOString(), {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    }).then(result => {
-                        return result.json();
-                    }).then(data => {
-                        if (data.status[0]) {
-                            APdata.push(data.status[0].WeekAP)
-                        } else {
-                            APdata.push(0)
-                        }
-                    })
-
+                    asyncProjectAP(projectID, start, end, APdata);
                     start.setDate(start.getDate()+7);
                     end.setDate(end.getDate()+7);
                     i++;
@@ -336,28 +375,12 @@
             var start = projectStart;
             var end = new Date(start);
             end.setDate(start.getDate()+7);
-            console.log(start.toISOString());
-            console.log(end.toISOString());
             var fetchLock = false;
             for (i=0;i<weeks.length;){
                 if (!fetchLock){
                     fetchLock = true;
                     data_labels.push(i+1);
-                    fetch('/data/project/completeAP/' + epicID + "/" + start.toISOString() + "/" + end.toISOString(), {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    }).then(result => {
-                        return result.json();
-                    }).then(data => {
-                        if (data.status[0]) {
-                            APdata.push(data.status[0].WeekAP)
-                        } else {
-                            APdata.push(0)
-                        }
-                        //APdata.push(data)
-                    })
+                    asyncEpicAP(epic, start, end, APdata);
                     start.setDate(start.getDate()+7);
                     end.setDate(end.getDate()+7);
                     i++;
@@ -380,7 +403,7 @@
                     data: WEEKLYchart,
                 };
                 APlineChart = new Chart(ap, config);
-            }, "1000");
+            }, "2000");
         })
     }
 </script>
@@ -408,7 +431,7 @@
                 labels: data_labels,
                 datasets: [
                     {
-                        label: 'Completadas',
+                        label: 'Complete',
                         data: data_countComplete,
                         backgroundColor: ['rgb(255, 99, 132)'],
                         hoverOffset: 4
@@ -511,6 +534,7 @@
             ProjectPieChart($("#projects").val());
             WeeklyAPLineChart($("#projects").val());
             areasBarChart($("#projects").val());
+            BurnupLineChart($("#projects").val());
         } else {
             EpicPieChart($("#epics").val());
             EpicWeeklyAPLineChart($("#epics").val());
