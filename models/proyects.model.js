@@ -68,4 +68,25 @@ module.exports = class Proyecto {
             WHERE p.idTicket = t.idTicket
         `);
     }
+
+    static fetchEstimate(projectID) {
+        return db.execute(`
+        CALL getEstimate(?)
+        `, [projectID]);
+    }
+
+    static fetchCompletedAP(projectID, SoW, EoW) {
+        return db.execute(`
+        SELECT P.idTicket, SUM(T.puntosAgiles) as 'WeekAP'
+        FROM PROYECTO P, TAREA T, EPIC E, FASE F, ESTATUS S
+        WHERE P.idTicket = E.perteneProyecto
+        AND E.idTicket = T.perteneceEpic
+        AND T.idTicket = F.idTicket
+        AND F.idEstatus = S.idEstatus
+        AND (S.descripcion = 'Done' OR S.descripcion = 'Closed')
+        AND F.fechaCambio BETWEEN ? AND ?
+        AND P.idTicket = ?
+        GROUP BY P.idTicket
+        `, [SoW, EoW, projectID]);
+    }
 }

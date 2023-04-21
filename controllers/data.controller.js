@@ -52,3 +52,38 @@ exports.getNotTitle = (req, res) => {
             res.status(500).json({message: "Internal Server Error"});
         });
 };
+
+exports.getEstimate = (req, res) => {
+    Proyecto.fetchEstimate(req.params.idProject)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
+
+
+exports.getCompletedAP = (req, res) => {
+    Proyecto.fetchCompletedAP(req.params.idProject, req.params.start, req.params.end)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
+
+
+exports.getCompletedAPEpic = (req, res) => {
+    Epic.fetchCompletedAP(req.params.idEpic, req.params.start, req.params.end)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};

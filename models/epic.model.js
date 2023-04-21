@@ -36,4 +36,18 @@ module.exports = class Epic {
             GROUP BY s.descripcion
         `, [epicID]);
     }
+
+    static fetchCompletedAP(epicID, SoW, EoW) {
+        return db.execute(`
+        SELECT E.idTicket, SUM(T.puntosAgiles) as 'WeekAP'
+        FROM TAREA T, EPIC E, FASE F, ESTATUS S
+        WHERE E.idTicket = T.perteneceEpic
+        AND T.idTicket = F.idTicket
+        AND F.idEstatus = S.idEstatus
+        AND (S.descripcion = 'Done' OR S.descripcion = 'Closed')
+        AND F.fechaCambio BETWEEN ? AND ?
+        AND E.idTicket = ?
+        GROUP BY E.idTicket
+        `, [SoW, EoW, epicID])
+    };
 }

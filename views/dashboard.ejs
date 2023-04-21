@@ -94,26 +94,6 @@
 </script>
 
 <script>
-    // Estos scripts crean graficas de Linea para los AP completados en una semana
-    const ap = document.getElementById('weeklyAP');
-
-    const APchart = {
-        labels: ['You','Are','The',"'Ocean's",'Gray','Waves'],
-        datasets: [{
-            data: [65, 59, 80, 81, 56, 55],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    };
-    const config = {
-        type: 'line',
-        data: APchart,
-    };
-    new Chart(ap, config);
-</script>
-
-<script>
     // Estos scripts crean graficas de Pie para los diferentes estatus de un proyecto o Epic
     var pieChart;
     function ProjectPieChart(projectID){
@@ -195,12 +175,155 @@
     }
 </script>
 
+
+<script>
+    // Estos scripts crean graficas de Linea para los AP completados en una semana
+    var APlineChart;
+    function WeeklyAPLineChart(projectID){
+        if (APlineChart) {
+            APlineChart.destroy();
+        }    
+        const ap = document.getElementById('weeklyAP');
+        fetch('/data/project/estimate/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let weeks = new Array(estimateData.status[0][0].Estimate); 
+            let APdata = [];
+            let data_labels = [];
+            const projectStart = new Date(estimateData.status[0][0].Inicio);
+            var start = projectStart;
+            var end = new Date(start);
+            end.setDate(start.getDate()+7);
+            console.log(start.toISOString());
+            console.log(end.toISOString());
+            var fetchLock = false;
+            for (i=0;i<weeks.length;){
+                if (!fetchLock){
+                    fetchLock = true;
+                    data_labels.push(i+1);
+                    fetch('/data/project/completeAP/' + projectID + "/" + start.toISOString() + "/" + end.toISOString(), {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    }).then(result => {
+                        return result.json();
+                    }).then(data => {
+                        if (data.status[0]) {
+                            APdata.push(data.status[0].WeekAP)
+                        } else {
+                            APdata.push(0)
+                        }
+                    })
+                    start.setDate(start.getDate()+7);
+                    end.setDate(end.getDate()+7);
+                    i++;
+                    fetchLock = false;
+                }
+            }
+            setTimeout(() => {
+                const WEEKLYchart = {
+                    labels: data_labels,
+                    datasets: [{
+                        label: "AP Completed Each Week",
+                        data: APdata,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                };
+                const config = {
+                    type: 'line',
+                    data: WEEKLYchart,
+                };
+                APlineChart = new Chart(ap, config);
+            }, "2000");
+        })
+    }
+
+    function EpicWeeklyAPLineChart(epicID){
+        if (APlineChart) {
+            APlineChart.destroy();
+        }    
+        const ap = document.getElementById('weeklyAP');
+        fetch('/data/project/estimate/' + $('#projects').val(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let weeks = new Array(estimateData.status[0][0].Estimate); 
+            let APdata = [];
+            let data_labels = [];
+            const projectStart = new Date(estimateData.status[0][0].Inicio);
+            var start = projectStart;
+            var end = new Date(start);
+            end.setDate(start.getDate()+7);
+            console.log(start.toISOString());
+            console.log(end.toISOString());
+            var fetchLock = false;
+            for (i=0;i<weeks.length;){
+                if (!fetchLock){
+                    fetchLock = true;
+                    data_labels.push(i+1);
+                    fetch('/data/project/completeAP/' + epicID + "/" + start.toISOString() + "/" + end.toISOString(), {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    }).then(result => {
+                        return result.json();
+                    }).then(data => {
+                        if (data.status[0]) {
+                            APdata.push(data.status[0].WeekAP)
+                        } else {
+                            APdata.push(0)
+                        }
+
+                        //APdata.push(data)
+                    })
+                    start.setDate(start.getDate()+7);
+                    end.setDate(end.getDate()+7);
+                    i++;
+                    fetchLock = false;
+                }
+            }
+            setTimeout(() => {
+                const WEEKLYchart = {
+                    labels: data_labels,
+                    datasets: [{
+                        label: "AP Completed Each Week",
+                        data: APdata,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                };
+                const config = {
+                    type: 'line',
+                    data: WEEKLYchart,
+                };
+                APlineChart = new Chart(ap, config);
+            }, "1000");
+        })
+    }
+</script>
+
 <script>
     function ChartAll() {
         if (document.getElementById('epicDiv').style.visibility == "hidden") {
             ProjectPieChart($("#projects").val());
+            WeeklyAPLineChart($("#projects").val());
         } else {
             EpicPieChart($("#epics").val());
+            EpicWeeklyAPLineChart($("#epics").val());
         }
     }
 </script>
