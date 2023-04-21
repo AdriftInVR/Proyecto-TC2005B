@@ -37,8 +37,12 @@
                                     <td class="font-medium text-gray-900 p-2  text-center whitespace-nowrap dark:text-white">
                                         <%= dato.efectividadAsignada %>
                                     </td>
-                                    <td class="font-medium text-gray-900 p-2  text-center whitespace-nowrap dark:text-white">
-                                        <%= dato.front_back %>
+                                    <td class="font-medium text-gray-900 p-2  text-center whitespace-nowrap dark:text-white">                                        
+                                            <% if(dato.front_back == 1){%>
+                                                <p>Backend</p>
+                                            <%} else if(dato.front_back == 0) { %>
+                                                <p>Frontend</p>
+                                            <% } %>                                                                                    
                                     </td>
                                 </tr>
                             <% } %>
