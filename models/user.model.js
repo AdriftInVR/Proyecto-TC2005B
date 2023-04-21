@@ -46,8 +46,7 @@ module.exports = class User {
         FROM tarea as ta, responsable as re, usuario as u
         WHERE u.idUsuario = re.idUsuario
         AND re.idTarea = ta.idTicket
-        AND u.nombre = ?
-        GROUP BY ta.front_back`,
+        AND u.nombre = ?`,
         [name]);
     }
 }
