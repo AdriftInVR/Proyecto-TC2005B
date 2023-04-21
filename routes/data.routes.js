@@ -20,5 +20,8 @@ router.get('/project/completeAP/:idProject/:start/:end', dataController.getCompl
 
 router.get('/project/epic/completeAP/:idEpic/:start/:end', dataController.getCompletedAPEpic);
 
+router.get('/project/area/:idProyecto', dataController.getArea);
+
+router.get('/project/epic/area/:idEpic', dataController.getAreaEpic);
 
 module.exports = router;
