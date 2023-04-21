@@ -88,6 +88,30 @@ exports.getCompletedAPEpic = (req, res) => {
     });
 }
 
+//Puntos agiles por tarea y epic
+exports.getAPproyect = (req, res) => {
+    Proyecto.fetchAPproject(req.params.idProject)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+    });
+}
+
+exports.getAPepic = (req, res) => {
+    Epic.fetchAPproject(req.params.idEpic)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+    });
+}
+//
+
 exports.getArea = async (req, res) => {
     let area = {
         allFront: 0,

@@ -152,7 +152,6 @@
             pieChart = new Chart(pie, config);
         })
     }
-
     function EpicPieChart(epicID){
         if (pieChart) {
             pieChart.destroy();
@@ -202,6 +201,48 @@
     }
 </script>
 
+<!--BURN UP AP-->
+<script>
+    // Estos scripts crean graficas de Linea para los AP completados en una semana
+    var burnupChart;
+
+    //Actualiza datos
+    function ProjectPieChart(projectID) {
+        if (burnupChart) {
+            burnupChart.destroy()
+        }
+
+        const buap = document.getElementById('burnupAP');
+        fetch('/data/project/totalAPp/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json;
+        }).then(data => {
+            let array = [];
+            
+        })
+
+        const APBurnUp = {
+        labels: [1, 3, 5, 8],
+        datasets: [{
+            data: [2, 2, 2, 2, 2],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+    const configura = {
+        type: 'line',
+        data: APBurnUp,
+    };
+    new Chart(buap, configura);
+
+}   
+</script>
+
 
 <script>
     // Estos scripts crean graficas de Linea para los AP completados en una semana
@@ -247,6 +288,7 @@
                             APdata.push(0)
                         }
                     })
+
                     start.setDate(start.getDate()+7);
                     end.setDate(end.getDate()+7);
                     i++;
@@ -273,6 +315,7 @@
         })
     }
 
+    
     function EpicWeeklyAPLineChart(epicID){
         if (APlineChart) {
             APlineChart.destroy();
@@ -313,7 +356,6 @@
                         } else {
                             APdata.push(0)
                         }
-
                         //APdata.push(data)
                     })
                     start.setDate(start.getDate()+7);
@@ -349,7 +391,6 @@
         if (barChar) {
             barChar.destroy();
         }    
-
         const bar = document.getElementById('frontBackAP');
         fetch('/data/project/area/' + projectID, {
             method: 'GET',

@@ -16,6 +16,10 @@ router.get('/project/title/:idProject', dataController.getNotTitle);
 
 router.get('/project/estimate/:idProject', dataController.getEstimate);
 
+router.get('/project/totalAPp/:idProject', dataController.getAPproyect);
+
+router.get('/project/epic/totalAPe/:idEpic', dataController.getAPepic);
+
 router.get('/project/completeAP/:idProject/:start/:end', dataController.getCompletedAP);
 
 router.get('/project/epic/completeAP/:idEpic/:start/:end', dataController.getCompletedAPEpic);
