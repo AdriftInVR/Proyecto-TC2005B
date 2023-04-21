@@ -47,25 +47,28 @@ control.getTasks = (req, res) => {
 
 control.getUsers = async (req, res) => {
 
-    User.fetchAll()
-    .then(async ([usuarios, fieldData]) => {
+    let usuarios_proyectos = [];
+    let usuarios_front_back = [];
+    
+    let [usuarios,filedData] = await User.fetchAll();
 
-        let usuarios_proyectos = [];
+    for (let usuario of usuarios) {
+        let proyectos = await User.fetchUserProjects(usuario.nombre);
+        usuarios_proyectos[usuario.nombre] = proyectos;
 
-        for (let usuario of usuarios) {
-            [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
-            usuarios_proyectos[usuario.nombre] = proyectos;
-        }
-        res.render('users', {
-            active: 'users',
-            usuarios_proyectos: usuarios_proyectos,
-        });
-    })
-    .catch(error => {
-        console.log(error);
-    });
+        let front_back = await User.fetchUserProjects(usuario.nombre);
+        usuarios_front_back[usuario.nombre] = front_back;
+    }
+
+    // console.log(usuarios_proyectos);
+    // console.log(usuarios_front_back);
 
     
+    res.render('users', {
+        active: 'users',
+        usuarios_proyectos: usuarios_proyectos,
+        usuarios_front_back: usuarios_front_back,
+    });
 };
 
 control.getDashboard = (req, res) => {
