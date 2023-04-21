@@ -97,5 +97,4 @@ PART-236,20774,Express client-side logging,Task,2,Code Review,PART-234,Express T
 PART-235,21047,Fix Dependabot alerts,Task,,To Do,PART-234,Express Tech Excellence,24/Feb/23 2:47 PM,,,part/Backend,part/Frontend,
 PART-191,21039,Database problems - Clean up care request,Task,,Canceled,PART-234,Express Tech Excellence,02/Mar/23 2:05 PM,,,,,
 PART-190,21038,Database problems - Clean up care request statuses,Task,,To Do,PART-234,Express Tech Excellence,02/Mar/23 2:05 PM,Bernardo Gomez-Romero,61c9eb457c6f980070deda99,,,
-PART-180,20754,"Client: add location, channel and all_status endpoints to MSW",Task,2.0,To Do,PART-234,Express Tech Excellence,02/Mar/23 1:49 PM,Giorgi Gelashvili,62cdef6c6eba71983721e037,part/Frontend,part/nse,
 PART-180,20754,"Client: add location, channel and all_status endpoints to MSW",Task,2,To Do,PART-234,Express Tech Excellence,02/Mar/23 1:49 PM,Giorgi Gelashvili,62cdef6c6eba71983721e037,part/Frontend,part/nse,

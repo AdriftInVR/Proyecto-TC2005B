@@ -455,8 +455,8 @@ control.processCsv = async(req,res)=>{
             };
             entries.push(ticketInsert);          
         }
-
-        await Tarea.fetchAll()
+        
+        await Tarea.fetchAllAll()
         .then(([rows, fieldData])=>{
             if(rows.length > 0){                
                 for(let i=0;i<entries.length;i++){

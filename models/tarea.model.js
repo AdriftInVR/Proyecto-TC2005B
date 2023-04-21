@@ -2,15 +2,20 @@ const db = require('../util/database');
 
 module.exports = class Tarea {
 
-    static fetchAll(epic){
-        console.log("Estás en epicTask!!");
+    static fetchAllAll(){
+        return db.execute(`
+        SELECT *
+        FROM TAREA`);
+    }
+
+    static fetchAll(epic){    
         return db.execute(`
         SELECT nombre
-        FROM ticket t, epic e, proyecto p
+        FROM TICKET t, EPIC e, PROYECTO p
         WHERE t.idTicket = e.idTicket
         AND perteneProyecto = p.idTicket 
         AND perteneProyecto IN (SELECT idTicket
-                                   FROM ticket
+                                   FROM TICKET
                                    WHERE nombre = (?));
         `,[epic]);
     }
