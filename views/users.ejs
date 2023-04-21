@@ -39,12 +39,28 @@
                             <nav class=" pt-8 bg-grey-light w-full rounded-md">
                                 <ol class="list-reset flex">
                                     <li>
-                                        <% console.log(usuarios_front_back[user]); %>
-                                        <% if (usuarios_front_back[user] = 0) { %>
+
+                                        <% let contador_front = 0; %>
+                                        <% let contador_back = 0; %>
+                                        <% for(let num2 in usuarios_front_back[user]) { %>
+                                            <% for(let num3 in num2) { %>
+                                                <% if(num3 = 0) { %>
+                                                    <% contador_front += 1; %>
+                                                <% } else if(num3 = 1) { %>
+                                                    <% contador_back += 1; %>
+                                                <% } %>
+                                            <% } %>
+                                        <% } %>
+
+                              
+                                        <% if ((contador_front > 0) && (contador_back > 0)) { %>
+                                            <a href="#" class="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600">Frontend | Backend</a>
+                                        <% } else if((contador_front > 0) && (contador_back == 0)){ %>
                                             <a href="#" class="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600">Frontend</a>
-                                        <% } else { %>
+                                        <% } else if((contador_back > 0) && (contador_front == 0)){ %>
                                             <a href="#" class="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600">Backend</a>
                                         <% } %>
+                                        
                                     </li>
                                 </ol>
                             </nav><br>
@@ -55,7 +71,7 @@
             <% num = num + 1; %>
         <% } %>
     <% } else { %>
-        No users in the datbase... How in the hell did you manage to get here without been a user?
+        No users in the datbase...
     <% } %>
     </div>
 
