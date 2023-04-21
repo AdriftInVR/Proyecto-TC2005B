@@ -6,14 +6,11 @@ module.exports = class Epic {
         return db.execute('SELECT * FROM EPIC');
     }
     
-    static add(data){        
+    static async add(data){        
         for(let i=0;i<data.length;i++){
-            db.execute(`INSERT INTO EPIC(idTicket) SELECT ? WHERE NOT EXISTS(SELECT 1 FROM EPIC WHERE idTicket = ?);`,[data[i].idTicket,data[i].idTicket])
-            // .then(([rows, fieldData]) => {
-            //     if(rows.affectedRows>0)console.log('Se inserto')
-            // })
+            await db.execute(`INSERT INTO EPIC(idTicket) VALUES (?)`,[data[i].idTicket])
             .catch(err => {
-                //console.log(err);
+                console.log({sql:err.sql, msg:err.sqlMessage});
             });
         }        
     }
@@ -37,8 +34,22 @@ module.exports = class Epic {
         `, [epicID]);
     }
 
-    static fetchAPepics(epicID){
+    static fetchCompletedAP(epicID, SoW, EoW) {
         return db.execute(`
+        SELECT E.idTicket, SUM(T.puntosAgiles) as 'WeekAP'
+        FROM TAREA T, EPIC E, FASE F, ESTATUS S
+        WHERE E.idTicket = T.perteneceEpic
+        AND T.idTicket = F.idTicket
+        AND F.idEstatus = S.idEstatus
+        AND (S.descripcion = 'Done' OR S.descripcion = 'Closed')
+        AND F.fechaCambio BETWEEN ? AND ?
+        AND E.idTicket = ?
+        GROUP BY E.idTicket
+        `, [SoW, EoW, epicID])
+    };
+
+    static fetchAPproject(epicID){
+        return db.execute (`
         SELECT SUM(ta.puntosAgiles)
         FROM proyecto p, ticket t, epic e, tarea ta
         WHERE p.idTicket = t.idTicket

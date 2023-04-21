@@ -8,45 +8,50 @@
     <div>
 
         <% if (proyectos.length > 0) { %>
-        <div class="overflow-x-auto rounded-lg h-screen flex items-center justify-center">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Start date
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Estimated duration
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Progress
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="rounded-lg pt-8 flex items-center justify-center">
+            <div class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
+                <div class="w-full h-16 text-center rounded-lg text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 flex">                    
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Name
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Start date
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Estimated duration
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Progress
+                    </div>
+                </div>
+                <div>
                     
                     <% for (let proyecto of proyectos) { %>
-                        <tr class ="bg-white dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="/gaia/project/<%= proyecto.nombre%>"><%= proyecto.nombre  %></a>
-                            </th>
-                            <td class="px-6 py-4">
-                                <%= proyecto.fechainicio %>
-                            </td>
-                            <td class="px-6 py-4">
-                                <%= proyecto.duracion %>
-                            </td>
-                            <td class="px-6 py-4">
-                                -
-                            </td>
-                        </tr>
+
+                        <div class ="w-full bg-white p-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">                            
+                            <a href="/gaia/project/<%= proyecto.nombre%>" class="px-6 py-4 font-medium flex text-gray-900 dark:text-white">
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6">
+                                    <%= proyecto.nombre  %>
+                                </div>
+                                
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6">
+                                    <%= proyecto.fechainicio.toLocaleDateString(); %>
+                                </div>
+                                
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
+                                    <%= proyecto.duracion %>
+                                </div>
+
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
+                                    -
+                                </div>                                
+                            </a>                            
+                        </div>
+
                     <% } %>
-                   
-                </tbody>
-            </table>
+                                       
+                </div>
+            </div>   
         </div>
         <% }  else { %>
             <div class="flex justify-center items-center">
@@ -60,7 +65,7 @@
 
     <!-- NEW PROJECT BUTTON -->
     <div class="fixed bottom-16 right-28">
-        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
         New Project
         </button>        
     </div>

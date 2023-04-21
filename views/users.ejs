@@ -3,11 +3,11 @@
     active: 'users'
 }) %>
 
-<div class="w-main inline-block content center">
+<div class="w-main inline-block content center flex justify-center items-center">
 
     <!-- lista de usuarios-->
 
-    <div class="fixed top-48 right-48 justify-center w-3/5" id="accordion-collapse" data-accordion="collapse">
+    <div class="justify-center w-3/5" id="accordion-collapse" data-accordion="collapse">
     <% if (usuarios_proyectos) { %>
         <% let num = 1; %>
         <% for(let user in usuarios_proyectos) { %>

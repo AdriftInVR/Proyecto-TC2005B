@@ -6,14 +6,11 @@ module.exports = class Fase {
         return db.execute('SELECT * FROM FASE');
     }
     
-    static add(data){        
+    static async add(data){        
         for(let i=0;i<data.length;i++){
-            db.execute(`INSERT INTO FASE(idTicket,idEstatus) VALUES (?,?);`,[data[i].idTicket,data[i].idEstatus])
-            // .then(([rows, fieldData]) => {
-            //     if(rows.affectedRows>0)console.log('Se inserto')
-            // })
+            await db.execute(`INSERT INTO FASE(idTicket,idEstatus) VALUES (?,?);`,[data[i].idTicket,data[i].idEstatus])
             .catch(err => {
-                //console.log(err);
+                console.log({sql:err.sql, msg:err.sqlMessage});
             });
         }        
     }

@@ -3,8 +3,8 @@
     active: active
 }) %>
     <div class="w-main inline-block content-center">  
-        <div class="flex items-center justify-center w-full">
-            <form action="/gaia/import/" method="POST" enctype="multipart/form-data" class="w-9/12 ml-8 mt-44 px-36">
+        <div class="flex items-center justify-center w-full h-full">
+            <form action="/gaia/import/" method="POST" enctype="multipart/form-data" class="w-9/12 ml-8 px-36">
                 <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 pt-3.125 mt-4.125">
                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
                         <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
@@ -18,22 +18,55 @@
             </form>  
         </div>
         
-            <div class="overlay", id="overlay">
+            <div class="overlay" id="overlay">
                 <div class="popup" id="popup">
                     <a id="btn-close-pup" class="btn-close-popup"><i class="fas fa-times"></i></a>
                     <h4>SUCCES!!</h4>
                     <h3>The document has been imported successfully</h3>
                 </div>
             </div>        
-            <div class="overlayerr", id="overlayerror">
+            <div class="overlayerr" id="overlayerror">
                 <div class="popuperr" id="popuperro">
-                    <a id="btn-close-popuperr" class="btn-close-popuperr"><i class="fas fa-times"></i></a>
+                    <a id="btn-close-popuperr"  class="btn-close-popuperr"><i class="fas fa-times"></i></a>
                     <h4>ERROR!!</h4>
                     <h3>The file wasnt imported, load only .csv files</h3>
                 </div>
             </div>        
     </div>
+    <% if(state){%>
+        <p style="visibility: hidden;" id="state"><%= state%></p>
+        <script>
+            var state = document.getElementById('state').textContent;
+            console.log(state);
+            var overlaysucces = document.getElementById('overlay');
+            var popup = document.getElementById('popup');
 
+            var overerr = document.getElementById('overlayerror');
+            var poperr = document.getElementById('popuperro');
+
+            var btnClosePopup = document.getElementById('btn-close-popuperr');
+            var btnClosePopupS = document.getElementById('btn-close-pup');
+
+            btnClosePopup.addEventListener("click",function(){
+                overerr.classList.remove('active');
+                poperr.classList.remove('active');
+            });
+
+            btnClosePopupS.addEventListener("click",function(){
+                overlaysucces.classList.remove('active');
+                popup.classList.remove('active');
+            });
+
+            if(state == 'err'){
+                overerr.classList.add('active');
+                poperr.classList.add('active');   
+            }
+            else if(state == 'succes'){
+                overlaysucces.classList.add('active');
+                popup.classList.add('active');
+            }
+        </script>  
+    <%}%>    
     <script>
         function fileValidation(){
             var fileInput = document.getElementById('dropzone-file');
@@ -64,10 +97,6 @@
                 poperr.classList.add('active');
                 fileInput.value = '';
                 return false;
-            }else{
-                overlaysucces.classList.add('active');
-                popup.classList.add('active');
-                return true;
             }
         };
 
@@ -80,6 +109,6 @@
             }       
         
         });
-
+        
     </script>
 <%- include('partials/endHTML.ejs') %>
