@@ -35,76 +35,90 @@ module.exports = class Tarea {
         }        
     }
 
-    static tasktdo(){
+    static tasktdo(id){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM TICKET ti, FASE f, TAREA ta
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
         AND f.idEstatus = 1
-        `)
+        AND e.idTicket = ?
+        `,[id])
 
     }
 
     static taskinpro(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM TICKET ti, FASE f, TAREA ta
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
         AND f.idEstatus = 2
-        `)
+        AND e.idTicket = ?
+        `,[id])
 
     }
 
     static taskcode(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM TICKET ti, FASE f, TAREA ta
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
         AND f.idEstatus = 3
-        `)
+        AND e.idTicket = ?
+        `,[id])
     }
 
     static taskquality(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM TICKET ti, FASE f, TAREA ta
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
         AND f.idEstatus = 4
-        `)
+        AND e.idTicket = ?
+        `,[id])
     }
 
     static taskrelease(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM TICKET ti, FASE f, TAREA ta
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
         AND f.idEstatus = 5
-        `)
+        AND e.idTicket = ?
+        `,[id])
     }
 
     static taskdone(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM TICKET ti, FASE f, TAREA ta
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
         AND f.idEstatus = 6
-        `)
+        AND e.idTicket = ?
+        `,[id])
     }
 
     static taskclosed(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM TICKET ti, FASE f, TAREA ta
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
         AND f.idEstatus = 7
-        `)
+        AND e.idTicket = ?
+        `,[id])
     }
 
     /*static estat(idEstatus){
