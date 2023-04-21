@@ -17,7 +17,7 @@ module.exports = class Proyecto {
             return result;
         }
 
-        id_temporal = makeid(6);
+        let id_temporal = makeid(6);
 
         return db.execute(`
             INSERT INTO TICKET (idTicket, nombre)
