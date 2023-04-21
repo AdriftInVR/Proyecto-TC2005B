@@ -100,7 +100,7 @@ module.exports = class Proyecto {
 
     static epics(epic) {
         return db.execute(`
-        SELECT nombre
+        SELECT nombre, t.idTicket
         FROM TICKET t, EPIC e, PROYECTO p
         WHERE t.idTicket = e.idTicket
         AND perteneProyecto = p.idTicket 

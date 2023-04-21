@@ -36,7 +36,7 @@ control.getProjects = (req, res) => {
 
 control.getProject = async (req, res) => {
     projectName = req.params.prj
-    
+
     try {
         [datos, filedData] = await Proyect.datos(projectName);        
     
@@ -47,7 +47,6 @@ control.getProject = async (req, res) => {
         console.log(err);
     }
 
-    console.log(namePrj)
     res.render('project', {
         active: 'projects',
         epics: epics,
@@ -59,35 +58,35 @@ control.getProject = async (req, res) => {
 
 
 control.getTasks = async (req, res) => {
-
+    id = req.params.prj;
+    let idProyect = 0;
+    await Epic.fetchPrjPertenece(id)
+    .then(([rows, fieldData])=>{
+        idProyect = rows[0].perteneProyecto;
+    })
     try {
-        [task1, fieldData] = await Tarea.tasktdo();
-        console.log(task1);
+        [task1, fieldData] = await Tarea.tasktdo(id);        
 
-        [task2, fieldData] = await Tarea.taskinpro();
-        console.log(task2);
+        [task2, fieldData] = await Tarea.taskinpro(id);    
 
-        [task3, fieldData] = await Tarea.taskcode();
-        console.log(task3);
+        [task3, fieldData] = await Tarea.taskcode(id);        
 
-        [task4, fieldData] = await Tarea.taskquality();
-        console.log(task4);
+        [task4, fieldData] = await Tarea.taskquality(id);        
 
-        [task5, fieldData] = await Tarea.taskrelease();
-        console.log(task5);
+        [task5, fieldData] = await Tarea.taskrelease(id);        
 
-        [task6, fieldData] = await Tarea.taskdone();
-        console.log(task6);
+        [task6, fieldData] = await Tarea.taskdone(id);        
 
-        [task7, fieldData] = await Tarea.taskclosed();
-        console.log(task7);
+        [task7, fieldData] = await Tarea.taskclosed(id);
+        
+        [epics, filedData] = await Proyect.epics(idProyect);
 
     } catch (err) {
         console.log(err);
     }
 
     Epic.fetchAll()
-    .then(([rows, fieldData])=>{
+    .then(([rows, fieldData])=>{        
         res.render('tasks', {
             active: 'projects',
             tasks1: task1,
@@ -97,7 +96,7 @@ control.getTasks = async (req, res) => {
             tasks5: task5,
             tasks6: task6,
             tasks7: task7,
-            epics: rows
+            epics: epics
         });
     })
     .catch(err =>console.log(err));
@@ -642,7 +641,7 @@ control.postProject = (req, res, next) =>{
         fechaInicio : req.body.projectStart
     };
     
-    const newProject = new Proyecto(data);    
+    const newProject = new Proyect(data);    
     
     if(data.nombre == ''){
         msgErrorAddProject = "The field name of project are blank";
@@ -658,7 +657,7 @@ control.postProject = (req, res, next) =>{
         }
     });
     
-    console.log(msgErrorAddProject);
+    //console.log(msgErrorAddProject);
     res.redirect('/');
 }
 
