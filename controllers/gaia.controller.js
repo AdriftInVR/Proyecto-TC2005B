@@ -56,6 +56,7 @@ control.getUsers = async (req, res) => {
             [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
             usuarios_proyectos[usuario.nombre] = proyectos;
         }
+
         res.render('users', {
             active: 'users',
             usuarios_proyectos: usuarios_proyectos,
