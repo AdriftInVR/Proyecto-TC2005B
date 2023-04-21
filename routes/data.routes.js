@@ -11,6 +11,8 @@ router.get('/project/epics/:idProject', dataController.getProjectEpics);
 
 router.get('/project/epic/status/:idEpic', dataController.getStatusEpic);
 
+router.get('')
+
 router.get('/project/title/:idProject', dataController.getNotTitle);
 
 module.exports = router;

@@ -36,4 +36,16 @@ module.exports = class Epic {
             GROUP BY s.descripcion
         `, [epicID]);
     }
+
+    static fetchAPepics(epicID){
+        return db.execute(`
+        SELECT SUM(ta.puntosAgiles)
+        FROM proyecto p, ticket t, epic e, tarea ta
+        WHERE p.idTicket = t.idTicket
+        AND p.idTicket = e.perteneProyecto
+        AND ta.perteneceEpic = e.idTicket
+        AND e.idTicket = ?
+        GROUP BY p.idTicket
+        `, [epicID])
+    }
 }

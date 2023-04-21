@@ -68,4 +68,35 @@ module.exports = class Proyecto {
             WHERE p.idTicket = t.idTicket
         `);
     }
+
+    static fetchEstimate(projectID) {
+        return db.execute(`
+        SET @PT = ?;
+        SET @AP = (SELECT SUM(T.puntosAgiles)
+        FROM TAREA T, EPIC E, PROYECTO P
+        WHERE T.perteneceEpic = E.idTicket
+        AND E.perteneProyecto = P.idTicket
+        AND P.idTicket = @PT);
+        SET @WEEKLY = (SELECT SUM(W.efectividadAsignada) 
+        FROM TRABAJA W, PROYECTO P
+        WHERE P.idTicket = W.idProyecto
+        AND P.idTicket = @PT);
+        SELECT @AP/@WEEKLY as 'Estimate', P.fechaInicio as 'Inicio'
+        FROM PROYECTO P
+        WHERE P.idTicket = @PT;
+        `, [projectID]);
+    }
+
+    static fetchAPproject(projectID){
+        return db.execute (`
+        SELECT SUM(ta.puntosAgiles)
+        FROM proyecto p, ticket t, epic e, tarea ta
+        WHERE p.idTicket = t.idTicket
+        AND p.idTicket = e.perteneProyecto
+        AND ta.perteneceEpic = e.idTicket
+        AND t.nombre = ?;
+        `, [projectID])
+    }
+
+  
 }
