@@ -35,22 +35,22 @@ control.getProjects = (req, res) => {
 
 control.getProject = async (req, res) => {
     projectName = req.params.prj
-
-    try {
-        [datos, filedData] = await Proyecto.datos(projectName);
-        console.log(datos);
     
-        [epics, filedData] = await Proyecto.epics(projectName);
-        console.log(epics);
+    try {
+        [datos, filedData] = await Proyecto.datos(projectName);        
+    
+        [epics, filedData] = await Proyecto.epics(projectName);        
+        
+        [namePrj, filedData] = await Proyecto.fetchAll(projectName);        
     } catch (err) {
         console.log(err);
     }
 
-
+    console.log(namePrj)
     res.render('project', {
         active: 'projects',
         epics: epics,
-        projectName: projectName,
+        projectName: namePrj[0].nombre,
         datos: datos, 
     });
     
@@ -85,16 +85,22 @@ control.getTasks = async (req, res) => {
         console.log(err);
     }
 
-    res.render('tasks', {
-        active: 'projects',
-        tasks1: task1,
-        tasks2: task2,
-        tasks3: task3,
-        tasks4: task4,
-        tasks5: task5,
-        tasks6: task6,
-        tasks7: task7,
-    });
+    Epic.fetchAll()
+    .then(([rows, fieldData])=>{
+        res.render('tasks', {
+            active: 'projects',
+            tasks1: task1,
+            tasks2: task2,
+            tasks3: task3,
+            tasks4: task4,
+            tasks5: task5,
+            tasks6: task6,
+            tasks7: task7,
+            epics: rows
+        });
+    })
+    .catch(err =>console.log(err));
+    
     
 
     /*Tarea.estat(req.params.idEstatus)

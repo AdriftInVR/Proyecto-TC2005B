@@ -69,22 +69,31 @@ module.exports = class Proyecto {
 
     static fetchAll() {
         return db.execute(`
-            SELECT t.nombre, p.fechainicio, p.duracion
+            SELECT t.nombre, p.fechainicio, p.duracion, p.idTicket
             FROM TICKET t, PROYECTO p
             WHERE  t.idTicket = p.idTicket;
         `);
+    }
+    
+    static fetchOne(id) {
+        return db.execute(`
+            SELECT t.nombre, p.fechainicio, p.duracion, p.idTicket
+            FROM TICKET t, PROYECTO p
+            WHERE  t.idTicket = p.idTicket
+            AND t.idTicket = ?;
+        `,[id]);
     }
 
     static datos(dato) {
         return db.execute(`
         SELECT u.nombre, efectividadAsignada, front_back
-        FROM tarea t, responsable r, trabaja tr, usuario u, proyecto p, ticket ti
+        FROM TAREA t, RESPONSABLE r, TRABAJA tr, USUARIO u, PROYECTO p, TICKET ti
         WHERE u.idUsuario= tr.idUsuario
         AND u.idUsuario = r.idUsuario
         AND r.idTarea = t.idTicket
         AND tr.idProyecto = p.idTicket
         AND p.idTicket = ti.idTicket
-        AND ti.nombre= (?)
+        AND ti.idTicket= (?)
         GROUP BY u.nombre;
         `, [dato]);
     }
@@ -92,12 +101,12 @@ module.exports = class Proyecto {
     static epics(epic) {
         return db.execute(`
         SELECT nombre
-        FROM ticket t, epic e, proyecto p
+        FROM TICKET t, EPIC e, PROYECTO p
         WHERE t.idTicket = e.idTicket
         AND perteneProyecto = p.idTicket 
         AND perteneProyecto IN (SELECT idTicket
-                                   FROM ticket
-                                   WHERE nombre = (?));
+                                   FROM TICKET
+                                   WHERE idTicket = (?));
         `, [epic]);
     }
 

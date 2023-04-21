@@ -33,7 +33,7 @@ module.exports = class Tarea {
     static tasktdo(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM ticket ti, fase f, tarea ta
+        FROM TICKET ti, FASE f, TAREA ta
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND f.idEstatus = 1
@@ -44,7 +44,7 @@ module.exports = class Tarea {
     static taskinpro(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM ticket ti, fase f, tarea ta
+        FROM TICKET ti, FASE f, TAREA ta
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND f.idEstatus = 2
@@ -55,7 +55,7 @@ module.exports = class Tarea {
     static taskcode(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM ticket ti, fase f, tarea ta
+        FROM TICKET ti, FASE f, TAREA ta
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND f.idEstatus = 3
@@ -65,7 +65,7 @@ module.exports = class Tarea {
     static taskquality(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM ticket ti, fase f, tarea ta
+        FROM TICKET ti, FASE f, TAREA ta
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND f.idEstatus = 4
@@ -75,7 +75,7 @@ module.exports = class Tarea {
     static taskrelease(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM ticket ti, fase f, tarea ta
+        FROM TICKET ti, FASE f, TAREA ta
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND f.idEstatus = 5
@@ -85,7 +85,7 @@ module.exports = class Tarea {
     static taskdone(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM ticket ti, fase f, tarea ta
+        FROM TICKET ti, FASE f, TAREA ta
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND f.idEstatus = 6
@@ -95,7 +95,7 @@ module.exports = class Tarea {
     static taskclosed(){
         return db.execute (`
         SELECT ti.nombre, ta.puntosAgiles 
-        FROM ticket ti, fase f, tarea ta
+        FROM TICKET ti, FASE f, TAREA ta
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND f.idEstatus = 7
