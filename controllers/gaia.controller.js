@@ -4,25 +4,28 @@ const Ticket = require('../models/tickets.model');
 const Estatus = require('../models/status.model');
 const Fase = require('../models/fase.model');
 const Proyecto = require('../models/proyects.model');
+const Proyect = require('../models/projects.model');
 const Epic = require('../models/epic.model');
 const User = require('../models/user.model');
 const Tarea = require('../models/tarea.model');
-
-control = []
 const db = require('../util/database');
+const { normalize } = require('path');
+
+control = [];
+let msgErrorAddProject = false;
+
 
 control.getLogin = (req, res) => {
     res.render('login')
 };
 
 control.getProjects = (req, res) => {
-    
-    Proyecto.fetchAll()
+    Proyect.fetchAll()
     .then(([rows, filedData]) => {
-
         res.render('home', {
             active: 'projects',
             proyectos: rows,
+            msgErr: msgErrorAddProject
         });
     })
     .catch(err => {
@@ -30,18 +33,87 @@ control.getProjects = (req, res) => {
     });
 };
 
-control.getProject = (req, res) => {
-    projectName = req.params.prj;
+
+control.getProject = async (req, res) => {
+    projectName = req.params.prj
+
+    try {
+        [datos, filedData] = await Proyect.datos(projectName);        
+    
+        [epics, filedData] = await Proyect.epics(projectName);        
+        
+        [namePrj, filedData] = await Proyect.fetchOne(projectName);        
+    } catch (err) {
+        console.log(err);
+    }
+
     res.render('project', {
         active: 'projects',
-        projectName: projectName
-    })
+        epics: epics,
+        projectName: namePrj[0].nombre,
+        datos: datos, 
+    });
+    
 };
 
-control.getTasks = (req, res) => {
-    res.render('tasks', {
-        active: 'projects'
+
+control.getTasks = async (req, res) => {
+    id = req.params.prj;
+    let idProyect = 0;
+    await Epic.fetchPrjPertenece(id)
+    .then(([rows, fieldData])=>{
+        idProyect = rows[0].perteneProyecto;
     })
+    try {
+        [task1, fieldData] = await Tarea.tasktdo(id);        
+
+        [task2, fieldData] = await Tarea.taskinpro(id);    
+
+        [task3, fieldData] = await Tarea.taskcode(id);        
+
+        [task4, fieldData] = await Tarea.taskquality(id);        
+
+        [task5, fieldData] = await Tarea.taskrelease(id);        
+
+        [task6, fieldData] = await Tarea.taskdone(id);        
+
+        [task7, fieldData] = await Tarea.taskclosed(id);
+        
+        [epics, filedData] = await Proyect.epics(idProyect);
+
+    } catch (err) {
+        console.log(err);
+    }
+
+    Epic.fetchAll()
+    .then(([rows, fieldData])=>{        
+        res.render('tasks', {
+            active: 'projects',
+            tasks1: task1,
+            tasks2: task2,
+            tasks3: task3,
+            tasks4: task4,
+            tasks5: task5,
+            tasks6: task6,
+            tasks7: task7,
+            epics: epics
+        });
+    })
+    .catch(err =>console.log(err));
+    
+    
+
+    /*Tarea.estat(req.params.idEstatus)
+    .then(([rows, fieldData]) => {
+        console.log(rows);
+        res.render('tasks', {
+            task: rows,
+            active: 'projects',
+        });
+    })
+    .catch(err => {
+        console.log(err);
+    })*/
 };
 
 control.getUsers = async (req, res) => {
@@ -382,8 +454,8 @@ control.processCsv = async(req,res)=>{
             };
             entries.push(ticketInsert);          
         }
-
-        await Tarea.fetchAll()
+        
+        await Tarea.fetchAllAll()
         .then(([rows, fieldData])=>{
             if(rows.length > 0){                
                 for(let i=0;i<entries.length;i++){
@@ -562,13 +634,32 @@ control.processCsv = async(req,res)=>{
 };
 
 control.postProject = (req, res, next) =>{
-    const nombre = req.body.projectName;
-    const newProject = new Proyecto(nombre);    
-    console.log(newProject)
+    msgErrorAddProject = false;
+
+    const data = {
+        nombre : req.body.projectName,
+        fechaInicio : req.body.projectStart
+    };
+    
+    const newProject = new Proyect(data);    
+    
+    if(data.nombre == ''){
+        msgErrorAddProject = "The field name of project are blank";
+    }
+
     newProject.save()
+    .then(([rows,fieldData])=>{
+        for(let i=0;i<rows.length;i++){
+            if(rows[i].nombre == data.nombre){                
+                msgErrorAddProject = "The name introduced has already taken";
+                break;
+            }
+        }
+    });
+    
+    //console.log(msgErrorAddProject);
     res.redirect('/');
 }
-
 
 
 module.exports = control

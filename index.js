@@ -12,7 +12,6 @@ require('dotenv').config();
 
 const app = express();
 
-
 const config = {
     authRequired: false,
     auth0Logout: true,

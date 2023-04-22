@@ -1,41 +1,50 @@
 <%- include('partials/header.ejs') %>
 <%- include('partials/spinner.ejs') %>
-    <h1><span id="titleHere">Showing Status Pie for Project </span></h1>
+    
 <body>
-    <span class="loader"></span>
-    <div>    
-        <input type="radio" id="pj" name="graph_selection" value="project" onchange='EpicToggle()' checked>
-        <label for="project">By Project</label>&nbsp;
-        <input type="radio" id="ep" name="graph_selection" value="epic" onchange='EpicToggle()'>
-        <label for="epic">By Epic</label><br>
-    </div>
-    <section id ='projectDiv'>
-        Project: 
-        <select id="projects">
-            <% let i = true %> 
-            <% for (project of projects) { %>
-                <option value="<%= project.ProjectID %>" <% if (i) { %> selected <% i = false  } %>><%= project.ProjectName %></option>
-            <% } %>
-        </select>
-    </section>
-    <section id='epicDiv' style="visibility:hidden">
-        Epics: 
-        <select id="epics">
+    <div class="h-[main] w-full flex justify-center p-8">
+        <div class="w-1/3 bg-white">
+            <div class="sticky top-[10vh]">    
+                <input type="radio" id="pj" name="graph_selection" value="project" onchange='EpicToggle()' checked>
+                <label for="project">By Project</label>&nbsp;
+                <input type="radio" id="ep" name="graph_selection" value="epic" onchange='EpicToggle()'>
+                <label for="epic">By Epic</label><br>
+            </div>
+            <section id ='projectDiv' class="sticky top-[15vh]">
+                Project: 
+                <select id="projects">
+                    <% let i = true %> 
+                    <% for (project of projects) { %>
+                        <option value="<%= project.ProjectID %>" <% if (i) { %> selected <% i = false  } %>><%= project.ProjectName %></option>
+                    <% } %>
+                </select>
+            </section>
+            <section id='epicDiv' style="visibility:hidden" class="sticky top-[20vh]">
+                Epics: 
+                <select id="epics">
+                    
+                </select>
+            </section>
+        </div>
+
+        <div class="w-2/3">
             
-        </select>
-    </section>
-    <div>
-        <canvas id ='burnupAP'></canvas>
+            <div class="p-16">
+                <canvas id ='weeklyAP'></canvas>
+            </div>
+            <div class="p-16">
+                <canvas id ='frontBackAP'></canvas>
+            </div>
+            <div class="p-16">
+                <canvas id="statusPie"></canvas>
+            </div>
+
+            <div class="p-16">
+                <canvas id ='burnupAP'></canvas>
+            </div>
+        </div>
     </div>
-    <div>
-        <canvas id ='weeklyAP'></canvas>
-    </div>
-    <div>
-        <canvas id ='frontBackAP'></canvas>
-    </div>
-    <div>
-        <canvas id="statusPie"></canvas>
-    </div>
+    
 </body>
 <%- include('partials/endHTML.ejs') %>
 
@@ -130,6 +139,15 @@
             const config = {
                 type: 'pie',
                 data: PIEchart,
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Task for State'
+                        },
+                    },
+                    responsive: true,                    
+                }
             };
             pieChart = new Chart(pie, config);
         })
@@ -168,6 +186,15 @@
             const config = {
                 type: 'pie',
                 data: PIEchart,
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Task for State'
+                        },
+                    },
+                    responsive: true,                    
+                }
             };
             pieChart = new Chart(pie, config);
         })
@@ -401,7 +428,7 @@
                     plugins: {
                     title: {
                         display: true,
-                        text: 'Chart.js Bar Chart - Stacked'
+                        text: 'Frontend Backend Completed Tasks'
                     },
                     },
                     responsive: true,
@@ -459,7 +486,7 @@
                     plugins: {
                     title: {
                         display: true,
-                        text: 'Chart.js Bar Chart - Stacked'
+                        text: 'Frontend Backend Completed Tasks'
                     },
                     },
                     responsive: true,

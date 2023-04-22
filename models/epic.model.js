@@ -6,6 +6,13 @@ module.exports = class Epic {
         return db.execute('SELECT * FROM EPIC');
     }
     
+    static async fetchPrjPertenece(id){                
+        return await db.execute(`SELECT perteneProyecto FROM EPIC WHERE idTicket = ?`,[id])
+        .catch(err => {
+            console.log({sql:err.sql, msg:err.sqlMessage});
+        });        
+    }
+
     static async add(data){        
         for(let i=0;i<data.length;i++){
             await db.execute(`INSERT INTO EPIC(idTicket) VALUES (?)`,[data[i].idTicket])
