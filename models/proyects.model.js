@@ -143,14 +143,14 @@ module.exports = class Proyecto {
         BEGIN
         SET @PT = ticket;
         SET @AP = (SELECT SUM(T.puntosAgiles)
-                FROM TAREA T, EPIC E, PROYECTO P
-                WHERE T.perteneceEpic = E.idTicket
-                AND E.perteneProyecto = P.idTicket
-                AND P.idTicket = @PT);
+                   FROM TAREA T, EPIC E, PROYECTO P
+                   WHERE T.perteneceEpic = E.idTicket
+                   AND E.perteneProyecto = P.idTicket
+                   AND P.idTicket = @PT);
         SET @WEEKLY = (SELECT SUM(W.efectividadAsignada) 
-                    FROM TRABAJA W, PROYECTO P
-                    WHERE P.idTicket = W.idProyecto
-                    AND P.idTicket = @PT);
+                       FROM TRABAJA W, PROYECTO P
+                       WHERE P.idTicket = W.idProyecto
+                       AND P.idTicket = @PT);
         SELECT CEIL(@AP/@WEEKLY) as 'Estimate', P.fechaInicio as 'Inicio'
         FROM PROYECTO P
         WHERE P.idTicket = @PT;
