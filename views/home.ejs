@@ -8,46 +8,51 @@
     <div class="justify-center">
 
         <% if (proyectos.length > 0) { %>
-            <div class="overflow-x-auto rounded-lg h-screen flex items-center justify-center">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Start date
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Estimated duration
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Progress
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        <% for (let proyecto of proyectos) { %>
-                            <tr class ="bg-white dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <a href="/gaia/project/<%= proyecto.nombre%>"><%= proyecto.nombre  %></a>
-                                </th>
-                                <td class="px-6 py-4">
-                                    <%= proyecto.fechainicio %>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <%= proyecto.duracion %>
-                                </td>
-                                <td class="px-6 py-4">
-                                    -
-                                </td>
-                            </tr>
-                        <% } %>
+        <div class="rounded-lg pt-8 flex items-center justify-center">
+            <div class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
+                <div class="w-full h-16 text-center rounded-lg text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 flex">                    
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Name
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Start date
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Estimated duration
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Progress
+                    </div>
+                </div>
+                <div>
                     
-                    </tbody>
-                </table>
-            </div>
+                    <% for (let proyecto of proyectos) { %>
+
+                        <div class ="w-full bg-white p-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">                            
+                            <a href="/gaia/project/<%= proyecto.idTicket%>" class="px-6 py-4 font-medium flex text-gray-900 dark:text-white">
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6">
+                                    <%= proyecto.nombre  %>
+                                </div>
+                                
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6">
+                                    <%= proyecto.fechainicio.toLocaleDateString(); %>
+                                </div>
+                                
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
+                                    <%= proyecto.duracion %>
+                                </div>
+
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
+                                    -
+                                </div>                                
+                            </a>                            
+                        </div>
+
+                    <% } %>
+                                       
+                </div>
+            </div>   
+        </div>
         <% }  else { %>
             <div class="flex justify-center items-center">
                 <p class="text-5xl">
@@ -59,9 +64,9 @@
 
 
     <!-- NEW PROJECT BUTTON -->
-    <div class="fixed bottom-16 right-28 ">
-        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-            New Project
+    <div class="fixed bottom-16 right-28">
+        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        New Project
         </button>        
     </div>
     
@@ -80,16 +85,16 @@
                         <div>
                             <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New project's name</label>
                             <div class="mb-6">
-                                <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                             </div>
                         </div>
                         <div>
                             <label for="startDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start date</label>
                             <div class="mb-6">
-                                <input type="date" id="projectStart" name="projectStart" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <input type="date" id="projectStart" name="projectStart" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                             </div>
                         </div>
-                        <input type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Create project" />
+                        <input data-modal-target="ErrorValue" data-modal-toggle="ErrorValue" type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Create project" />
                     </form>
                 </div>
             </div>
@@ -99,26 +104,26 @@
 
 
     <!--ERROR-->
-    <div tabindex="-1" aria-hidden="true" class="w-96 h-48 fixed top-28 right-32 overflow-hidden rounded-lg bg-slate-200 text-left shadow-xl transition-all">
-        <div class=" bg-slate-200 px-4 pb-4 pt-5">
-            <div class="flex items-start">
-                <div class="flex w-12 fixed inset-x-9 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                </svg>
-                </div>
-                <div class="my-8 mx-8">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">ERROR</h3>
-                    <div>
-                        <p class=" text-sm text-gray-500">Incorrect value</p>
+    <% if(msgErr){ %>
+        <div id="ErrorValue" aria-hidden="true" class="w-96 h-48 fixed top-60 right-100 rounded-lg bg-white text-left shadow-xl transition-all border border-gray-600 flex flex-col">
+            <div class=" px-4 pb-4 pt-5">
+                <div class="flex items-start">
+                    <div class="flex w-12 inset-x-9 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                        </svg>
+                    </div>
+                    <div class="my-8 mx-8">
+                        <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">ERROR</h3>
+                        <div>
+                            <p class=" text-sm text-gray-500"><%= msgErr%></p>
+                        </div>
                     </div>
                 </div>
             </div>
+            <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold  text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" data-modal-hide="ErrorValue">Acept</button>
         </div>
-        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-            <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Acept</button>
-        </div>
-    </div>
+    <% } %>
 
 
 </div>

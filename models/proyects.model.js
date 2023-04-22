@@ -6,7 +6,6 @@ module.exports = class Proyecto {
     }
 
     save() {
-
         function makeid(length) {
             let result = '';
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -18,7 +17,7 @@ module.exports = class Proyecto {
             return result;
         }
 
-        id_temporal = makeid(6);
+        let id_temporal = makeid(6);
 
         return db.execute(`
             INSERT INTO TICKET (idTicket, nombre)
@@ -34,5 +33,87 @@ module.exports = class Proyecto {
         `);
     }
 
-}
+    static fetchNotTitle(projectID) {
+        return db.execute(`
+            SELECT idTicket FROM PROYECTO p
+            WHERE p.idTicket = ?
+        `, [projectID]);
+    }
 
+    static fetchStatus(projectID) {
+        return db.execute(`
+            SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM ESTATUS s, FASE f, TAREA t, EPIC e, PROYECTO p
+            WHERE s.idEstatus = f.idEstatus
+            AND f.idTicket = t.idTicket
+            AND t.perteneceEpic = e.idTicket
+            AND e.perteneProyecto = p.idTicket
+            AND p.idTicket = ?
+            GROUP BY s.descripcion
+        `, [projectID]);
+    }
+
+    static fetchEpics(projectID) {
+        return db.execute(`
+            SELECT t.nombre as 'EpicName', e.idTicket as 'EpicID', e.perteneProyecto as 'ProjectID'
+            FROM EPIC e, TICKET t
+            WHERE e.idTicket = t.idTicket
+            AND e.perteneProyecto = ?
+        `, [projectID]);
+    }
+
+    static fetchAllIDs() {
+        return db.execute(`
+            SELECT t.nombre as 'ProjectName', p.idTicket as 'ProjectID'
+            FROM PROYECTO p, TICKET t
+            WHERE p.idTicket = t.idTicket
+        `);
+    }
+
+    static async fetchCompletePrj(projectID) {
+        return await db.execute(`
+            SELECT t.front_back, COUNT(t.idTicket) as 'Complete'
+            FROM TAREA t, EPIC e, PROYECTO p, FASE f, ESTATUS s
+            WHERE t.idTicket = f.idTicket
+            AND f.idEstatus = s.idEstatus
+            AND t.perteneceEpic = e.idTicket
+            AND (s.descripcion = 'Done' OR s.descripcion = 'Closed')
+            AND e.perteneProyecto = p.idTicket
+            AND p.idTicket = ?
+            GROUP BY t.front_back
+        `,[projectID])
+    }
+    
+    static async fetchAllPrj(projectID) {
+        return await db.execute(`
+            SELECT t.front_back, COUNT(puntosAgiles) as 'Completed'
+            FROM TAREA t, EPIC e, PROYECTO p
+            WHERE t.perteneceEpic = e.idTicket
+            AND e.perteneProyecto = p.idTicket
+            AND p.idTicket = ?
+            GROUP BY t.front_back
+        `,[projectID])        
+    }
+
+    static async fetchCompleteEpi(epicID) {
+        return await db.execute(`
+            SELECT t.front_back, COUNT(t.idTicket) as 'Complete'
+            FROM TAREA t, EPIC e, FASE f, ESTATUS s
+            WHERE t.idTicket = f.idTicket
+            AND f.idEstatus = s.idEstatus
+            AND t.perteneceEpic = e.idTicket
+            AND (s.descripcion = 'Done' OR s.descripcion = 'Closed')            
+            AND e.idTicket = ?
+            GROUP BY t.front_back
+        `, [epicID])
+    }
+    
+    static async fetchAllEpi(epicID) {
+        return await db.execute(`
+            SELECT t.front_back, COUNT(puntosAgiles) as 'Completed'
+            FROM TAREA t, EPIC e
+            WHERE t.perteneceEpic = e.idTicket
+            AND e.idTicket = ?
+            GROUP BY t.front_back
+        `, [epicID])
+    }
+}
