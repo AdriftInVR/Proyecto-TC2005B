@@ -43,7 +43,7 @@ module.exports = class User {
 
     static fetchUserTasks(name) {
         return db.execute(`SELECT ta.front_back
-        FROM tarea as ta, responsable as re, usuario as u
+        FROM TAREA as ta, RESPONSABLE as re, USUARIO as u
         WHERE u.idUsuario = re.idUsuario
         AND re.idTarea = ta.idTicket
         AND u.nombre = ?`,
