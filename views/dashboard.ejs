@@ -255,7 +255,7 @@
                 type: 'line',
                 data: APBurnUp,
             };
-            new Chart(buap, configura);
+            burnupChart = new Chart(buap, configura);
         })
     }   
 </script>
@@ -265,12 +265,7 @@
     // Estos scripts crean graficas de Linea para los AP completados en una semana
     var APlineChart;
 
-    async function asyncProjectAP(projectID, start, end, APdata) {
-        console.log("calling")
-        const result = await getProjectAP(projectID, start, end, APdata);
-    }
-
-    function getProjectAP(projectID, start, end, APdata) {
+    function getProjectAP(projectID, start, end, APdata, i) {
         fetch('/data/project/completeAP/' + projectID + "/" + start.toISOString() + "/" + end.toISOString(), {
             method: 'GET',
             headers: {
@@ -280,20 +275,15 @@
                 return result.json();
             }).then(data => {
                 if (data.status[0]) {
-                    APdata.push(data.status[0].WeekAP)
+                    APdata[i] = data.status[0].WeekAP;
                 } else {
-                    APdata.push(0)
+                    APdata[i] = 0;
                 }
             }
         )
     }
 
-    async function asyncEpicAP(epicID, start, end, APdata) {
-        console.log("calling")
-        const result = await getEpicAP(epicID, start, end, APdata);
-    }
-
-    function getEpicAP(epicID, start, end, APdata) {
+    function getEpicAP(epicID, start, end, APdata, i) {
         fetch('/data/project/epic/completeAP/' + epicID + "/" + start.toISOString() + "/" + end.toISOString(), {
             method: 'GET',
             headers: {
@@ -303,9 +293,9 @@
                 return result.json();
             }).then(data => {
                 if (data.status[0]) {
-                    APdata.push(data.status[0].WeekAP)
+                    APdata[i] = data.status[0].WeekAP;
                 } else {
-                    APdata.push(0)
+                    APdata[i] = 0;
                 }
             }
         )
@@ -324,26 +314,23 @@
         }).then(result => {
             return result.json();
         }).then(estimateData => {
-            let APdata = [];
-            let data_labels = [];
+            let weekly = new Array(estimateData.status[0][0].Estimate);
+            let data_labels = [0];
             const projectStart = new Date(estimateData.status[0][0].Inicio);
             var start = projectStart;
             var end = new Date(start);
             end.setDate(start.getDate()+7);
-            console.log(start.toISOString());
-            console.log(end.toISOString());
             var fetchLock = false;
             for (i=0;i<estimateData.status[0][0].Estimate;i++){
-                if (!fetchLock){
-                    fetchLock = true;
-                    data_labels.push(i+1);
-                    asyncProjectAP(projectID, start, end, APdata);
-                    start.setDate(start.getDate()+7);
-                    end.setDate(end.getDate()+7);
-                    fetchLock = false;
-                }
+                data_labels.push(i+1);
+                getProjectAP(projectID, start, end, weekly, i);
+                start.setDate(start.getDate()+7);
+                end.setDate(end.getDate()+7);
+                fetchLock = false;
             }
+            
             setTimeout(() => {
+                let APdata = [0].concat(weekly)
                 const WEEKLYchart = {
                     labels: data_labels,
                     datasets: [{
@@ -359,7 +346,7 @@
                     data: WEEKLYchart,
                 };
                 APlineChart = new Chart(ap, config);
-            }, "2000");
+            }, "100");
         })
     }
 
@@ -377,24 +364,23 @@
         }).then(result => {
             return result.json();
         }).then(estimateData => {
-            let APdata = [];
-            let data_labels = [];
+            let weekly = new Array(estimateData.status[0][0].Estimate);
+            let data_labels = [0];
             const projectStart = new Date(estimateData.status[0][0].Inicio);
             var start = projectStart;
             var end = new Date(start);
             end.setDate(start.getDate()+7);
             var fetchLock = false;
             for (i=0;i<estimateData.status[0][0].Estimate;i++){
-                if (!fetchLock){
-                    fetchLock = true;
-                    data_labels.push(i+1);
-                    asyncEpicAP(epic, start, end, APdata);
-                    start.setDate(start.getDate()+7);
-                    end.setDate(end.getDate()+7);
-                    fetchLock = false;
-                }
+                fetchLock = true;
+                data_labels.push(i+1);
+                getEpicAP(epicID, start, end, weekly, i);
+                start.setDate(start.getDate()+7);
+                end.setDate(end.getDate()+7);
+                fetchLock = false;
             }
             setTimeout(() => {
+                let APdata = [0].concat(weekly)
                 const WEEKLYchart = {
                     labels: data_labels,
                     datasets: [{
@@ -410,7 +396,7 @@
                     data: WEEKLYchart,
                 };
                 APlineChart = new Chart(ap, config);
-            }, "2000");
+            }, "100");
         })
     }
 </script>
