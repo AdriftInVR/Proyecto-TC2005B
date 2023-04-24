@@ -40,4 +40,13 @@ module.exports = class User {
         AND u.nombre = ?`,
         [name]);
     }
+
+    static fetchUserTasks(name) {
+        return db.execute(`SELECT ta.front_back
+        FROM tarea as ta, responsable as re, usuario as u
+        WHERE u.idUsuario = re.idUsuario
+        AND re.idTarea = ta.idTicket
+        AND u.nombre = ?`,
+        [name]);
+    }
 }
