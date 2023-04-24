@@ -68,6 +68,7 @@ exports.getEstimate = (req, res) => {
 exports.getCompletedAP = (req, res) => {
     Proyecto.fetchCompletedAP(req.params.idProject, req.params.start, req.params.end)
         .then(([rows, fieldData]) => {
+            console.log(rows)
             res.status(200).json({status: rows})
         })
         .catch(err => {
@@ -89,8 +90,20 @@ exports.getCompletedAPEpic = (req, res) => {
 }
 
 //Puntos agiles por tarea y epic
-exports.getAPproyect = (req, res) => {
-    Proyecto.fetchAPproject(req.params.idProject)
+
+exports.getAPproyect = async (req, res) => {
+    await Proyecto.fetchAPproject(req.params.idProject)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+    });
+}
+/*---------------------------------------------------------------------------------------------*/
+exports.getAPepic = async (req, res) => {
+    await Proyecto.fetchAPepic(req.params.idEpic)
         .then(([rows, fieldData]) => {
             res.status(200).json({status: rows})
         })
@@ -100,18 +113,7 @@ exports.getAPproyect = (req, res) => {
     });
 }
 
-exports.getAPepic = (req, res) => {
-    Epic.fetchAPproject(req.params.idEpic)
-        .then(([rows, fieldData]) => {
-            res.status(200).json({status: rows})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({message: "Internal Server Error"});
-    });
-}
-//
-
+//AREAS
 exports.getArea = async (req, res) => {
     let area = {
         allFront: 0,

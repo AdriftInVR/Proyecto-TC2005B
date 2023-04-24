@@ -14,12 +14,15 @@ router.get('/project/epic/status/:idEpic', dataController.getStatusEpic);
 
 router.get('/project/title/:idProject', dataController.getNotTitle);
 
-router.get('/project/estimate/:idProject', dataController.getEstimate);
 
+//ESTIMADO
+//router.get('/project/estimate/:idProject', dataController.getEstimate);
+
+//AP TOTALES PROYECTO Y EPIC
 router.get('/project/totalAPp/:idProject', dataController.getAPproyect);
-
 router.get('/project/epic/totalAPe/:idEpic', dataController.getAPepic);
 
+//EXTRAS
 router.get('/project/completeAP/:idProject/:start/:end', dataController.getCompletedAP);
 
 router.get('/project/epic/completeAP/:idEpic/:start/:end', dataController.getCompletedAPEpic);

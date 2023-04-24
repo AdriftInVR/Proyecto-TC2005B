@@ -141,7 +141,7 @@ module.exports = class Proyecto {
     static fetchEstimate(projectID) {
         return db.execute(`
         BEGIN
-        SET @PT = ticket;
+        SET @PT = ?;
         SET @AP = (SELECT SUM(T.puntosAgiles)
                    FROM TAREA T, EPIC E, PROYECTO P
                    WHERE T.perteneceEpic = E.idTicket
@@ -158,15 +158,29 @@ module.exports = class Proyecto {
         `, [projectID]);
     }
 
-    static fetchAPproject(projectID){
-        return db.execute (`
-        SELECT SUM(ta.puntosAgiles)
+    //Puntos Aguiles Totales por epic y proyecto
+
+    static async fetchAPproject(projectID){
+        return await db.execute (`
+        SELECT SUM(ta.puntosAgiles) as 'APTotalesP'
+        FROM proyecto p, ticket t, epic e, tarea ta
+        WHERE p.idTicket = t.idTicket
+        AND p.idTicket = e.perteneProyecto
+        AND ta.perteneceEpic = e.idTicket   
+        AND t.idTicket = ?;
+        `, [projectID])
+    }
+
+    static async fetchAPepic(epicID){
+        return await db.execute (`
+        SELECT SUM(ta.puntosAgiles) as 'APTotalesE'
         FROM proyecto p, ticket t, epic e, tarea ta
         WHERE p.idTicket = t.idTicket
         AND p.idTicket = e.perteneProyecto
         AND ta.perteneceEpic = e.idTicket
-        AND t.nombre = ?;
-        `, [projectID])
+        AND e.idTicket = ?
+        GROUP BY p.idTicket
+        `, [epicID])
     }
 
 }
