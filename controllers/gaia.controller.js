@@ -644,7 +644,7 @@ control.postProject = (req, res, next) =>{
     const newProject = new Proyect(data);    
     
     if(data.nombre == ''){
-        msgErrorAddProject = "The field name of project are blank";
+        msgErrorAddProject = "The field name of project is blank";
     }
 
     newProject.save()
