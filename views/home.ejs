@@ -42,7 +42,7 @@
                                 </div>
 
                                 <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
-                                    <canvas id="<%= proyecto.idTicket %>" style="height: 100px; width: 200px;">
+                                    <canvas id="<%= proyecto.idTicket %>">
 
                                     </canvas>
                                 </div>                                
@@ -149,7 +149,6 @@
             let completed = 0;
             let sum = 0;
             for(let tag of data.status) {
-                console.log(tag.Nombre);
                 if(tag.Nombre == 'Done' || tag.Nombre == 'Closed') {
                     completed += tag.Cantidad;
                 }
