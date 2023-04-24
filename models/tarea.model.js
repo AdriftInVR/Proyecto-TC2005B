@@ -1,5 +1,7 @@
 const db = require('../util/database');
 
+//Front = 0 Backend = 1
+
 module.exports = class Tarea {
 
     static fetchAllAll(){
