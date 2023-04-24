@@ -217,36 +217,47 @@
         if (burnupChart) {
             burnupChart.destroy()
         }
-
         const buap = document.getElementById('burnupAP');
-        fetch('/data/project/totalAPp/' + projectID, {
+        fetch('/data/project/estimate/' + projectID, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         }).then(result => {
-            return result.json;
-        }).then(data => {
-            let array = [];
-            
+            return result.json();
+        }).then(estimateData => {
+            let data_labels = []
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
+                data_labels.push(i+1);
+            }
+            fetch('/data/project/totalAPp/' + projectID, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).then(result => {
+                return result.json;
+            }).then(data => {
+                let array = [];
+                
+            })
+
+            const APBurnUp = {
+            labels: data_labels,
+            datasets: [{
+                data: [2, 2, 2, 2, 2],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+            };
+            const configura = {
+                type: 'line',
+                data: APBurnUp,
+            };
+            new Chart(buap, configura);
         })
-
-        const APBurnUp = {
-        labels: data_labels,
-        datasets: [{
-            data: [2, 2, 2, 2, 2],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    };
-    const configura = {
-        type: 'line',
-        data: APBurnUp,
-    };
-    new Chart(buap, configura);
-
-}   
+    }   
 </script>
 
 
@@ -313,7 +324,6 @@
         }).then(result => {
             return result.json();
         }).then(estimateData => {
-            let weeks = new Array(estimateData.status[0][0].Estimate); 
             let APdata = [];
             let data_labels = [];
             const projectStart = new Date(estimateData.status[0][0].Inicio);
@@ -323,14 +333,13 @@
             console.log(start.toISOString());
             console.log(end.toISOString());
             var fetchLock = false;
-            for (i=0;i<weeks.length;){
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
                 if (!fetchLock){
                     fetchLock = true;
                     data_labels.push(i+1);
                     asyncProjectAP(projectID, start, end, APdata);
                     start.setDate(start.getDate()+7);
                     end.setDate(end.getDate()+7);
-                    i++;
                     fetchLock = false;
                 }
             }
@@ -368,7 +377,6 @@
         }).then(result => {
             return result.json();
         }).then(estimateData => {
-            let weeks = new Array(estimateData.status[0][0].Estimate); 
             let APdata = [];
             let data_labels = [];
             const projectStart = new Date(estimateData.status[0][0].Inicio);
@@ -376,14 +384,13 @@
             var end = new Date(start);
             end.setDate(start.getDate()+7);
             var fetchLock = false;
-            for (i=0;i<weeks.length;){
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
                 if (!fetchLock){
                     fetchLock = true;
                     data_labels.push(i+1);
                     asyncEpicAP(epic, start, end, APdata);
                     start.setDate(start.getDate()+7);
                     end.setDate(end.getDate()+7);
-                    i++;
                     fetchLock = false;
                 }
             }
