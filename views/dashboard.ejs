@@ -51,7 +51,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Este script cambia la visibilidad del dropdown de Epics
+    // Este script cambia la visibilidad del dropdown de Epics. 
     function EpicToggle(flag) {
         var div = document.getElementById('epicDiv');
         if (div.style.visibility == "hidden"){
@@ -89,14 +89,13 @@
             for(var i = 0; i <= data.APTotalesP; i++) {
                 console.log(data_APp[0].push(data.APTotalesP));
             }
-
         })
          
         const APBurnUp = {
-        labels: [1, 3, 5, 8],
+        labels: [1, 3, 4],
         datasets: [{
-            data: data_APp,
-            //data: [55, 89, 2],
+            //data: data_APp,
+            data: [55, 89, 2],
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -108,7 +107,6 @@
         };
         new Chart(buap, configura);
     }
-    
 </script>
 
 <script>
