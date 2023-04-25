@@ -33,6 +33,15 @@ module.exports = class Proyecto {
         `);
     }
 
+    static async fetchOne(id) {
+        return await db.execute(`
+            SELECT t.nombre, p.fechainicio, p.duracion
+            FROM TICKET t, PROYECTO p
+            WHERE  t.idTicket = p.idTicket
+            AND p.idTicket = ?
+        `,[id]);
+    }
+
     static fetchNotTitle(projectID) {
         return db.execute(`
             SELECT idTicket FROM PROYECTO p
@@ -69,8 +78,8 @@ module.exports = class Proyecto {
         `);
     }
 
-    static fetchEstimate(projectID) {
-        return db.execute(`
+    static async fetchEstimate(projectID) {
+        return await db.execute(`
         CALL getEstimate(?)
         `, [projectID]);
     }
@@ -138,36 +147,29 @@ module.exports = class Proyecto {
         `, [epicID])
     }
 
-    static fetchEstimate(projectID) {
-        return db.execute(`
-        BEGIN
-        SET @PT = ?;
-        SET @AP = (SELECT SUM(T.puntosAgiles)
-                   FROM TAREA T, EPIC E, PROYECTO P
-                   WHERE T.perteneceEpic = E.idTicket
-                   AND E.perteneProyecto = P.idTicket
-                   AND P.idTicket = @PT);
-        SET @WEEKLY = (SELECT SUM(W.efectividadAsignada) 
-                       FROM TRABAJA W, PROYECTO P
-                       WHERE P.idTicket = W.idProyecto
-                       AND P.idTicket = @PT);
-        SELECT CEIL(@AP/@WEEKLY) as 'Estimate', P.fechaInicio as 'Inicio'
-        FROM PROYECTO P
-        WHERE P.idTicket = @PT;
-        END
-        `, [projectID]);
-    }
-
-    //Puntos Aguiles Totales por epic y proyecto
-
     static async fetchAPproject(projectID){
         return await db.execute (`
         SELECT SUM(ta.puntosAgiles) as 'APTotalesP'
         FROM proyecto p, ticket t, epic e, tarea ta
         WHERE p.idTicket = t.idTicket
         AND p.idTicket = e.perteneProyecto
-        AND ta.perteneceEpic = e.idTicket   
+        AND ta.perteneceEpic = e.idTicket
         AND t.idTicket = ?;
+        `, [projectID])
+    }
+
+
+    /* LINEA VERDE PROYECTOS :) */
+    static fetchGreenLine(projectID){
+        return db.execute(`
+        SELECT f.fechaCambio, t.puntosAgiles
+        FROM TAREA t, EPIC e, PROYECTO p, FASE f
+        WHERE t.perteneceEpic = e.idTicket
+        AND e.perteneProyecto = p.idTicket
+        AND p.idTicket = 3
+        AND t.idTicket = f.idTicket
+        AND (f.idEstatus = 7 OR f.idEstatus = 6)
+        ORDER BY f.fechaCambio DESC
         `, [projectID])
     }
 }

@@ -67,4 +67,17 @@ module.exports = class Epic {
         `, [epicID])
     }
 
+/* LINEA VERDE EPICS :D */
+    static fetchGreenEpicLine(epicID){
+        return db.execute (`
+        SELECT COUNT(ta.idTicket)
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 6 
+        AND e.idTicket = ?
+        `, [epicID])
+    }
+
 }
