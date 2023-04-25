@@ -1322,6 +1322,8 @@ video {
   padding: 2rem;
 }
 
+<<<<<<< HEAD
+=======
 .p-16 {
   padding: 4rem;
 }
@@ -1331,6 +1333,7 @@ video {
   padding-right: 0.75rem;
 }
 
+>>>>>>> develop
 .px-36 {
   padding-left: 9rem;
   padding-right: 9rem;
