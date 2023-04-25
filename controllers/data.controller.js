@@ -9,18 +9,6 @@ const User = require('../models/user.model');
 const Tarea = require('../models/tarea.model');
 const db = require('../util/database');
 
-exports.getTaskinfo = (req, res) => {
-
-    Tarea.fetchOne(req.params.idTask)
-    .then(([rows, fieldData])=>{        
-        res.status(200).json({data: rows[0]})
-    })
-    .catch(err =>{
-        console.log(err);
-        res.status(500).json({message: "internal server error"});
-    })
-};
-
 exports.getStatus = (req, res) => {
     Proyecto.fetchStatus(req.params.idProject)
         .then(([rows, fieldData]) => {

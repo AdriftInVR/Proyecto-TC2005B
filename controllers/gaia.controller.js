@@ -56,7 +56,6 @@ control.getProject = async (req, res) => {
     
 };
 
-
 control.getTasks = async (req, res) => {
     id = req.params.prj;
     let idProyect = 0;
@@ -84,7 +83,43 @@ control.getTasks = async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-
+    
+    for(let i=0;i<task1.length;i++){
+        fecha = task1[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task1[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task2.length;i++){
+        fecha = task2[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task2[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task3.length;i++){
+        fecha = task3[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task3[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task4.length;i++){
+        fecha = task4[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task4[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task5.length;i++){
+        fecha = task5[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task5[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task6.length;i++){
+        fecha = task6[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task6[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task7.length;i++){
+        fecha = task7[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task7[i].fechaCambio = fechaFormateada;
+    }    
+    
     Epic.fetchAll()
     .then(([rows, fieldData])=>{        
         res.render('tasks', {
@@ -116,27 +151,38 @@ control.getTasks = async (req, res) => {
     })*/
 };
 
+function formatDate(dateAnt){
+    const diasSemana = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const nombreDia = diasSemana[dateAnt.getDay()];
+
+    const dia = fecha.getDate();
+    const mes = fecha.toLocaleString("default", { month: "long" });
+    const anio = fecha.getFullYear();
+
+    const fechaFormateada = `${nombreDia}, ${mes} ${dia} - ${anio}`; 
+    return fechaFormateada;
+}
+
 control.getUsers = async (req, res) => {
 
-    User.fetchAll()
-    .then(async ([usuarios, fieldData]) => {
-
-        let usuarios_proyectos = [];
-
-        for (let usuario of usuarios) {
-            [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
-            usuarios_proyectos[usuario.nombre] = proyectos;
-        }
-        res.render('users', {
-            active: 'users',
-            usuarios_proyectos: usuarios_proyectos,
-        });
-    })
-    .catch(error => {
-        console.log(error);
-    });
-
+    let usuarios_proyectos = [];
+    let usuarios_front_back = [];
     
+    [usuarios,filedData] = await User.fetchAll();
+
+    for (let usuario of usuarios) {
+        [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
+        usuarios_proyectos[usuario.nombre] = proyectos;
+
+        [front_back, fieldData] = await User.fetchUserTasks(usuario.nombre);
+        usuarios_front_back[usuario.nombre] = front_back;
+    }
+  
+    res.render('users', {
+        active: 'users',
+        usuarios_proyectos: usuarios_proyectos,
+        usuarios_front_back: usuarios_front_back,
+    });
 };
 
 control.getDashboard = (req, res) => {
