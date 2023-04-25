@@ -156,6 +156,7 @@
             pieChart = new Chart(pie, config);
         })
     }
+    
     function EpicPieChart(epicID){
         if (pieChart) {
             pieChart.destroy();
@@ -213,100 +214,6 @@
     // Estos scripts crean graficas de Linea para los AP completados en una semana
     var burnupChart;
 
-    //Actualiza datos
-    function BurnupLineChart(projectID) {
-        if (burnupChart) {
-            burnupChart.destroy()
-        }
-        const buap = document.getElementById('burnupAP');
-        fetch('/data/project/burnUpLine/' + projectID, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then(result => {
-            return result.json();
-        })/*.then(estimateData => {
-            let data_labels = [0];
-            let data_values = [];
-            let dataValuesExpected = [];
-            for (i=0;i<estimateData.stimate[0][0].Estimate;i++){
-                data_labels.push(i+1);
-            }
-            console.log(estimateData)
-            for (i=0;i<data_labels.length;i++){
-                data_values.push(estimateData.aptotales);
-            }
-            */
-
-
-
-            .then(estimateData => {
-            let weekly = new Array(estimateData.status[0][0].Estimate);
-            let data_labels = [0];
-            const projectStart = new Date(estimateData.status[0][0].Inicio);
-            var start = projectStart;
-            var end = new Date(start);
-            end.setDate(start.getDate()+7);
-            var fetchLock = false;
-            for (i=0;i<estimateData.status[0][0].Estimate;i++){
-                data_labels.push(i+1);
-                getProjectAP(projectID, start, end, weekly, i);
-                start.setDate(start.getDate()+7);
-                end.setDate(end.getDate()+7);
-                fetchLock = false;
-            }
-
-            
-            
-            
-            //calculate expected line
-            let apPerWeek = estimateData.aptotales / estimateData.stimate[0][0].Estimate;
-            let totalApAux = 0;
-            for(i in data_labels){                
-                dataValuesExpected.push(totalApAux);
-                totalApAux += apPerWeek;
-            }
-
-            const APBurnUp = {
-            labels: data_labels,
-            datasets: [{
-                type: 'line',
-                label: 'Expected',
-                data: dataValuesExpected,
-                borderColor: '#0E57FF',
-                backgroundColor: 'rgba(0, 0, 0, 0)'
-              }, {
-                type: 'line',
-                label: 'Goal',
-                data: data_values,
-                fill: false,
-                borderColor: '#FEE214'
-            }]
-            };
-
-            const configura = {
-                type: 'line',
-                data: APBurnUp,
-                options: {
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Burn up AP'
-                        },
-                    },
-                    responsive: true,                    
-                } 
-            };
-            burnupChart = new Chart(buap, configura);
-        })
-    }   
-</script>
-
-
-<script>
-    // Estos scripts crean graficas de Linea para los AP completados en una semana
-    var APlineChart;
 
     function getProjectAP(projectID, start, end, APdata, i) {
         fetch('/data/project/completeAP/' + projectID + "/" + start.toISOString() + "/" + end.toISOString(), {
@@ -326,6 +233,7 @@
         )
     }
 
+
     function getEpicAP(epicID, start, end, APdata, i) {
         fetch('/data/project/epic/completeAP/' + epicID + "/" + start.toISOString() + "/" + end.toISOString(), {
             method: 'GET',
@@ -343,6 +251,128 @@
             }
         )
     }
+
+    function totalAPProject(projectID, end, i, APdata){
+        fetch("data/project/totalAP/" + projectID + "/" + end.toISOString(),{    
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+        }).then(result => {
+            return result.json();
+        }).then(data =>{
+            if (data.status[0]) {
+                APdata[i] = data.status[0].TotalAP;
+            } else {
+                APdata[i] = 0;
+            }
+        })
+    }
+
+
+    //Actualiza datos
+    function BurnupLineChart(projectID) {
+        if (burnupChart) {
+            burnupChart.destroy()
+        }
+        const buap = document.getElementById('burnupAP');
+        fetch('/data/project/estimate/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let data_labels = [0];
+            let data_values = new Array (estimateData.status[0][0].Estimate);
+            let data_completeAP = new Array (estimateData.status[0][0].Estimate);
+            let dataValuesExpected = new Array (estimateData.status[0][0].Estimate);
+            var start = new Date(estimateData.status[0][0].Inicio);
+            var end = new Date(start);
+            end.setDate(end.getDate() + 7);
+            
+
+
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
+                data_labels.push(i+1);
+                console.log(end.toISOString())
+                getProjectAP(projectID, start, end, data_completeAP, i);
+                totalAPProject(projectID, end, i, data_values);
+                start.setDate(start.getDate()+7);
+                end.setDate(end.getDate()+7);
+            }
+            
+            
+            //calculate expected line
+            /*let apPerWeek = estimateData.aptotales / estimateData.stimate[0][0].Estimate;
+            let totalApAux = 0;
+            for(i in data_labels){                
+                dataValuesExpected.push(totalApAux);
+                totalApAux += apPerWeek;
+            }*/
+            setTimeout(() => {
+                for (i=1;i<data_completeAP.length;i++){
+                    data_completeAP[i]+=data_completeAP[i-1]
+                }
+                console.log(data_values)
+                let completeLine = [0].concat(data_completeAP);
+                const APBurnUp = {
+                    labels: data_labels,
+                    datasets: [/*{
+                        /*type: 'line',
+                        label: 'Expected',
+                        data: dataValuesExpected,
+                        borderColor: '#0E57FF',
+                        backgroundColor: 'rgba(0, 0, 0, 0)'
+                    },*/ {
+                        type: 'line',
+                        label: 'Goal',
+                        data: data_values,
+                        fill: false,
+                        borderColor: '#FF0000'
+                    },
+                    {
+                        type: 'line',
+                        label: 'Complete',
+                        data: completeLine,
+                        fill: false,
+                        borderColor: '#FEE214'
+                    }]
+                };
+
+                const configura = {
+                    type: 'line',
+                    data: APBurnUp,
+                    options: {
+                        scales:{
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Burn up AP'
+                            },
+                        },
+                        responsive: true,                    
+                    } 
+                };
+                burnupChart = new Chart(buap, configura);
+            }, "300")
+        })
+    }   
+</script>
+
+
+<script>
+    // Estos scripts crean graficas de Linea para los AP completados en una semana
+    var APlineChart;
+
+    
+
+    
 
     function WeeklyAPLineChart(projectID){
         if (APlineChart) {
@@ -363,13 +393,11 @@
             var start = projectStart;
             var end = new Date(start);
             end.setDate(start.getDate()+7);
-            var fetchLock = false;
             for (i=0;i<estimateData.status[0][0].Estimate;i++){
                 data_labels.push(i+1);
                 getProjectAP(projectID, start, end, weekly, i);
                 start.setDate(start.getDate()+7);
                 end.setDate(end.getDate()+7);
-                fetchLock = false;
             }
             
             setTimeout(() => {
@@ -387,6 +415,13 @@
                 const config = {
                     type: 'line',
                     data: WEEKLYchart,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
                 };
                 APlineChart = new Chart(ap, config);
             }, "100");
@@ -412,14 +447,12 @@
             var start = projectStart;
             var end = new Date(start);
             end.setDate(start.getDate()+7);
-            var fetchLock = false;
             for (i=0;i<estimateData.status[0][0].Estimate;i++){
                 fetchLock = true;
                 data_labels.push(i+1);
                 getEpicAP(epicID, start, end, weekly, i);
                 start.setDate(start.getDate()+7);
                 end.setDate(end.getDate()+7);
-                fetchLock = false;
             }
             setTimeout(() => {
                 let APdata = [0].concat(weekly)
@@ -436,9 +469,16 @@
                 const config = {
                     type: 'line',
                     data: WEEKLYchart,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
                 };
                 APlineChart = new Chart(ap, config);
-            }, "100");
+            }, "300");
         })
     }
 </script>

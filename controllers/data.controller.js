@@ -238,15 +238,6 @@ exports.burnUpLine = async (req, res) =>{
         res.status(500).json({message: "Internal Server Error"});
     });
 
-    await Proyecto.fetchAPproject(req.params.idProject)
-    .then(([rows,fieldData])=>{
-        data.aptotales = rows[0].APTotalesP;        
-    })
-    .catch(err=>{
-        console.log(err);
-        res.status(500).json({message: "Internal Server Error"});
-    })
-
     let startPrjDate = '';
     await Proyecto.fetchOne(req.params.idProject)
     .then(([rows, fieldData])=>{
@@ -261,7 +252,7 @@ exports.burnUpLine = async (req, res) =>{
     .then(([rows, fieldData])=>{
         let maxDate = rows[0].fechaCambio;
         let daysClose = (maxDate - startPrjDate)/86400000;
-        
+
         
         res.status(500).json(data);
     })
@@ -294,7 +285,16 @@ exports.burnUpLinesEpic= async (req, res) =>{
     .catch(err=>{
         console.log(err);
         res.status(500).json({message: "Internal Server Error"});
-    })
-
-    
+    })   
 }
+
+exports.getProjectCompleteAP = (req, res) => {
+    Proyecto.fetchAPproject(req.params.idProject, req.params.end)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status:rows})  
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
