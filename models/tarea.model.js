@@ -44,7 +44,7 @@ module.exports = class Tarea {
 
     static tasktdo(id){
         return db.execute (`
-        SELECT ti.nombre, ta.puntosAgiles 
+        SELECT *
         FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
@@ -57,7 +57,7 @@ module.exports = class Tarea {
 
     static taskinpro(){
         return db.execute (`
-        SELECT ti.nombre, ta.puntosAgiles 
+        SELECT *
         FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
@@ -70,7 +70,7 @@ module.exports = class Tarea {
 
     static taskcode(){
         return db.execute (`
-        SELECT ti.nombre, ta.puntosAgiles 
+        SELECT *
         FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
@@ -82,7 +82,7 @@ module.exports = class Tarea {
 
     static taskquality(){
         return db.execute (`
-        SELECT ti.nombre, ta.puntosAgiles 
+        SELECT *
         FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
@@ -94,7 +94,7 @@ module.exports = class Tarea {
 
     static taskrelease(){
         return db.execute (`
-        SELECT ti.nombre, ta.puntosAgiles 
+        SELECT *
         FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
@@ -106,7 +106,7 @@ module.exports = class Tarea {
 
     static taskdone(){
         return db.execute (`
-        SELECT ti.nombre, ta.puntosAgiles 
+        SELECT *
         FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
@@ -118,7 +118,7 @@ module.exports = class Tarea {
 
     static taskclosed(){
         return db.execute (`
-        SELECT ti.nombre, ta.puntosAgiles 
+        SELECT *
         FROM TICKET ti, FASE f, TAREA ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
@@ -128,14 +128,14 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    /*static estat(idEstatus){
-        return db.execute(`
-        SELECT ti.nombre, ta.puntosAgiles 
-        FROM ticket ti, fase f, tarea ta
-        WHERE ti.idTicket = f.idTicket
-        AND ti.idTicket = ta.idTicket
-        AND f.idEstatus = ?
-        `, [idEstatus])
-    };*/ 
 
+    static async fetchOne(){
+        return await db.execute (`
+        SELECT *
+        FROM TICKET ti, FASE f, TAREA ta
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket                
+        AND ti.idTicket = ?
+        `,[id])
+    }
 }

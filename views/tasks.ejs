@@ -83,13 +83,44 @@
                                 </thead>
                                 <% for (let task1 of tasks1) { %>
                                     <tbody >
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis    hover:bg-blue-400">
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task1.nombre %></a>
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis hover:bg-blue-400" >
+                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">                                            
+                                                <!-- Modal toggle -->
+                                                <button data-modal-target="<%=task1.nombre%><%=task1.idTicket%>" data-modal-toggle="<%=task1.nombre%><%=task1.idTicket%>" >
+                                                    <%= task1.nombre %>                                                    
+                                                </button>  
+                                                <td class="px-6 py-4 rounded-e-3xl">
+                                                    <%= task1.puntosAgiles %>
+                                                </td>                                                                                                                                               
+                                                <!-- Main modal -->
+                                                <div id="<%=task1.nombre%><%=task1.idTicket%>" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                    <div class="relative w-full max-w-2xl max-h-full">
+                                                        <!-- Modal content -->
+                                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                            <!-- Modal header -->
+                                                            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                                                <h3 id="defaultModal<%=task1.idTicket%>" tabindex="-1" class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                                    <%= task1.nombre %> 
+                                                                </h3>
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                    <span class="sr-only">Close modal</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="p-6 space-y-6">
+                                                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                                    Status: To do <br>
+                                                                    Update date: <%= task1.fechaCambio %> <br>
+                                                                    Agile Points: <%= task1.puntosAgiles %> <br>
+                                                                    Task type: <%if(task1.esTipo == 1){%>Task<%}else if(task1.esTipo == 2){%>Story<%}else{%>Bug<%}%><br>
+                                                                    Work area: <%if(task1.front_back == 0){%>FRONTEND<%}else{%>BACKEND<%}%>
+                                                                </p>                                                                
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>                                            
                                             </th>
-                                            <td class="px-6 py-4 rounded-e-3xl">
-                                                <%= task1.puntosAgiles %>
-                                            </td>
                                         </tr>
                                     </tbody>
                                 <% } %>
@@ -126,13 +157,44 @@
     
                             <% for (let task2 of tasks2) { %>
                                 <tbody>
-                                    <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis    hover:bg-amber-400">
+                                    <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis    hover:bg-amber-400" >
                                         <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">                                            
-                                            <a href=""><%= task2.nombre %></a>
-                                        </th>
-                                        <td class="px-6 py-4 rounded-e-3xl">
-                                            <%= task2.puntosAgiles %>
-                                        </td> 
+                                            <!-- Modal toggle -->
+                                            <button data-modal-target="<%=task2.nombre%><%=task2.idTicket%>" data-modal-toggle="<%=task2.nombre%><%=task2.idTicket%>" >
+                                                <%= task2.nombre %>                                                    
+                                            </button>  
+                                            <td class="px-6 py-4 rounded-e-3xl">
+                                                <%= task2.puntosAgiles %>
+                                            </td>                                                                                                                                               
+                                            <!-- Main modal -->
+                                            <div id="<%=task2.nombre%><%=task2.idTicket%>" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                <div class="relative w-full max-w-2xl max-h-full">
+                                                    <!-- Modal content -->
+                                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                        <!-- Modal header -->
+                                                        <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                                <%= task2.nombre %> 
+                                                            </h3>
+                                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                <span class="sr-only">Close modal</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- Modal body -->
+                                                        <div class="p-6 space-y-6">
+                                                            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                                Status: In progress <br>
+                                                                Update date: <%= task2.fechaCambio %> <br>
+                                                                Agile Points: <%= task2.puntosAgiles %> <br>
+                                                                Task type: <%if(task2.esTipo == 1){%>Task<%}else if(task2.esTipo == 2){%>Story<%}else{%>Bug<%}%><br>
+                                                                Work area: <%if(task2.front_back == 0){%>FRONTEND<%}else{%>BACKEND<%}%>
+                                                            </p>                                                                
+                                                        </div>                                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </th>                                        
                                     </tr>
                                 </tbody>
                             <% } %>
@@ -166,13 +228,45 @@
                                 </thead>
                                 <% for (let task3 of tasks3) { %>
                                     <tbody>
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-400">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-400" >
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task3.nombre %></a>
+                                                <!-- Modal toggle -->
+                                                <button data-modal-target="<%=task3.nombre%><%=task3.idTicket%>" data-modal-toggle="<%=task3.nombre%><%=task3.idTicket%>" >
+                                                    <%= task3.nombre %>                                                    
+                                                </button>  
+                                                <td class="px-6 py-4 rounded-e-3xl">
+                                                    <%= task3.puntosAgiles %>
+                                                </td>                                                                                                                                               
+                                                <!-- Main modal -->
+                                                <div id="<%=task3.nombre%><%=task3.idTicket%>" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                    <div class="relative w-full max-w-2xl max-h-full">
+                                                        <!-- Modal content -->
+                                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                            <!-- Modal header -->
+                                                            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                                    <%= task3.nombre %> 
+                                                                </h3>
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                    <span class="sr-only">Close modal</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="p-6 space-y-6">
+                                                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                                    Status: In progress <br>
+                                                                    Update date: <%= task3.fechaCambio %> <br>
+                                                                    Agile Points: <%= task3.puntosAgiles %> <br>
+                                                                    Task type: <%if(task3.esTipo == 1){%>Task<%}else if(task3.esTipo == 2){%>Story<%}else{%>Bug<%}%><br>
+                                                                    Work area: <%if(task3.front_back == 0){%>FRONTEND<%}else{%>BACKEND<%}%>
+                                                                </p>                                                                
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </th>
-                                            <td class="px-6 py-4 rounded-e-3xl">
-                                                <%= task3.puntosAgiles %>
-                                            </td> 
+                                            
                                         </tr>
                                     </tbody>
                                 <% } %>
@@ -208,11 +302,43 @@
                                     <tbody>
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-red-400">
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task4.nombre %></a>
+                                                <!-- Modal toggle -->
+                                                <button data-modal-target="<%=task4.nombre%><%=task4.idTicket%>" data-modal-toggle="<%=task4.nombre%><%=task4.idTicket%>" >
+                                                    <%= task4.nombre %>                                                    
+                                                </button>  
+                                                <td class="px-6 py-4 rounded-e-3xl">
+                                                    <%= task4.puntosAgiles %>
+                                                </td>                                                                                                                                               
+                                                <!-- Main modal -->
+                                                <div id="<%=task4.nombre%><%=task4.idTicket%>" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                    <div class="relative w-full max-w-2xl max-h-full">
+                                                        <!-- Modal content -->
+                                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                            <!-- Modal header -->
+                                                            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                                    <%= task4.nombre %> 
+                                                                </h3>
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                    <span class="sr-only">Close modal</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="p-6 space-y-6">
+                                                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                                    Status: Quality review <br>
+                                                                    Update date: <%= task4.fechaCambio %> <br>
+                                                                    Agile Points: <%= task4.puntosAgiles %> <br>
+                                                                    Task type: <%if(task4.esTipo == 1){%>Task<%}else if(task4.esTipo == 2){%>Story<%}else{%>Bug<%}%><br>
+                                                                    Work area: <%if(task4.front_back == 0){%>FRONTEND<%}else{%>BACKEND<%}%>
+                                                                </p>                                                                
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </th>
-                                            <td class="px-6 py-4 rounded-e-3xl">
-                                                <%= task4.puntosAgiles %>
-                                            </td> 
+                                            
                                         </tr>
                                     </tbody>
                                 <% } %>
@@ -246,13 +372,44 @@
                                 </thead>
                                 <% for (let task5 of tasks5) { %>
                                     <tbody>
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-500">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-500" >
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task5.nombre %></a>
-                                            </th>
-                                            <td class="px-6 py-4 rounded-e-3xl">
-                                                <%= task5.puntosAgiles %>
-                                            </td> 
+                                                <!-- Modal toggle -->
+                                                <button data-modal-target="<%=task5.nombre%><%=task5.idTicket%>" data-modal-toggle="<%=task5.nombre%><%=task5.idTicket%>" >
+                                                    <%= task5.nombre %>                                                    
+                                                </button>  
+                                                <td class="px-6 py-4 rounded-e-3xl">
+                                                    <%= task5.puntosAgiles %>
+                                                </td>                                                                                                                                               
+                                                <!-- Main modal -->
+                                                <div id="<%=task5.nombre%><%=task5.idTicket%>" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                    <div class="relative w-full max-w-2xl max-h-full">
+                                                        <!-- Modal content -->
+                                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                            <!-- Modal header -->
+                                                            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                                    <%= task5.nombre %> 
+                                                                </h3>
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                    <span class="sr-only">Close modal</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="p-6 space-y-6">
+                                                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                                    Status: Release ready <br>
+                                                                    Update date: <%= task5.fechaCambio %> <br>
+                                                                    Agile Points: <%= task5.puntosAgiles %> <br>
+                                                                    Task type: <%if(task5.esTipo == 1){%>Task<%}else if(task5.esTipo == 2){%>Story<%}else{%>Bug<%}%><br>
+                                                                    Work area: <%if(task5.front_back == 0){%>FRONTEND<%}else{%>BACKEND<%}%>
+                                                                </p>                                                                
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>               
                                         </tr>
                                     </tbody>
                                 <% } %>
@@ -286,13 +443,44 @@
                                 </thead>
                                 <% for (let task6 of tasks6) { %>
                                     <tbody>
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700" >
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task6.nombre %></a>
-                                            </th>
-                                            <td class="px-6 py-4 rounded-e-3xl">
-                                                <%= task6.puntosAgiles %>
-                                            </td> 
+                                                <!-- Modal toggle -->
+                                                <button data-modal-target="<%=task6.nombre%><%=task6.idTicket%>" data-modal-toggle="<%=task6.nombre%><%=task6.idTicket%>" >
+                                                    <%= task6.nombre %>                                                    
+                                                </button>  
+                                                <td class="px-6 py-4 rounded-e-3xl">
+                                                    <%= task6.puntosAgiles %>
+                                                </td>                                                                                                                                               
+                                                <!-- Main modal -->
+                                                <div id="<%=task6.nombre%><%=task6.idTicket%>" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                    <div class="relative w-full max-w-2xl max-h-full">
+                                                        <!-- Modal content -->
+                                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                            <!-- Modal header -->
+                                                            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                                    <%= task6.nombre %> 
+                                                                </h3>
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                    <span class="sr-only">Close modal</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="p-6 space-y-6">
+                                                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                                    Status: Quality review <br>
+                                                                    Update date: <%= task6.fechaCambio %> <br>
+                                                                    Agile Points: <%= task6.puntosAgiles %> <br>
+                                                                    Task type: <%if(task6.esTipo == 1){%>Task<%}else if(task6.esTipo == 2){%>Story<%}else{%>Bug<%}%><br>
+                                                                    Work area: <%if(task6.front_back == 0){%>FRONTEND<%}else{%>BACKEND<%}%>
+                                                                </p>                                                                
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>                                            
                                         </tr>
                                     </tbody>
                                 <% } %>
@@ -326,13 +514,45 @@
                                 </thead>
                                 <% for (let task7 of tasks7) { %>
                                     <tbody> 
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-blue-300">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-blue-300" >
                                             <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
-                                                <a href=""><%= task7.nombre %></a>
+                                                <!-- Modal toggle -->
+                                                <button data-modal-target="<%=task7.nombre%><%=task7.idTicket%>" data-modal-toggle="<%=task7.nombre%><%=task7.idTicket%>" >
+                                                    <%= task7.nombre %>                                                    
+                                                </button>  
+                                                <td class="px-6 py-4 rounded-e-3xl">
+                                                    <%= task7.puntosAgiles %>
+                                                </td>                                                                                                                                               
+                                                <!-- Main modal -->
+                                                <div id="<%=task7.nombre%><%=task7.idTicket%>" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                    <div class="relative w-full max-w-2xl max-h-full">
+                                                        <!-- Modal content -->
+                                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                            <!-- Modal header -->
+                                                            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                                    <%= task7.nombre %> 
+                                                                </h3>
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                    <span class="sr-only">Close modal</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="p-6 space-y-6">
+                                                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                                                    Status: Quality review <br>
+                                                                    Update date: <%= task7.fechaCambio %> <br>
+                                                                    Agile Points: <%= task7.puntosAgiles %> <br>
+                                                                    Task type: <%if(task7.esTipo == 1){%>Task<%}else if(task7.esTipo == 2){%>Story<%}else{%>Bug<%}%><br>
+                                                                    Work area: <%if(task7.front_back == 0){%>FRONTEND<%}else{%>BACKEND<%}%>
+                                                                </p>                                                                
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </th>
-                                            <td class="px-6 py-4 rounded-e-3xl">
-                                                <%= task7.puntosAgiles %>
-                                            </td> 
+                                            
                                         </tr>
                                     </tbody>
                                 <% } %>
