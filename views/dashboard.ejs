@@ -321,13 +321,11 @@
             var start = projectStart;
             var end = new Date(start);
             end.setDate(start.getDate()+7);
-            var fetchLock = false;
             for (i=0;i<estimateData.status[0][0].Estimate;i++){
                 data_labels.push(i+1);
                 getProjectAP(projectID, start, end, weekly, i);
                 start.setDate(start.getDate()+7);
                 end.setDate(end.getDate()+7);
-                fetchLock = false;
             }
             
             setTimeout(() => {
@@ -378,14 +376,12 @@
             var start = projectStart;
             var end = new Date(start);
             end.setDate(start.getDate()+7);
-            var fetchLock = false;
             for (i=0;i<estimateData.status[0][0].Estimate;i++){
                 fetchLock = true;
                 data_labels.push(i+1);
                 getEpicAP(epicID, start, end, weekly, i);
                 start.setDate(start.getDate()+7);
                 end.setDate(end.getDate()+7);
-                fetchLock = false;
             }
             setTimeout(() => {
                 let APdata = [0].concat(weekly)
