@@ -155,6 +155,7 @@
             pieChart = new Chart(pie, config);
         })
     }
+    
     function EpicPieChart(epicID){
         if (pieChart) {
             pieChart.destroy();
@@ -344,6 +345,13 @@
                 const config = {
                     type: 'line',
                     data: WEEKLYchart,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
                 };
                 APlineChart = new Chart(ap, config);
             }, "100");
@@ -394,6 +402,13 @@
                 const config = {
                     type: 'line',
                     data: WEEKLYchart,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
                 };
                 APlineChart = new Chart(ap, config);
             }, "100");
