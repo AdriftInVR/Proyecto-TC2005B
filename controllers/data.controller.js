@@ -88,6 +88,17 @@ exports.getCompletedAPEpic = (req, res) => {
     });
 }
 
+exports.getProjectCompleteAP = (req, res) => {
+    Proyecto.fetchAPproject(req.params.idProject, req.params.end)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status:rows})  
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
+
 //Puntos agiles por tarea y epic
 exports.getAPproyect = async (req, res) => {
     await Proyecto.fetchAPproject(req.params.idProject)
@@ -287,14 +298,3 @@ exports.burnUpLinesEpic= async (req, res) =>{
         res.status(500).json({message: "Internal Server Error"});
     })   
 }
-
-exports.getProjectCompleteAP = (req, res) => {
-    Proyecto.fetchAPproject(req.params.idProject, req.params.end)
-        .then(([rows, fieldData]) => {
-            res.status(200).json({status:rows})  
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({message: "Internal Server Error"});
-        });
-};

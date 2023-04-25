@@ -150,7 +150,7 @@ module.exports = class Proyecto {
     static async fetchAPproject(projectID, EoW){
         return await db.execute (`
         SELECT SUM(ta.puntosAgiles) as 'TotalAP'
-        FROM proyecto p, ticket t, epic e, tarea ta
+        FROM PROYECTO p, TICKET t, EPIC e, TAREA ta
         WHERE p.idTicket = t.idTicket
         AND p.idTicket = e.perteneProyecto
         AND ta.perteneceEpic = e.idTicket
