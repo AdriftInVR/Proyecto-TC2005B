@@ -257,7 +257,8 @@ control.processCsv = async(req,res)=>{
     console.log('Data from CSV was read');
 
     //validate file
-    if(objList.length > 0 && Object.keys(objList[0]).length == 14){
+    if(objList.length > 0 && (Object.keys(objList[0]).length == 14
+    || Object.keys(objList[0]).length == 16) ){
         const requiredFields = ['Issuekey',
         'Issueid',
         'Summary',
@@ -267,15 +268,17 @@ control.processCsv = async(req,res)=>{
         'CustomfieldEpicLink',
         'EpicLinkSummary',
         'Updated',
+        'Created',
         'Assignee',
         'AssigneeId',
         'Labels',
         'Labels',
-        'Labels'];        
-
-        for (let i = 0; i < requiredFields.length; i++) {
-            if (requiredFields[i] !== fieldNames[i]) {
+        'Labels',
+        'Labels'];                
+        for (let i = 0; i < requiredFields.length; i++) {            
+            if (requiredFields[i] != fieldNames[i]) {
                 isCorrect = false;
+                break;
             }
             if(i == (requiredFields.length - 1)){
                 isCorrect = true;
@@ -354,7 +357,8 @@ control.processCsv = async(req,res)=>{
         
                 let rowInsert = {
                     idTicket:  objList[i].issueid,
-                    idEstatus: state
+                    idEstatus: state,
+                    fechaCambio: objList[i].created
                 }
 
                 entries.push(rowInsert);
@@ -375,7 +379,7 @@ control.processCsv = async(req,res)=>{
                         if(entries[i].idTicket == rows[j].idTicket){                                                                    
                             //check if these rows have same data
                             let sameRow = true;                            
-                            if(entries[i].idEstatus != rows[j].idEstatus)
+                            if(entries[i].idEstatus != rows[j].idEstatus && rows[j].idEstatus != 1 )
                                 sameRow = false;
                             //if is the same row, that isnt pushed to entries
                             if(sameRow == false){
@@ -406,8 +410,79 @@ control.processCsv = async(req,res)=>{
             }
         })
         await Fase.add(entriesNew);
+        //add created
+        var monthObject = {
+            Jan: 0,
+            Feb: 1,
+            Mar: 2,
+            Apr: 3,
+            May: 4,
+            Jun: 5,
+            Jul: 6,
+            Aug: 7,
+            Sep: 8,
+            Oct: 9,
+            Nov: 10,
+            Dec: 11
+        };
+                
+        for(let i=0;i<entries.length;i++){
+            var components = entries[i].fechaCambio.split(/[/: ]/);
+
+            // obtener los componentes de fecha y hora
+            var day = components[0];
+            var month = monthObject[components[1]];
+            var year = '20'+components[2];
+            var hours = components[3];
+            var minutes = components[4];
+
+            // crear el objeto Date
+            var date = new Date(year, month, day, hours, minutes);
+            entries[i].fechaCambio = date;
+        }                        
+
+        entriesNew = [], entriesUpt = [];        
+        await Fase.fetchAllOne()
+        .then(([rows,fieldData])=>{
+            //verify data
+            if(rows.length > 0){                 
+                for(let i=0;i<entries.length;i++){
+                    for(let j=0; j<rows.length;j++){                        
+                        //add only rows that arent into bd
+                        if(entries[i].idTicket == rows[j].idTicket){                                                                    
+                            let ticketInsert = {
+                                idTicket: entries[i].idTicket,
+                                idEstatus:  1,
+                                fechaCambio: entries[i].fechaCambio
+                            };                                
+                            entriesUpt.push(ticketInsert);                                                            
+                            break;
+                        }else if(j == (rows.length - 1)){                            
+                            let ticketInsert = {
+                                idTicket: entries[i].idTicket,
+                                idEstatus:  1,
+                                fechaCambio: entries[i].fechaCambio
+                            };                          
+                            entriesNew.push(ticketInsert);
+                        }
+                    }
+                }
+            }else{                                           
+                for(let i=0;i<entries.length;i++){
+                    let ticketInsert = {
+                        idTicket: entries[i].idTicket,
+                        idEstatus:  1,
+                        fechaCambio: entries[i].fechaCambio
+                    };          
+                    entriesNew.push(ticketInsert);
+                }
+            }
+        })
 
         
+        await Fase.addOne(entriesNew);            
+        await Fase.updateOne(entriesUpt);
+
         //Data for table EPICS
         entries = [];        
         //Only rows that are different
