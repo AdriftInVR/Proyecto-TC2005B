@@ -128,7 +128,6 @@ module.exports = class Tarea {
         `,[id])
     }
 
-
     static async fetchOne(){
         return await db.execute (`
         SELECT *
@@ -137,5 +136,16 @@ module.exports = class Tarea {
         AND ti.idTicket = ta.idTicket                
         AND ti.idTicket = ?
         `,[id])
+    }
+
+    static fetchfrontback(frbk){
+        return db.execute(`
+        SELECT *
+        FROM TICKET t, PROYECTO p, EPIC e, TAREA ta
+        WHERE t.idTicket = p.idTicket
+        AND p.idTicket = e.perteneProyecto
+        AND e.idTicket = ta.perteneceEpic
+        AND ta.front_back = ?
+        `[frbk])
     }
 }

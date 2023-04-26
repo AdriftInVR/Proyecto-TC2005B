@@ -59,6 +59,7 @@ control.getProject = async (req, res) => {
 control.getTasks = async (req, res) => {
     id = req.params.prj;
     let idProyect = 0;
+
     await Epic.fetchPrjPertenece(id)
     .then(([rows, fieldData])=>{
         idProyect = rows[0].perteneProyecto;
@@ -79,6 +80,9 @@ control.getTasks = async (req, res) => {
         [task7, fieldData] = await Tarea.taskclosed(id);
         
         [epics, filedData] = await Proyect.epics(idProyect);
+
+        [front_back, fieldData] = await Tarea.fetchfrontback(frbk);
+
 
     } catch (err) {
         console.log(err);
@@ -131,12 +135,10 @@ control.getTasks = async (req, res) => {
             tasks5: task5,
             tasks6: task6,
             tasks7: task7,
-            epics: epics
+            epics: epics,
         });
     })
     .catch(err =>console.log(err));
-    
-    
 
     /*Tarea.estat(req.params.idEstatus)
     .then(([rows, fieldData]) => {
