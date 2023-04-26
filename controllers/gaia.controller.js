@@ -59,7 +59,7 @@ control.getProject = async (req, res) => {
 control.getTasks = async (req, res) => {
     id = req.params.prj;
     let idProyect = 0;
-    frbk
+    frbk = req.params.prj;
     await Epic.fetchPrjPertenece(id)
     .then(([rows, fieldData])=>{
         idProyect = rows[0].perteneProyecto;
