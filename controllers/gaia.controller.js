@@ -18,7 +18,7 @@ let msgErrorAddProject = false;
 control.getLogin = (req, res) => {
     res.render('login')
 };
-
+/*
 control.getProjects = (req, res) => {
     Proyect.fetchAll()
     .then(([rows, filedData]) => {
@@ -32,7 +32,27 @@ control.getProjects = (req, res) => {
         console.log(err);
     });
 };
+*/
 
+control.getProjects = async (req, res) => {
+    msgErr = msgErrorAddProject
+    projectName = req.params.prj
+
+    try{
+        [proyectos, fieldData] = await Proyect.fetchAll();
+
+        [epics, filedData] = await Proyect.epics(projectName);  
+    }catch(err){
+        console.log(err);
+    }
+    res.render('home', {
+        active: 'projects',
+        proyectos: proyectos,
+        epics: epics,
+        msgErr: msgErrorAddProject,
+        projectName: namePrj[0].nombre,
+    });
+};
 
 control.getProject = async (req, res) => {
     projectName = req.params.prj
