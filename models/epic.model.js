@@ -55,9 +55,9 @@ module.exports = class Epic {
         `, [SoW, EoW, epicID])
     };
 
-    static fetchAPproject(epicID){
-        return db.execute (`
-        SELECT SUM(ta.puntosAgiles)
+    static async fetchAPepic(epicID){
+        return await db.execute (`
+        SELECT SUM(ta.puntosAgiles) as 'APTotalesE'
         FROM proyecto p, ticket t, epic e, tarea ta
         WHERE p.idTicket = t.idTicket
         AND p.idTicket = e.perteneProyecto
@@ -66,4 +66,18 @@ module.exports = class Epic {
         GROUP BY p.idTicket
         `, [epicID])
     }
+
+/* LINEA VERDE EPICS :D */
+    static fetchGreenEpicLine(epicID){
+        return db.execute (`
+        SELECT COUNT(ta.idTicket)
+        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 6 
+        AND e.idTicket = ?
+        `, [epicID])
+    }
+
 }
