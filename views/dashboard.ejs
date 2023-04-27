@@ -30,7 +30,7 @@
         <div class="w-2/3">
             
             <div class="p-16">
-                <canvas id ='weeklyAP'></canvas>
+                <canvas id ='burnupAP'></canvas>
             </div>
             <div class="p-16">
                 <canvas id ='frontBackAP'></canvas>
@@ -40,7 +40,7 @@
             </div>
 
             <div class="p-16">
-                <canvas id ='burnupAP'></canvas>
+                <canvas id ='weeklyAP'></canvas>
             </div>
         </div>
     </div>
@@ -103,26 +103,6 @@
 </script>
 
 <script>
-    // Estos scripts crean graficas de Linea para los AP completados en una semana
-    const ap = document.getElementById('weeklyAP');
-
-    const APchart = {
-        labels: ['You','Are','The',"'Ocean's",'Gray','Waves'],
-        datasets: [{
-            data: [65, 59, 80, 81, 56, 55],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    };
-    const config = {
-        type: 'line',
-        data: APchart,
-    };
-    new Chart(ap, config);
-</script>
-
-<script>
     // Estos scripts crean graficas de Pie para los diferentes estatus de un proyecto o Epic
     var pieChart;
     function ProjectPieChart(projectID){
@@ -151,7 +131,10 @@
                     backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
+                    'rgb(255, 205, 86)',
+                    'rgb(54, 252, 132)',
+                    'rgb(90, 218, 232)',
+                    'rgb(195, 121, 237)'
                     ],
                     hoverOffset: 4
                 }]
@@ -172,7 +155,7 @@
             pieChart = new Chart(pie, config);
         })
     }
-
+    
     function EpicPieChart(epicID){
         if (pieChart) {
             pieChart.destroy();
@@ -199,7 +182,10 @@
                     backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
+                    'rgb(255, 205, 86)',
+                    'rgb(54, 252, 132)',
+                    'rgb(90, 218, 232)',
+                    'rgb(195, 121, 237)'
                     ],
                     hoverOffset: 4
                 }]
@@ -222,13 +208,216 @@
     }
 </script>
 
+<!--BURN UP AP-->
+<script>
+    // Estos scripts crean graficas de Linea para los AP completados en una semana
+    var burnupChart;
+
+    //Actualiza datos
+    function BurnupLineChart(projectID) {
+        if (burnupChart) {
+            burnupChart.destroy()
+        }
+        const buap = document.getElementById('burnupAP');
+        fetch('/data/project/estimate/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let data_labels = []
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
+                data_labels.push(i+1);
+            }
+            fetch('/data/project/totalAPp/' + projectID, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).then(result => {
+                return result.json;
+            }).then(data => {
+                let array = [];
+                
+            })
+
+            const APBurnUp = {
+            labels: data_labels,
+            datasets: [{
+                data: [2, 2, 2, 2, 2],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+            };
+            const configura = {
+                type: 'line',
+                data: APBurnUp,
+            };
+            burnupChart = new Chart(buap, configura);
+        })
+    }   
+</script>
+
+
+<script>
+    // Estos scripts crean graficas de Linea para los AP completados en una semana
+    var APlineChart;
+
+    function getProjectAP(projectID, start, end, APdata, i) {
+        fetch('/data/project/completeAP/' + projectID + "/" + start.toISOString() + "/" + end.toISOString(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            }).then(result => {
+                return result.json();
+            }).then(data => {
+                if (data.status[0]) {
+                    APdata[i] = data.status[0].WeekAP;
+                } else {
+                    APdata[i] = 0;
+                }
+            }
+        )
+    }
+
+    function getEpicAP(epicID, start, end, APdata, i) {
+        fetch('/data/project/epic/completeAP/' + epicID + "/" + start.toISOString() + "/" + end.toISOString(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            }).then(result => {
+                return result.json();
+            }).then(data => {
+                if (data.status[0]) {
+                    APdata[i] = data.status[0].WeekAP;
+                } else {
+                    APdata[i] = 0;
+                }
+            }
+        )
+    }
+
+    function WeeklyAPLineChart(projectID){
+        if (APlineChart) {
+            APlineChart.destroy();
+        }    
+        const ap = document.getElementById('weeklyAP');
+        fetch('/data/project/estimate/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let weekly = new Array(estimateData.status[0][0].Estimate);
+            let data_labels = [0];
+            const projectStart = new Date(estimateData.status[0][0].Inicio);
+            var start = projectStart;
+            var end = new Date(start);
+            end.setDate(start.getDate()+7);
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
+                data_labels.push(i+1);
+                getProjectAP(projectID, start, end, weekly, i);
+                start.setDate(start.getDate()+7);
+                end.setDate(end.getDate()+7);
+            }
+            
+            setTimeout(() => {
+                let APdata = [0].concat(weekly)
+                const WEEKLYchart = {
+                    labels: data_labels,
+                    datasets: [{
+                        label: "AP Completed Each Week",
+                        data: APdata,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                };
+                const config = {
+                    type: 'line',
+                    data: WEEKLYchart,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                };
+                APlineChart = new Chart(ap, config);
+            }, "100");
+        })
+    }
+
+    
+    function EpicWeeklyAPLineChart(epicID){
+        if (APlineChart) {
+            APlineChart.destroy();
+        }    
+        const ap = document.getElementById('weeklyAP');
+        fetch('/data/project/estimate/' + $('#projects').val(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let weekly = new Array(estimateData.status[0][0].Estimate);
+            let data_labels = [0];
+            const projectStart = new Date(estimateData.status[0][0].Inicio);
+            var start = projectStart;
+            var end = new Date(start);
+            end.setDate(start.getDate()+7);
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
+                fetchLock = true;
+                data_labels.push(i+1);
+                getEpicAP(epicID, start, end, weekly, i);
+                start.setDate(start.getDate()+7);
+                end.setDate(end.getDate()+7);
+            }
+            setTimeout(() => {
+                let APdata = [0].concat(weekly)
+                const WEEKLYchart = {
+                    labels: data_labels,
+                    datasets: [{
+                        label: "AP Completed Each Week",
+                        data: APdata,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                };
+                const config = {
+                    type: 'line',
+                    data: WEEKLYchart,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                };
+                APlineChart = new Chart(ap, config);
+            }, "100");
+        })
+    }
+</script>
+
 <script>
     var barChar;
     function areasBarChart(projectID){
         if (barChar) {
             barChar.destroy();
         }    
-
         const bar = document.getElementById('frontBackAP');
         fetch('/data/project/area/' + projectID, {
             method: 'GET',
@@ -246,7 +435,7 @@
                 labels: data_labels,
                 datasets: [
                     {
-                        label: 'Completadas',
+                        label: 'Complete',
                         data: data_countComplete,
                         backgroundColor: ['rgb(255, 99, 132)'],
                         hoverOffset: 4
@@ -347,9 +536,12 @@
     function ChartAll() {
         if (document.getElementById('epicDiv').style.visibility == "hidden") {
             ProjectPieChart($("#projects").val());
+            WeeklyAPLineChart($("#projects").val());
             areasBarChart($("#projects").val());
+            BurnupLineChart($("#projects").val());
         } else {
             EpicPieChart($("#epics").val());
+            EpicWeeklyAPLineChart($("#epics").val());
             areasBarChartEpic($("#epics").val());
         }
     }
