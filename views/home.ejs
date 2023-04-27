@@ -19,14 +19,15 @@
                     </div>
                     <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
                         Estimated duration
+                        (Weeks)
                     </div>
                     <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
                         Progress
                     </div>
                 </div>
                 <div>
+                    <% let tempID = 0 %>
                     <% for (let proyecto of proyectos) { %>
-
                         <div class ="w-full bg-white p-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">                            
                             <a href="/gaia/project/<%= proyecto.idTicket%>" class="px-6 py-4 font-medium flex text-gray-900 dark:text-white">
                                 <div class="inline-block w-1/4 flex-1 text-mg px-6">
@@ -38,16 +39,15 @@
                                 </div>
                                 
                                 <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
-                                    <%= proyecto.duracion %>
+                                    <estimate id ="<%= tempID %>"></estimate>
                                 </div>
 
-                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
-                                    <canvas id="<%= proyecto.idTicket %>">
-
-                                    </canvas>
+                                <div class="inline-block w-1/4 text-center">
+                                    <canvas id="<%= proyecto.idTicket %>"></canvas>
                                 </div>                                
                             </a>                            
                         </div>
+                        <% tempID++ %>
                     <% } %>
                                        
                 </div>
@@ -178,7 +178,7 @@
                 data: barChart,
                 options: {
                     indexAxis: 'y',
-                    maintainAspectRatio: true,
+                    aspectRatio: 4,
                     elements: {
                     bar: {
                         borderWidth: 2,
@@ -194,6 +194,7 @@
                     x: {
                         display: false,
                         stacked: true,
+                        max: (sum+completed)
                     },
                     y: {
                         display: false,
@@ -206,10 +207,25 @@
         })
     }
 
-    matches = document.querySelectorAll('canvas');
+    function printEstimate(projectID, element){
+        fetch('/data/project/estimate/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            element.innerHTML = estimateData.status[0][0].Estimate;
+        })
+    }
 
-    for(let i = 0; i < matches.length; i++) {
-        progressBar(matches[i].id);
+    canvasMatches = document.querySelectorAll('canvas');
+    estimates = document.querySelectorAll('estimate');
+
+    for(let i = 0; i < canvasMatches.length; i++) {
+        progressBar(canvasMatches[i].id);
+        printEstimate(canvasMatches[i].id, estimates[i])
     }
 
     
