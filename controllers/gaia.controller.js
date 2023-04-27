@@ -56,7 +56,6 @@ control.getProject = async (req, res) => {
     
 };
 
-
 control.getTasks = async (req, res) => {
     id = req.params.prj;
     let idProyect = 0;
@@ -84,7 +83,43 @@ control.getTasks = async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-
+    
+    for(let i=0;i<task1.length;i++){
+        fecha = task1[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task1[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task2.length;i++){
+        fecha = task2[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task2[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task3.length;i++){
+        fecha = task3[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task3[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task4.length;i++){
+        fecha = task4[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task4[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task5.length;i++){
+        fecha = task5[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task5[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task6.length;i++){
+        fecha = task6[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task6[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<task7.length;i++){
+        fecha = task7[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task7[i].fechaCambio = fechaFormateada;
+    }    
+    
     Epic.fetchAll()
     .then(([rows, fieldData])=>{        
         res.render('tasks', {
@@ -116,27 +151,38 @@ control.getTasks = async (req, res) => {
     })*/
 };
 
+function formatDate(dateAnt){
+    const diasSemana = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const nombreDia = diasSemana[dateAnt.getDay()];
+
+    const dia = fecha.getDate();
+    const mes = fecha.toLocaleString("default", { month: "long" });
+    const anio = fecha.getFullYear();
+
+    const fechaFormateada = `${nombreDia}, ${mes} ${dia} - ${anio}`; 
+    return fechaFormateada;
+}
+
 control.getUsers = async (req, res) => {
 
-    User.fetchAll()
-    .then(async ([usuarios, fieldData]) => {
-
-        let usuarios_proyectos = [];
-
-        for (let usuario of usuarios) {
-            [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
-            usuarios_proyectos[usuario.nombre] = proyectos;
-        }
-        res.render('users', {
-            active: 'users',
-            usuarios_proyectos: usuarios_proyectos,
-        });
-    })
-    .catch(error => {
-        console.log(error);
-    });
-
+    let usuarios_proyectos = [];
+    let usuarios_front_back = [];
     
+    [usuarios,filedData] = await User.fetchAll();
+
+    for (let usuario of usuarios) {
+        [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
+        usuarios_proyectos[usuario.nombre] = proyectos;
+
+        [front_back, fieldData] = await User.fetchUserTasks(usuario.nombre);
+        usuarios_front_back[usuario.nombre] = front_back;
+    }
+  
+    res.render('users', {
+        active: 'users',
+        usuarios_proyectos: usuarios_proyectos,
+        usuarios_front_back: usuarios_front_back,
+    });
 };
 
 control.getDashboard = (req, res) => {
@@ -209,7 +255,8 @@ control.processCsv = async(req,res)=>{
     console.log('Data from CSV was read');
 
     //validate file
-    if(objList.length > 0 && Object.keys(objList[0]).length == 14){
+    if(objList.length > 0 && (Object.keys(objList[0]).length == 14
+    || Object.keys(objList[0]).length == 16) ){
         const requiredFields = ['Issuekey',
         'Issueid',
         'Summary',
@@ -219,15 +266,17 @@ control.processCsv = async(req,res)=>{
         'CustomfieldEpicLink',
         'EpicLinkSummary',
         'Updated',
+        'Created',
         'Assignee',
         'AssigneeId',
         'Labels',
         'Labels',
-        'Labels'];        
-
-        for (let i = 0; i < requiredFields.length; i++) {
-            if (requiredFields[i] !== fieldNames[i]) {
+        'Labels',
+        'Labels'];                
+        for (let i = 0; i < requiredFields.length; i++) {            
+            if (requiredFields[i] != fieldNames[i]) {
                 isCorrect = false;
+                break;
             }
             if(i == (requiredFields.length - 1)){
                 isCorrect = true;
@@ -306,7 +355,8 @@ control.processCsv = async(req,res)=>{
         
                 let rowInsert = {
                     idTicket:  objList[i].issueid,
-                    idEstatus: state
+                    idEstatus: state,
+                    fechaCambio: objList[i].created
                 }
 
                 entries.push(rowInsert);
@@ -327,7 +377,7 @@ control.processCsv = async(req,res)=>{
                         if(entries[i].idTicket == rows[j].idTicket){                                                                    
                             //check if these rows have same data
                             let sameRow = true;                            
-                            if(entries[i].idEstatus != rows[j].idEstatus)
+                            if(entries[i].idEstatus != rows[j].idEstatus && rows[j].idEstatus != 1 )
                                 sameRow = false;
                             //if is the same row, that isnt pushed to entries
                             if(sameRow == false){
@@ -358,8 +408,79 @@ control.processCsv = async(req,res)=>{
             }
         })
         await Fase.add(entriesNew);
+        //add created
+        var monthObject = {
+            Jan: 0,
+            Feb: 1,
+            Mar: 2,
+            Apr: 3,
+            May: 4,
+            Jun: 5,
+            Jul: 6,
+            Aug: 7,
+            Sep: 8,
+            Oct: 9,
+            Nov: 10,
+            Dec: 11
+        };
+                
+        for(let i=0;i<entries.length;i++){
+            var components = entries[i].fechaCambio.split(/[/: ]/);
+
+            // obtener los componentes de fecha y hora
+            var day = components[0];
+            var month = monthObject[components[1]];
+            var year = '20'+components[2];
+            var hours = components[3];
+            var minutes = components[4];
+
+            // crear el objeto Date
+            var date = new Date(year, month, day, hours, minutes);
+            entries[i].fechaCambio = date;
+        }                        
+
+        entriesNew = [], entriesUpt = [];        
+        await Fase.fetchAllOne()
+        .then(([rows,fieldData])=>{
+            //verify data
+            if(rows.length > 0){                 
+                for(let i=0;i<entries.length;i++){
+                    for(let j=0; j<rows.length;j++){                        
+                        //add only rows that arent into bd
+                        if(entries[i].idTicket == rows[j].idTicket){                                                                    
+                            let ticketInsert = {
+                                idTicket: entries[i].idTicket,
+                                idEstatus:  1,
+                                fechaCambio: entries[i].fechaCambio
+                            };                                
+                            entriesUpt.push(ticketInsert);                                                            
+                            break;
+                        }else if(j == (rows.length - 1)){                            
+                            let ticketInsert = {
+                                idTicket: entries[i].idTicket,
+                                idEstatus:  1,
+                                fechaCambio: entries[i].fechaCambio
+                            };                          
+                            entriesNew.push(ticketInsert);
+                        }
+                    }
+                }
+            }else{                                           
+                for(let i=0;i<entries.length;i++){
+                    let ticketInsert = {
+                        idTicket: entries[i].idTicket,
+                        idEstatus:  1,
+                        fechaCambio: entries[i].fechaCambio
+                    };          
+                    entriesNew.push(ticketInsert);
+                }
+            }
+        })
 
         
+        await Fase.addOne(entriesNew);            
+        await Fase.updateOne(entriesUpt);
+
         //Data for table EPICS
         entries = [];        
         //Only rows that are different

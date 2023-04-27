@@ -6,6 +6,10 @@ module.exports = class Fase {
         return db.execute('SELECT * FROM FASE');
     }
     
+    static fetchAllOne() {
+        return db.execute('SELECT * FROM FASE WHERE idEstatus = 1');
+    }
+    
     static async add(data){        
         for(let i=0;i<data.length;i++){
             await db.execute(`INSERT INTO FASE(idTicket,idEstatus) VALUES (?,?);`,[data[i].idTicket,data[i].idEstatus])
@@ -13,5 +17,24 @@ module.exports = class Fase {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
         }        
+    }
+    
+    static async addOne(data){        
+        for(let i=0;i<data.length;i++){
+            await db.execute(`INSERT INTO FASE(idTicket,idEstatus, fechaCambio) VALUES (?,?, ?);`,[data[i].idTicket,data[i].idEstatus,data[i].fechaCambio])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+        }        
+    }
+
+    static async updateOne(data){
+        for(let i=0;i<data.length;i++){
+            await db.execute(`UPDATE FASE SET fechaCambio = ? WHERE idTicket = ? AND idEstatus = 1`,[data[i].fechaCambio,data[i].idTicket])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+            
+        }     
     }
 }
