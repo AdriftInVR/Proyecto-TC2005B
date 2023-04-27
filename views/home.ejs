@@ -38,10 +38,12 @@
                                 </div>
                                 
                                 <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
-                                    <%= proyecto.duracion %>
+                                    <span id="estimacion">
+
+                                    </span>
                                 </div>
 
-                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
+                                <div class="inline-block w-1/4 text-center">
                                     <canvas id="<%= proyecto.idTicket %>">
 
                                     </canvas>
@@ -178,7 +180,7 @@
                 data: barChart,
                 options: {
                     indexAxis: 'y',
-                    maintainAspectRatio: true,
+                    aspectRatio:4,
                     elements: {
                     bar: {
                         borderWidth: 2,
@@ -194,6 +196,7 @@
                     x: {
                         display: false,
                         stacked: true,
+                        max: (sum+completed),
                     },
                     y: {
                         display: false,
