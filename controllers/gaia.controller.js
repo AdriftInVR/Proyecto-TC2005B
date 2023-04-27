@@ -381,6 +381,20 @@ control.processCsv = async(req,res)=>{
             console.log(err);
             result = 'err'
         });        
+        for(let i=0;i<entries.length;i++){
+            var components = entries[i].fechaCambio.split(/[/: ]/);
+
+            // obtener los componentes de fecha y hora
+            var day = components[0];
+            var month = monthObject[components[1]];
+            var year = '20'+components[2];
+            var hours = components[3];
+            var minutes = components[4];
+
+            // crear el objeto Date
+            var date = new Date(year, month, day, hours, minutes);
+            entries[i].fechaCambio = date;
+        }   
         
         await Fase.fetchAll()
         .then(([rows,fieldData])=>{
@@ -398,7 +412,8 @@ control.processCsv = async(req,res)=>{
                             if(sameRow == false){
                                 let ticketInsert = {
                                     idTicket: entries[i].idTicket,
-                                    idEstatus:  entries[i].idEstatus
+                                    idEstatus:  entries[i].idEstatus,
+                                    fechaCambio: entries[i].fechaCambio
                                 };                                
                                 entriesNew.push(ticketInsert);                                
                             }
@@ -406,7 +421,8 @@ control.processCsv = async(req,res)=>{
                         }else if(j == (rows.length - 1)){                            
                             let ticketInsert = {
                                 idTicket: entries[i].idTicket,
-                                idEstatus:  entries[i].idEstatus
+                                idEstatus:  entries[i].idEstatus,
+                                fechaCambio: entries[i].fechaCambio
                             };                          
                             entriesNew.push(ticketInsert);
                         }
@@ -416,29 +432,15 @@ control.processCsv = async(req,res)=>{
                 for(let i=0;i<entries.length;i++){
                     let ticketInsert = {
                         idTicket: entries[i].idTicket,
-                        idEstatus:  entries[i].idEstatus
+                        idEstatus:  entries[i].idEstatus,
+                        fechaCambio: entries[i].fechaCambio
                     };          
                     entriesNew.push(ticketInsert);
                 }
             }
         })
         await Fase.add(entriesNew);
-        //add created        
-                
-        for(let i=0;i<entries.length;i++){
-            var components = entries[i].fechaCambio.split(/[/: ]/);
-
-            // obtener los componentes de fecha y hora
-            var day = components[0];
-            var month = monthObject[components[1]];
-            var year = '20'+components[2];
-            var hours = components[3];
-            var minutes = components[4];
-
-            // crear el objeto Date
-            var date = new Date(year, month, day, hours, minutes);
-            entries[i].fechaCambio = date;
-        }                        
+        //add created                                                 
 
         entriesNew = [], entriesUpt = [];        
         await Fase.fetchAllOne()
