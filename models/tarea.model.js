@@ -140,6 +140,7 @@ module.exports = class Tarea {
         AND ti.idTicket = ?
         `,[id])
     }
+    
     static epicTask(epic){
         console.log("Estás en epicTask!!");
         return db.execute(`

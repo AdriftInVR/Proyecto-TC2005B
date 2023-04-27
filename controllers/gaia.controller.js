@@ -63,7 +63,7 @@ control.getTasks = async (req, res) => {
     id = req.params.prj;
     let idProyect = 0;
     await Epic.fetchPrjPertenece(id)
-    .then(([rows, fieldData])=>{
+    .then(([rows, fieldData]) => {
         idProyect = rows[0].perteneProyecto;
     })
     try {
@@ -138,8 +138,6 @@ control.getTasks = async (req, res) => {
         });
     })
     .catch(err =>console.log(err));
-    
-    
 
     /*Tarea.estat(req.params.idEstatus)
     .then(([rows, fieldData]) => {
