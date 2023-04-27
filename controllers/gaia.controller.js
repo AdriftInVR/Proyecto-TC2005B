@@ -786,4 +786,15 @@ control.postProject = (req, res, next) =>{
 }
 
 
+
+control.postEpicsDB = (req, res, next) =>{
+    const epicDato = req.body.EpicID;
+    const newTask = new Tarea(epicDato);    
+    console.log(newTask)
+    newTask.save()
+    res.redirect('/project');
+}
+
+
+
 module.exports = control

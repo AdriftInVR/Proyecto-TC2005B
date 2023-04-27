@@ -77,8 +77,8 @@
                                 <tbody>
                                     <% for (let epic of epics) { %>
                                         <tr>
-                                            <td class="font-medium p-2 text-gray-900 rounded-lg dark:text-white hover:bg-blue-400">
-                                                <a href="/gaia/tasks/<%= epic.idTicket%>"><%= epic.nombre %></a>
+                                            <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <a href="/gaia/tasks/<%= epic.EpicID%>"><%= epic.nombre %></a>
                                             </td>
                                         </tr>
                                     <% } %>

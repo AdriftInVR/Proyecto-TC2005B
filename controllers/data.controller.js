@@ -7,10 +7,12 @@ const Proyecto = require('../models/proyects.model');
 const Epic = require('../models/epic.model');
 const User = require('../models/user.model');
 const Tarea = require('../models/tarea.model');
+
+control = []
 const db = require('../util/database');
 
 exports.getStatus = (req, res) => {
-    Proyecto.fetchStatus(req.params.idProject)
+    Proyecto.fetchStatus(req.params.idProyecto)
         .then(([rows, fieldData]) => {
             res.status(200).json({status: rows})
         })

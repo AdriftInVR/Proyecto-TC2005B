@@ -20,6 +20,10 @@ module.exports = class Tarea {
         `,[epic]);
     }
     
+    static fetchAll(){
+        return db.execute('SELECT * FROM TAREA');
+    }
+    
     static async add(data){        
         for(let i=0;i<data.length;i++){            
             await db.execute(`INSERT INTO TAREA(idTicket,perteneceEpic,puntosAgiles,esTipo,front_back) VALUES (?,?,?,?,?) `,
@@ -136,4 +140,17 @@ module.exports = class Tarea {
         AND ti.idTicket = ?
         `,[id])
     }
+    static epicTask(epic){
+        console.log("Estás en epicTask!!");
+        return db.execute(`
+        SELECT nombre
+        FROM ticket t, epic e, proyecto p
+        WHERE t.idTicket = e.idTicket
+        AND perteneProyecto = p.idTicket 
+        AND perteneProyecto IN (SELECT idTicket
+                                   FROM ticket
+                                   WHERE nombre = (?));
+        `,[epic]);
+    }
+    
 }

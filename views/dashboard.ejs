@@ -102,6 +102,49 @@
     }
 </script>
 
+<!--BURNUP CHART-->
+
+<script>
+
+const grafica = document.getElementById('burnupChart');
+    const burnChart = {
+        labels: ['You','Are','The',"'Ocean's",'Gray','Waves'],
+        datasets: [{
+            data: [65, 59, 80, 81, 56, 55],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+    const configura = {
+        type: 'line',
+        data: burnChart,
+    };
+    new Chart(grafica, configura);
+
+</script>
+
+<!--FIN BURNUP CHART-->
+
+<script>
+    // Este script crea una grafica de Pie para los diferentes estatus de un proyecto
+    const ap = document.getElementById('weeklyAP');
+    const APchart = {
+        labels: ['You','Are','The',"'Ocean's",'Gray','Waves'],
+        datasets: [{
+            data: [65, 59, 80, 81, 56, 55],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+    const config = {
+        type: 'line',
+        data: APchart,
+    };
+    new Chart(ap, config);
+</script>
+
 <script>
     // Estos scripts crean graficas de Pie para los diferentes estatus de un proyecto o Epic
     var pieChart;
