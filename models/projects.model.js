@@ -46,12 +46,18 @@ module.exports = class Proyecto {
                     INSERT INTO PROYECTO (idTicket, fechaInicio)
                     VALUES (?, ?)
                 `, [id_temporal, this.fechaInicio])
-                        .then(([rows, fieldData]) => {
 
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
+                    db.execute(`
+                    INSERT INTO EPIC (perteneProyecto)
+                    VALUES (?)
+                `, [id_temporal])
+
+                    .then(([rows, fieldData]) => {
+
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
 
                 }
                 return error;
@@ -62,7 +68,7 @@ module.exports = class Proyecto {
 
         return db.execute(`
             SELECT *
-            FROM PROYECTO p, TICKET t 
+            FROM PROYECTO p, TICKET t
             WHERE p.idTicket = t.idTicket
             GROUP BY nombre;`);
     }
