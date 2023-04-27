@@ -209,6 +209,21 @@ control.postImport = (request, response, next) => {
 
 
 control.processCsv = async(req,res)=>{
+    var monthObject = {
+        Jan: 0,
+        Feb: 1,
+        Mar: 2,
+        Apr: 3,
+        May: 4,
+        Jun: 5,
+        Jul: 6,
+        Aug: 7,
+        Sep: 8,
+        Oct: 9,
+        Nov: 10,
+        Dec: 11
+    };
+
     //Result --> msg after process
     //isCorrect --> control var to know if file is valid
     result = 'succes';
@@ -408,21 +423,7 @@ control.processCsv = async(req,res)=>{
             }
         })
         await Fase.add(entriesNew);
-        //add created
-        var monthObject = {
-            Jan: 0,
-            Feb: 1,
-            Mar: 2,
-            Apr: 3,
-            May: 4,
-            Jun: 5,
-            Jul: 6,
-            Aug: 7,
-            Sep: 8,
-            Oct: 9,
-            Nov: 10,
-            Dec: 11
-        };
+        //add created        
                 
         for(let i=0;i<entries.length;i++){
             var components = entries[i].fechaCambio.split(/[/: ]/);
@@ -571,11 +572,27 @@ control.processCsv = async(req,res)=>{
                 perteneceEpic: objList[i].customfieldepiclink,
                 puntosAgiles:  objList[i].customfieldstorypoints,
                 esTipo: typeTicket,
-                front_back:workarea
+                front_back:workarea,
+                asignation: objList[i].created
             };
             entries.push(ticketInsert);          
         }
         
+        for(let i=0;i<entries.length;i++){
+            var components = entries[i].asignation.split(/[/: ]/);
+
+            // obtener los componentes de fecha y hora
+            var day = components[0];
+            var month = monthObject[components[1]];
+            var year = '20'+components[2];
+            var hours = components[3];
+            var minutes = components[4];
+
+            // crear el objeto Date
+            var date = new Date(year, month, day, hours, minutes);
+            entries[i].asignation = date;
+        }               
+
         await Tarea.fetchAllAll()
         .then(([rows, fieldData])=>{
             if(rows.length > 0){                
@@ -601,6 +618,10 @@ control.processCsv = async(req,res)=>{
                                 sameRow = false;
                             }                                                            
                             
+                            if(entries[i].asignation != rows[j].asignacionEpiTar){
+                                sameRow = false;
+                            }                                                            
+                            
                             //if is the same row, that isnt pushed to entries
                             if(sameRow == false){                                
                                 let ticketInsert = {
@@ -608,7 +629,8 @@ control.processCsv = async(req,res)=>{
                                     perteneceEpic: entries[i].perteneceEpic,
                                     puntosAgiles:  entries[i].puntosAgiles,
                                     esTipo: entries[i].esTipo,
-                                    front_back: entries[i].front_back
+                                    front_back: entries[i].front_back,
+                                    asignation: entries[i].asignation
                                 };                                               
                                 entriesUpt.push(ticketInsert);                                
                             }
@@ -619,7 +641,8 @@ control.processCsv = async(req,res)=>{
                                 perteneceEpic: entries[i].perteneceEpic,
                                 puntosAgiles:  entries[i].puntosAgiles,
                                 esTipo: entries[i].esTipo,
-                                front_back: entries[i].front_back
+                                front_back: entries[i].front_back,
+                                asignation: entries[i].asignation
                             };                              
                             entriesNew.push(ticketInsert);
                         }
@@ -632,7 +655,8 @@ control.processCsv = async(req,res)=>{
                         perteneceEpic: entries[i].perteneceEpic,
                         puntosAgiles:  entries[i].puntosAgiles,
                         esTipo: entries[i].esTipo,
-                        front_back: entries[i].front_back
+                        front_back: entries[i].front_back,
+                        asignation: entries[i].asignation
                     };       
                     entriesNew.push(ticketInsert);
                 }
