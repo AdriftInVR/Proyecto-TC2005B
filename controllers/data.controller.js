@@ -53,6 +53,65 @@ exports.getNotTitle = (req, res) => {
         });
 };
 
+exports.getEstimate = (req, res) => {
+    Proyecto.fetchEstimate(req.params.idProject)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
+
+
+exports.getCompletedAP = (req, res) => {
+    Proyecto.fetchCompletedAP(req.params.idProject, req.params.start, req.params.end)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
+
+
+exports.getCompletedAPEpic = (req, res) => {
+    Epic.fetchCompletedAP(req.params.idEpic, req.params.start, req.params.end)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+    });
+}
+
+//Puntos agiles por tarea y epic
+exports.getAPproyect = (req, res) => {
+    Proyecto.fetchAPproject(req.params.idProject)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+    });
+}
+
+exports.getAPepic = (req, res) => {
+    Epic.fetchAPproject(req.params.idEpic)
+        .then(([rows, fieldData]) => {
+            res.status(200).json({status: rows})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+    });
+}
+//
+
 exports.getArea = async (req, res) => {
     let area = {
         allFront: 0,
