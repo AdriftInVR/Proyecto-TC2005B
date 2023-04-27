@@ -14,7 +14,7 @@ module.exports = class Proyecto {
               result += characters.charAt(Math.floor(Math.random() * characters.length));
               counter += 1;
             }
-            return result;
+            return result;
         }
 
         let id_temporal = makeid(6);
@@ -69,6 +69,27 @@ module.exports = class Proyecto {
         `);
     }
 
+    static fetchEstimate(projectID) {
+        return db.execute(`
+        CALL getEstimate(?)
+        `, [projectID]);
+    }
+
+    static fetchCompletedAP(projectID, SoW, EoW) {
+        return db.execute(`
+        SELECT P.idTicket, SUM(T.puntosAgiles) as 'WeekAP'
+        FROM PROYECTO P, TAREA T, EPIC E, FASE F, ESTATUS S
+        WHERE P.idTicket = E.perteneProyecto
+        AND E.idTicket = T.perteneceEpic
+        AND T.idTicket = F.idTicket
+        AND F.idEstatus = S.idEstatus
+        AND (S.descripcion = 'Done' OR S.descripcion = 'Closed')
+        AND F.fechaCambio BETWEEN ? AND ?
+        AND P.idTicket = ?
+        GROUP BY P.idTicket
+        `, [SoW, EoW, projectID]);
+    }
+    
     static async fetchCompletePrj(projectID) {
         return await db.execute(`
             SELECT t.front_back, COUNT(t.idTicket) as 'Complete'
@@ -116,4 +137,16 @@ module.exports = class Proyecto {
             GROUP BY t.front_back
         `, [epicID])
     }
+
+    static fetchAPproject(projectID){
+        return db.execute (`
+        SELECT SUM(ta.puntosAgiles)
+        FROM proyecto p, ticket t, epic e, tarea ta
+        WHERE p.idTicket = t.idTicket
+        AND p.idTicket = e.perteneProyecto
+        AND ta.perteneceEpic = e.idTicket
+        AND t.nombre = ?;
+        `, [projectID])
+    }
+
 }

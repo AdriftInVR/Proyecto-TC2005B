@@ -25,7 +25,6 @@
                     </div>
                 </div>
                 <div>
-                    
                     <% for (let proyecto of proyectos) { %>
 
                         <div class ="w-full bg-white p-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">                            
@@ -43,11 +42,12 @@
                                 </div>
 
                                 <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
-                                    -
+                                    <canvas id="<%= proyecto.idTicket %>">
+
+                                    </canvas>
                                 </div>                                
                             </a>                            
                         </div>
-
                     <% } %>
                                        
                 </div>
@@ -153,3 +153,91 @@
 
 </div>
 <%- include('partials/endHTML.ejs') %>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    var barChar;
+    function progressBar(projectID){
+        if(barChar) {
+            barChar.destroy();
+        }
+        const progreso = document.getElementById(projectID);
+        fetch('/data/project/status/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            let completed = 0;
+            let sum = 0;
+            for(let tag of data.status) {
+                if(tag.Nombre == 'Done' || tag.Nombre == 'Closed') {
+                    completed += tag.Cantidad;
+                }
+                sum += tag.Cantidad;
+            }
+            sum = sum - completed;
+
+            
+
+            const barChart = {
+                labels: [""],
+                datasets: [{
+                    label: "Completed",
+                    data: [completed],
+                    borderColor: 'rgb(43, 67, 224)',
+                    backgroundColor: 'rgba(94, 110, 214, 0.3)',
+                },
+                {
+                   label: "Missing",
+                   data: [sum],
+                   borderColor: 'rgb(204, 63, 89)',
+                   backgroundColor: 'rgba(232, 118, 139, 0.3)',
+                }]
+            };
+            const config = {
+                type: 'bar',
+                data: barChart,
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: true,
+                    elements: {
+                    bar: {
+                        borderWidth: 2,
+                    }
+                    },
+                    responsive: true,
+                    plugins: {
+                    legend: {
+                        display: false
+                    },
+                    },
+                    scales: {
+                    x: {
+                        display: false,
+                        stacked: true,
+                    },
+                    y: {
+                        display: false,
+                        stacked: true,
+                    }
+                }
+                },
+            };
+            barChar = new Chart(progreso, config);
+        })
+    }
+
+    matches = document.querySelectorAll('canvas');
+
+    for(let i = 0; i < matches.length; i++) {
+        progressBar(matches[i].id);
+    }
+
+    
+  
+
+</script>
