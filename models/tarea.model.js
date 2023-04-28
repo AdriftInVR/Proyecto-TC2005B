@@ -26,8 +26,8 @@ module.exports = class Tarea {
     
     static async add(data){        
         for(let i=0;i<data.length;i++){            
-            await db.execute(`INSERT INTO TAREA(idTicket,perteneceEpic,puntosAgiles,esTipo,front_back) VALUES (?,?,?,?,?) `,
-            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back])
+            await db.execute(`INSERT INTO TAREA(idTicket,perteneceEpic,puntosAgiles,esTipo,front_back, asignacionEpiTar) VALUES (?,?,?,?,?,?) `,
+            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back, data[i].asignation])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
@@ -36,8 +36,8 @@ module.exports = class Tarea {
 
     static async update(data){        
         for(let i=0;i<data.length;i++){            
-            await db.execute(`UPDATE TAREA SET idTicket = ?,perteneceEpic = ?, puntosAgiles = ?,esTipo = ?, front_back = ? WHERE idTicket = ? `,
-            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back, data[i].idTicket])
+            await db.execute(`UPDATE TAREA SET idTicket = ?,perteneceEpic = ?, puntosAgiles = ?,esTipo = ?, front_back = ?, asignacionEpiTar = ? WHERE idTicket = ? `,
+            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back, data[i].asignation, data[i].idTicket])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });

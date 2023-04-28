@@ -12,7 +12,7 @@ module.exports = class Fase {
     
     static async add(data){        
         for(let i=0;i<data.length;i++){
-            await db.execute(`INSERT INTO FASE(idTicket,idEstatus) VALUES (?,?);`,[data[i].idTicket,data[i].idEstatus])
+            await db.execute(`INSERT INTO FASE(idTicket,idEstatus, fechaCambio) VALUES (?,?, ?);`,[data[i].idTicket,data[i].idEstatus,data[i].fechaCambio])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
