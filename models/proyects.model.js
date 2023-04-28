@@ -20,7 +20,7 @@ module.exports = class Proyecto {
         let id_temporal = makeid(6);
 
         return db.execute(`
-            INSERT INTO TICKET (idTicket, nombre)
+            INSERT INTO ticket (idTicket, nombre)
             VALUES (?, ?)
         `, [id_temporal, this.nombre]);
     }
@@ -28,21 +28,21 @@ module.exports = class Proyecto {
     static fetchAll() {
         return db.execute(`
             SELECT t.nombre, p.fechainicio, p.duracion
-            FROM TICKET t, PROYECTO p
+            FROM ticket t, proyecto p
             WHERE  t.idTicket = p.idTicket
         `);
     }
 
     static fetchNotTitle(projectID) {
         return db.execute(`
-            SELECT idTicket FROM PROYECTO p
+            SELECT idTicket FROM proyecto p
             WHERE p.idTicket = ?
         `, [projectID]);
     }
 
     static fetchStatus(projectID) {
         return db.execute(`
-            SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM ESTATUS s, FASE f, TAREA t, EPIC e, PROYECTO p
+            SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM estatus s, fase f, tarea t, epic e, proyecto p
             WHERE s.idEstatus = f.idEstatus
             AND f.idTicket = t.idTicket
             AND t.perteneceEpic = e.idTicket
@@ -55,7 +55,7 @@ module.exports = class Proyecto {
     static fetchEpics(projectID) {
         return db.execute(`
             SELECT t.nombre as 'EpicName', e.idTicket as 'EpicID', e.perteneProyecto as 'ProjectID'
-            FROM EPIC e, TICKET t
+            FROM epic e, ticket t
             WHERE e.idTicket = t.idTicket
             AND e.perteneProyecto = ?
         `, [projectID]);
@@ -64,7 +64,7 @@ module.exports = class Proyecto {
     static fetchAllIDs() {
         return db.execute(`
             SELECT t.nombre as 'ProjectName', p.idTicket as 'ProjectID'
-            FROM PROYECTO p, TICKET t
+            FROM proyecto p, ticket t
             WHERE p.idTicket = t.idTicket
         `);
     }
@@ -78,7 +78,7 @@ module.exports = class Proyecto {
     static fetchCompletedAP(projectID, SoW, EoW) {
         return db.execute(`
         SELECT P.idTicket, SUM(T.puntosAgiles) as 'WeekAP'
-        FROM PROYECTO P, TAREA T, EPIC E, FASE F, ESTATUS S
+        FROM proyecto P, tarea T, epic E, fase F, estatus S
         WHERE P.idTicket = E.perteneProyecto
         AND E.idTicket = T.perteneceEpic
         AND T.idTicket = F.idTicket
@@ -93,7 +93,7 @@ module.exports = class Proyecto {
     static async fetchCompletePrj(projectID) {
         return await db.execute(`
             SELECT t.front_back, COUNT(t.idTicket) as 'Complete'
-            FROM TAREA t, EPIC e, PROYECTO p, FASE f, ESTATUS s
+            FROM tarea t, epic e, proyecto p, fase f, estatus s
             WHERE t.idTicket = f.idTicket
             AND f.idEstatus = s.idEstatus
             AND t.perteneceEpic = e.idTicket
@@ -107,7 +107,7 @@ module.exports = class Proyecto {
     static async fetchAllPrj(projectID) {
         return await db.execute(`
             SELECT t.front_back, COUNT(puntosAgiles) as 'Completed'
-            FROM TAREA t, EPIC e, PROYECTO p
+            FROM tarea t, epic e, proyecto p
             WHERE t.perteneceEpic = e.idTicket
             AND e.perteneProyecto = p.idTicket
             AND p.idTicket = ?
@@ -118,7 +118,7 @@ module.exports = class Proyecto {
     static async fetchCompleteEpi(epicID) {
         return await db.execute(`
             SELECT t.front_back, COUNT(t.idTicket) as 'Complete'
-            FROM TAREA t, EPIC e, FASE f, ESTATUS s
+            FROM tarea t, epic e, fase f, estatus s
             WHERE t.idTicket = f.idTicket
             AND f.idEstatus = s.idEstatus
             AND t.perteneceEpic = e.idTicket
@@ -131,7 +131,7 @@ module.exports = class Proyecto {
     static async fetchAllEpi(epicID) {
         return await db.execute(`
             SELECT t.front_back, COUNT(puntosAgiles) as 'Completed'
-            FROM TAREA t, EPIC e
+            FROM tarea t, epic e
             WHERE t.perteneceEpic = e.idTicket
             AND e.idTicket = ?
             GROUP BY t.front_back

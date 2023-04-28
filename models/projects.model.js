@@ -105,7 +105,7 @@ module.exports = class Proyecto {
         WHERE t.idTicket = e.idTicket
         AND perteneProyecto = p.idTicket 
         AND perteneProyecto IN (SELECT idTicket
-                                   FROM TICKET
+                                   FROM ticket
                                    WHERE idTicket = (?));
         `, [epic]);
     }
