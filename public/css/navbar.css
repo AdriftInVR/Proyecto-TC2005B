@@ -278,3 +278,8 @@ input[type="file"]{
     box-shadow: 0 0 10px #a945c7, 0 0 40px #a945c7, 0 0 80px #a945c7;
     transition: 1s;
 }
+
+/*Otros*/
+.hide{
+    display: none;
+}

@@ -138,7 +138,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static fetchfrontback(idfront){
+    /*static fetchfrontback(idfront){
         return db.execute(`
         SELECT *
         FROM TICKET t, PROYECTO p, EPIC e, TAREA ta
@@ -147,5 +147,5 @@ module.exports = class Tarea {
         AND e.idTicket = ta.perteneceEpic
         AND ta.front_back = ?
         `[idfront])
-    }
+    }*/
 }

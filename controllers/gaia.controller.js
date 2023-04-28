@@ -135,18 +135,6 @@ control.getTasks = async (req, res) => {
         });
     })
     .catch(err =>console.log(err));
-
-    /*Tarea.fetchfrontback(req.params.idfront)
-    .then(([rows, fieldData]) => {
-        console.log(rows);
-        res.render('tasks', {
-            front_b: rows,
-            active: 'projects',
-        });
-    })
-    .catch(err => {
-        console.log(err);
-    })*/
 };
 
 function formatDate(dateAnt){

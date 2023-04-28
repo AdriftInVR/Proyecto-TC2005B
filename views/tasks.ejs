@@ -27,17 +27,17 @@
                 
                 <div class="m-4">
                     <div class="inline-flex shadow-sm" role="group">
-                        <button type="button" onclick="" id="btnAll" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        <button type="button" class="btn px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white button-value" data-filter="all">
                         ALL
                         </button>
-                        <button type="button" onclick="" id="btnFronted" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600 hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        <button type="button" class="btn px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600 hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white button-value" data-filter="frontend">
                         FRONTEND
                         </button>
-                        <button type="button" onclick="" id="btnBackend" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        <button type="button" class="btn px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white button-value" data-filter="backend">
                         BACKEND
                         </button>
                     </div>
-                </div>        
+                </div>     
             </div>
 
             <div class="m-4 flex-[3_3_0%] flex justify-center align-center">
@@ -82,9 +82,9 @@
                                     </tr>
                                 </thead>
                                 <% for (let task1 of tasks1) { %>
-                                    <tbody >
+                                    <tbody class="" category="">
                                         <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis hover:bg-blue-400" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">                                            
+                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 dark:text-gray text-ellipsis rounded-s-3xl store-itemtk1">                                            
                                                 <!-- Modal toggle -->
                                                 <button data-modal-target="<%=task1.nombre%><%=task1.idTicket%>" data-modal-toggle="<%=task1.nombre%><%=task1.idTicket%>" >
                                                     <%= task1.nombre %>                                                    
@@ -158,7 +158,7 @@
                             <% for (let task2 of tasks2) { %>
                                 <tbody>
                                     <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis    hover:bg-amber-400" >
-                                        <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">                                            
+                                        <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl store-itemtk2">                                            
                                             <!-- Modal toggle -->
                                             <button data-modal-target="<%=task2.nombre%><%=task2.idTicket%>" data-modal-toggle="<%=task2.nombre%><%=task2.idTicket%>" >
                                                 <%= task2.nombre %>                                                    
@@ -229,7 +229,7 @@
                                 <% for (let task3 of tasks3) { %>
                                     <tbody>
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-400" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl store-itemtk3">
                                                 <!-- Modal toggle -->
                                                 <button data-modal-target="<%=task3.nombre%><%=task3.idTicket%>" data-modal-toggle="<%=task3.nombre%><%=task3.idTicket%>" >
                                                     <%= task3.nombre %>                                                    
@@ -301,7 +301,7 @@
                                 <% for (let task4 of tasks4) { %>
                                     <tbody>
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-red-400">
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl store-itemtk4">
                                                 <!-- Modal toggle -->
                                                 <button data-modal-target="<%=task4.nombre%><%=task4.idTicket%>" data-modal-toggle="<%=task4.nombre%><%=task4.idTicket%>" >
                                                     <%= task4.nombre %>                                                    
@@ -373,7 +373,7 @@
                                 <% for (let task5 of tasks5) { %>
                                     <tbody>
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-500" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl store-itemtk5">
                                                 <!-- Modal toggle -->
                                                 <button data-modal-target="<%=task5.nombre%><%=task5.idTicket%>" data-modal-toggle="<%=task5.nombre%><%=task5.idTicket%>" >
                                                     <%= task5.nombre %>                                                    
@@ -444,7 +444,7 @@
                                 <% for (let task6 of tasks6) { %>
                                     <tbody>
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl store-itemtk6">
                                                 <!-- Modal toggle -->
                                                 <button data-modal-target="<%=task6.nombre%><%=task6.idTicket%>" data-modal-toggle="<%=task6.nombre%><%=task6.idTicket%>" >
                                                     <%= task6.nombre %>                                                    
@@ -515,7 +515,7 @@
                                 <% for (let task7 of tasks7) { %>
                                     <tbody> 
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-blue-300" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl store-itemtk7">
                                                 <!-- Modal toggle -->
                                                 <button data-modal-target="<%=task7.nombre%><%=task7.idTicket%>" data-modal-toggle="<%=task7.nombre%><%=task7.idTicket%>" >
                                                     <%= task7.nombre %>                                                    
@@ -570,5 +570,226 @@
     </div>
     
 </div>
+
+<script>
+    
+    (function () {
+        const buttons = document.querySelectorAll('.btn')
+        const storeItem = document.querySelectorAll('.store-itemtk1')
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault()
+                const filter = e.target.dataset.filter
+
+                storeItem.forEach((item) => {
+                    if(filter == 'all') {
+                        item.style.display = 'block'
+                    }
+                    else if (filter == 'frontend'){
+                        item.style.display = '<%= task1.front_back %>' 
+                    }
+                    else if (filter == 'backend'){
+                        item.style.display = 'none' 
+                    }
+                    else {
+                        if (item.classList.contains(filter)) {
+                            item.style.display = 'block'
+                        } else {
+                            item.style.display = 'none'
+                        }
+                    }
+                })
+            })
+        })
+    })();
+
+    (function () {
+        const buttons = document.querySelectorAll('.btn')
+        const storeItem = document.querySelectorAll('.store-itemtk2')
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault()
+                const filter = e.target.dataset.filter
+
+                storeItem.forEach((item) => {
+                    if(filter == 'all') {
+                        item.style.display = 'block'
+                    }
+                    else if (filter == 'frontend'){
+                        item.style.display = '<%= task2.front_back %>' 
+                    }
+                    else if (filter == 'backend'){
+                        item.style.display = 'none' 
+                    }
+                    else {
+                        if (item.classList.contains(filter)) {
+                            item.style.display = 'block'
+                        } else {
+                            item.style.display = 'none'
+                        }
+                    }
+                })
+            })
+        })
+    })();
+
+    (function () {
+        const buttons = document.querySelectorAll('.btn')
+        const storeItem = document.querySelectorAll('.store-itemtk3')
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault()
+                const filter = e.target.dataset.filter
+
+                storeItem.forEach((item) => {
+                    if(filter == 'all') {
+                        item.style.display = 'block'
+                    }
+                    else if (filter == 'frontend'){
+                        item.style.display = '<%= task3.front_back %>' 
+                    }
+                    else if (filter == 'backend'){
+                        item.style.display = 'none' 
+                    }
+                    else {
+                        if (item.classList.contains(filter)) {
+                            item.style.display = 'block'
+                        } else {
+                            item.style.display = 'none'
+                        }
+                    }
+                })
+            })
+        })
+    })();
+
+    (function () {
+        const buttons = document.querySelectorAll('.btn')
+        const storeItem = document.querySelectorAll('.store-itemtk4')
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault()
+                const filter = e.target.dataset.filter
+
+                storeItem.forEach((item) => {
+                    if(filter == 'all') {
+                        item.style.display = 'block'
+                    }
+                    else if (filter == 'frontend'){
+                        item.style.display = '<%= task4.front_back %>' 
+                    }
+                    else if (filter == 'backend'){
+                        item.style.display = 'none' 
+                    }
+                    else {
+                        if (item.classList.contains(filter)) {
+                            item.style.display = 'block'
+                        } else {
+                            item.style.display = 'none'
+                        }
+                    }
+                })
+            })
+        })
+    })();
+
+    (function () {
+        const buttons = document.querySelectorAll('.btn')
+        const storeItem = document.querySelectorAll('.store-itemtk5')
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault()
+                const filter = e.target.dataset.filter
+
+                storeItem.forEach((item) => {
+                    if(filter == 'all') {
+                        item.style.display = 'block'
+                    }
+                    else if (filter == 'frontend'){
+                        item.style.display = '<%= task5.front_back %>' 
+                    }
+                    else if (filter == 'backend'){
+                        item.style.display = 'none' 
+                    }
+                    else {
+                        if (item.classList.contains(filter)) {
+                            item.style.display = 'block'
+                        } else {
+                            item.style.display = 'none'
+                        }
+                    }
+                })
+            })
+        })
+    })();
+
+    (function () {
+        const buttons = document.querySelectorAll('.btn')
+        const storeItem = document.querySelectorAll('.store-itemtk6')
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault()
+                const filter = e.target.dataset.filter
+
+                storeItem.forEach((item) => {
+                    if(filter == 'all') {
+                        item.style.display = 'block'
+                    }
+                    else if (filter == 'frontend'){
+                        item.style.display = '<%= task6.front_back %>' 
+                    }
+                    else if (filter == 'backend'){
+                        item.style.display = 'none' 
+                    }
+                    else {
+                        if (item.classList.contains(filter)) {
+                            item.style.display = 'block'
+                        } else {
+                            item.style.display = 'none'
+                        }
+                    }
+                })
+            })
+        })
+    })();
+
+    (function () {
+        const buttons = document.querySelectorAll('.btn')
+        const storeItem = document.querySelectorAll('.store-itemtk7')
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault()
+                const filter = e.target.dataset.filter
+
+                storeItem.forEach((item) => {
+                    if(filter == 'all') {
+                        item.style.display = 'block'
+                    }
+                    else if (filter == 'frontend'){
+                        item.style.display = '<%= task7.front_back %>' 
+                    }
+                    else if (filter == 'backend'){
+                        item.style.display = 'none' 
+                    }
+                    else {
+                        if (item.classList.contains(filter)) {
+                            item.style.display = 'block'
+                        } else {
+                            item.style.display = 'none'
+                        }
+                    }
+                })
+            })
+        })
+    })();
+    
+</script>
 
 <%- include('partials/endHTML.ejs') %>
