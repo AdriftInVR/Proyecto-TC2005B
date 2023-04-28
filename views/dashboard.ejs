@@ -269,6 +269,23 @@
         })
     }
 
+    function totalAPEpic(epicID, end, i, APdata){
+        fetch("/data/project/epic/totalAPe/" + epicID + "/" + end.toISOString(), {    
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+        }).then(result => {
+            return result.json();
+        }).then(data =>{
+            if (data.status[0]) {
+                APdata[i] = data.status[0].APTotalesE;
+            } else {
+                APdata[i] = 0;
+            }
+        })
+    }
+
 
     //Actualiza datos
     function BurnupLineChart(projectID) {
@@ -331,7 +348,7 @@
                     dataValuesExpected.push(thisWeek);
                 }
                 console.log(dataValuesExpected);
-            }, "400")
+            }, "1100")
             setTimeout(() => {
                 for (i=1;i<data_completeAP.length;i++){
                     data_completeAP[i]+=data_completeAP[i-1];
@@ -350,21 +367,21 @@
                         type: 'line',
                         label: 'Expected',
                         data: expectedLine,
-                        borderColor: '#000000',
+                        borderColor: 'rgb(16, 70, 220)',
                     },{
                         type: 'line',
                         label: 'Goal',
                         data: goalLine,
                         fill: false,
-                        borderColor: 'rgb(54,162,235)'
+                        borderColor: 'rgb(232, 255, 16)'
                     },
                     {
                         type: 'line',
                         label: 'Complete',
                         data: completeLine,
                         fill: true,
-                        borderColor: 'rgb(255,99,132)',
-                        backgroundColor: 'rgba(255,99,132,0.2)'
+                        borderColor: 'rgb(24,212,86)',
+                        backgroundColor: 'rgba(24,212,86,0.2)'
                     }]
                 };
 
@@ -387,9 +404,127 @@
                     } 
                 };
                 burnupChart = new Chart(buap, configura);
-            }, "1000")
+            }, "1400")
         })
-    }   
+    }
+    
+    
+/*EPIC*/
+    function BurnupLineChartEpic(epicID) {
+        if (burnupChart) {
+            burnupChart.destroy()
+        }
+        const buap = document.getElementById('burnupAP');
+        fetch('/data/project/estimate/' + $('#projects').val(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let data_labels = [0];
+            let data_values = new Array (estimateData.status[0][0].Estimate);
+            let data_completeAP = new Array (estimateData.status[0][0].Estimate);
+            let dataValuesExpected = [0];
+            var start = new Date(estimateData.status[0][0].Inicio);
+            var end = new Date(start);
+            end.setDate(end.getDate() + 7);
+            
+
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
+                data_labels.push(i+1);
+                getEpicAP(epicID, start, end, data_completeAP, i);
+                totalAPEpic(epicID, end, i, data_values);
+                start.setDate(start.getDate()+7);
+                end.setDate(end.getDate()+7);
+            }
+            
+            var thisWeek = 0
+            var goalLine = []
+            let segmentChange = []
+            setTimeout(() => {
+                goalLine = [data_values[0]].concat(data_values);
+                for(i=1;i<data_values.length;i++){
+                    if (data_values[i] != data_values[i-1]){
+                        segmentChange.push(true)
+                    } else {
+                        segmentChange.push(false)
+                    }
+                }
+                let segmentGoal = [segmentChange.indexOf(true)+1] 
+                for(i=1;i<segmentChange.length;i++){
+                    if (segmentChange[i]){
+                        segmentGoal.push(i+1)
+                    } else {
+                        segmentGoal.push(segmentGoal[i-1])
+                    }
+                }
+                segmentGoal[segmentGoal.length-1] = goalLine.length-1
+                console.log(segmentGoal)
+                for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                    thisWeek = goalLine[i] / segmentGoal[i];
+                    dataValuesExpected.push(thisWeek);
+                }
+                console.log(dataValuesExpected);
+            }, "2100")
+            setTimeout(() => {
+                for (i=1;i<data_completeAP.length;i++){
+                    data_completeAP[i]+=data_completeAP[i-1];
+                    dataValuesExpected[i]+=dataValuesExpected[i-1];
+                    if (dataValuesExpected[i]>=goalLine[i]){
+                        dataValuesExpected[i]=goalLine[i]
+                    }
+                }
+                let completeLine = [0].concat(data_completeAP);
+                let expectedLine = [0].concat(dataValuesExpected);
+                const APBurnUp = {
+                    labels: data_labels,
+                    datasets: [{
+                        type: 'line',
+                        label: 'Expected',
+                        data: expectedLine,
+                        borderColor: 'rgb(16, 70, 220)',
+                    },{
+                        type: 'line',
+                        label: 'Goal',
+                        data: goalLine,
+                        fill: false,
+                        borderColor: 'rgb(232, 255, 16)'
+                    },
+                    {
+                        type: 'line',
+                        label: 'Complete',
+                        data: completeLine,
+                        fill: true,
+                        borderColor: 'rgb(24,212,86)',
+                        backgroundColor: 'rgba(24,212,86,0.2)'
+                    }]
+                };
+
+                const configura = {
+                    type: 'line',
+                    data: APBurnUp,
+                    options: {
+                        scales:{
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Burn up AP'
+                            },
+                        },
+                        responsive: true,                    
+                    } 
+                };
+                burnupChart = new Chart(buap, configura);
+            }, "2400")
+        })
+    }
+
 </script>
 
 
@@ -397,9 +532,6 @@
     // Estos scripts crean graficas de Linea para los AP completados en una semana
     var APlineChart;
 
-    
-
-    
 
     function WeeklyAPLineChart(projectID){
         if (APlineChart) {
@@ -641,6 +773,7 @@
             EpicPieChart($("#epics").val());
             EpicWeeklyAPLineChart($("#epics").val());
             areasBarChartEpic($("#epics").val());
+            BurnupLineChartEpic($("#epics").val());
         }
     }
 </script>
