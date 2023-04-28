@@ -36,7 +36,7 @@ module.exports = class Proyecto {
                 if (this.nombre == "" || this.nombre == undefined) {
                 } else {
                     let id_temporal = makeid(6);
-
+                    
                     db.execute(`
                     INSERT INTO TICKET (idTicket, nombre)
                     VALUES (?, ?)
@@ -57,7 +57,7 @@ module.exports = class Proyecto {
                     })
                     .catch(err => {
                         console.log(err);
-                    });
+                    });     
 
                 }
                 return error;
