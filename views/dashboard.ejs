@@ -304,17 +304,39 @@
             
             var thisWeek = 0
             var goalLine = []
+            let segmentChange = []
             setTimeout(() => {
                 goalLine = [data_values[0]].concat(data_values);
+                for(i=1;i<data_values.length;i++){
+                    if (data_values[i] != data_values[i-1]){
+                        segmentChange.push(true)
+                    } else {
+                        segmentChange.push(false)
+                    }
+                }
+                let segmentGoal = [segmentChange.indexOf(true)+1] 
+                for(i=1;i<segmentChange.length;i++){
+                    if (segmentChange[i]){
+                        segmentGoal.push(i+1)
+                    } else {
+                        segmentGoal.push(segmentGoal[i-1])
+                    }
+                }
+                segmentGoal[segmentGoal.length-1] = goalLine.length-1
+                console.log(segmentGoal)
                 for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
-                    thisWeek = data_values[i] / (estimateData.status[0][0].Estimate-i);
+                    thisWeek = goalLine[i] / segmentGoal[i];
                     dataValuesExpected.push(thisWeek);
                 }
+                console.log(dataValuesExpected);
             }, "100")
             setTimeout(() => {
                 for (i=1;i<data_completeAP.length;i++){
                     data_completeAP[i]+=data_completeAP[i-1];
                     dataValuesExpected[i]+=dataValuesExpected[i-1];
+                    if (dataValuesExpected[i]>=goalLine[i]){
+                        dataValuesExpected[i]=goalLine[i]
+                    }
                 }
                 let completeLine = [0].concat(data_completeAP);
                 let expectedLine = [0].concat(dataValuesExpected);
