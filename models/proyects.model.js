@@ -33,6 +33,15 @@ module.exports = class Proyecto {
         `);
     }
 
+    static async fetchOne(id) {
+        return await db.execute(`
+            SELECT t.nombre, p.fechainicio, p.duracion
+            FROM TICKET t, PROYECTO p
+            WHERE  t.idTicket = p.idTicket
+            AND p.idTicket = ?
+        `,[id]);
+    }
+
     static fetchNotTitle(projectID) {
         return db.execute(`
             SELECT idTicket FROM proyecto p
@@ -69,8 +78,8 @@ module.exports = class Proyecto {
         `);
     }
 
-    static fetchEstimate(projectID) {
-        return db.execute(`
+    static async fetchEstimate(projectID) {
+        return await db.execute(`
         CALL getEstimate(?)
         `, [projectID]);
     }
@@ -138,15 +147,45 @@ module.exports = class Proyecto {
         `, [epicID])
     }
 
-    static fetchAPproject(projectID){
-        return db.execute (`
-        SELECT SUM(ta.puntosAgiles)
+    static async fetchAPproject(projectID, EoW){
+        return await db.execute (`
+        SELECT SUM(ta.puntosAgiles) as 'TotalAP'
+        FROM PROYECTO p, TICKET t, EPIC e, TAREA ta
+        WHERE p.idTicket = t.idTicket
+        AND p.idTicket = e.perteneProyecto
+        AND ta.perteneceEpic = e.idTicket
+        AND p.idTicket = ?
+        AND ta.asignacionEpiTar < ?;
+        `, [projectID, EoW])
+    }
+
+
+
+    static async fetchAPepic(epicID, EoW){
+        return await db.execute (`
+        SELECT SUM(ta.puntosAgiles) as 'APTotalesE'
         FROM proyecto p, ticket t, epic e, tarea ta
         WHERE p.idTicket = t.idTicket
         AND p.idTicket = e.perteneProyecto
         AND ta.perteneceEpic = e.idTicket
-        AND t.nombre = ?;
-        `, [projectID])
+        AND e.idTicket = ?
+        AND ta.asignacionEpiTar < ?
+        GROUP BY p.idTicket
+        `, [epicID, EoW])
     }
 
+
+    /* LINEA VERDE PROYECTOS :) */
+    static fetchGreenLine(projectID){
+        return db.execute(`
+        SELECT f.fechaCambio, t.puntosAgiles
+        FROM TAREA t, EPIC e, PROYECTO p, FASE f
+        WHERE t.perteneceEpic = e.idTicket
+        AND e.perteneProyecto = p.idTicket
+        AND p.idTicket = 3
+        AND t.idTicket = f.idTicket
+        AND (f.idEstatus = 7 OR f.idEstatus = 6)
+        ORDER BY f.fechaCambio DESC
+        `, [projectID])
+    }
 }
