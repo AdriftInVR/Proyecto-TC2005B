@@ -5,7 +5,7 @@ module.exports = class Tarea {
     static fetchAllAll(){
         return db.execute(`
         SELECT *
-        FROM TAREA`);
+        FROM tarea`);
     }
 
     static fetchAll(epic){    
@@ -43,7 +43,7 @@ module.exports = class Tarea {
     static tasktdo(id){
         return db.execute (`
         SELECT *
-        FROM ticket ti, fase f, tarea ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -56,7 +56,7 @@ module.exports = class Tarea {
     static taskinpro(){
         return db.execute (`
         SELECT *
-        FROM ticket ti, fase f, tarea ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -69,7 +69,7 @@ module.exports = class Tarea {
     static taskcode(){
         return db.execute (`
         SELECT *
-        FROM ticket ti, fase f, tarea ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -105,7 +105,7 @@ module.exports = class Tarea {
     static taskdone(){
         return db.execute (`
         SELECT *
-        FROM Tticket ti, fase f, tarea ta, epic e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -117,7 +117,7 @@ module.exports = class Tarea {
     static taskclosed(){
         return db.execute (`
         SELECT *
-        FROM ticket ti, fase f, tarea ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
