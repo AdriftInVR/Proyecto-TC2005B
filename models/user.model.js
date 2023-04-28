@@ -3,20 +3,20 @@ const db = require('../util/database');
 module.exports = class User {
 
     static fetchAll() {
-        return db.execute('SELECT * FROM USUARIO');
+        return db.execute('SELECT * FROM usuario');
     }
     
     static fetchAllRespon() {
-        return db.execute('SELECT * FROM RESPONSABLE');
+        return db.execute('SELECT * FROM responsable');
     }
     
     static async add(data){        
         for(let i=0;i<data.length;i++){
-            await db.execute(`INSERT INTO USUARIO(idUsuario,nombre) SELECT ?,? WHERE NOT EXISTS(SELECT 1 FROM ESTADO_LABORAL WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].nombre,data[i].idUsuario])            
+            await db.execute(`INSERT INTO usuario(idUsuario,nombre) SELECT ?,? WHERE NOT EXISTS(SELECT 1 FROM estado_laboral WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].nombre,data[i].idUsuario])            
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
-            await db.execute(`INSERT INTO ESTADO_LABORAL(idUsuario, idEstatus) SELECT ?,8 WHERE NOT EXISTS(SELECT 1 FROM ESTADO_LABORAL WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].idUsuario])
+            await db.execute(`INSERT INTO estado_laboral(idUsuario, idEstatus) SELECT ?,8 WHERE NOT EXISTS(SELECT 1 FROM estado_laboral WHERE idUsuario = ?);`,[data[i].idUsuario,data[i].idUsuario])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });                        
@@ -25,7 +25,7 @@ module.exports = class User {
 
     static async addRespon(data){
         for(let i=0;i<data.length;i++){
-            await db.execute(`INSERT INTO RESPONSABLE(idUsuario, idTarea) VALUES (?,?)`,[data[i].idUsuario,data[i].idTarea])
+            await db.execute(`INSERT INTO responsable(idUsuario, idTarea) VALUES (?,?)`,[data[i].idUsuario,data[i].idTarea])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
@@ -34,7 +34,7 @@ module.exports = class User {
 
     static fetchUserProjects(name) {
         return db.execute(`SELECT t.nombre
-        FROM USUARIO as u, TRABAJA as tr, TICKET as t
+        FROM usuario as u, trabaja as tr, ticket as t
         WHERE u.idUsuario = tr.idUsuario
         AND tr.idProyecto = t.idTicket
         AND u.nombre = ?`,
@@ -43,7 +43,7 @@ module.exports = class User {
 
     static fetchUserTasks(name) {
         return db.execute(`SELECT ta.front_back
-        FROM TAREA as ta, RESPONSABLE as re, USUARIO as u
+        FROM tarea as ta, responsable as re, usuario as u
         WHERE u.idUsuario = re.idUsuario
         AND re.idTarea = ta.idTicket
         AND u.nombre = ?`,

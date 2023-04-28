@@ -22,7 +22,7 @@ module.exports = class Proyecto {
 
         db.execute(`
             SELECT *
-            FROM PROYECTO p, TICKET t 
+            FROM proyecto p, ticket t 
             WHERE p.idTicket = t.idTicket
             GROUP BY nombre;`)
             .then(([rows, fieldData]) => {
@@ -38,12 +38,12 @@ module.exports = class Proyecto {
                     let id_temporal = makeid(6);
 
                     db.execute(`
-                    INSERT INTO TICKET (idTicket, nombre)
+                    INSERT INTO ticket (idTicket, nombre)
                     VALUES (?, ?)
                 `, [id_temporal, this.nombre])
 
                     db.execute(`
-                    INSERT INTO PROYECTO (idTicket, fechaInicio)
+                    INSERT INTO proyecto (idTicket, fechaInicio)
                     VALUES (?, ?)
                 `, [id_temporal, this.fechaInicio])
                         .then(([rows, fieldData]) => {
@@ -62,7 +62,7 @@ module.exports = class Proyecto {
 
         return db.execute(`
             SELECT *
-            FROM PROYECTO p, TICKET t 
+            FROM proyecto p, ticket t 
             WHERE p.idTicket = t.idTicket
             GROUP BY nombre;`);
     }
@@ -70,7 +70,7 @@ module.exports = class Proyecto {
     static fetchAll() {
         return db.execute(`
             SELECT t.nombre, p.fechainicio, p.duracion, p.idTicket
-            FROM TICKET t, PROYECTO p
+            FROM ticket t, proyecto p
             WHERE  t.idTicket = p.idTicket;
         `);
     }
@@ -78,7 +78,7 @@ module.exports = class Proyecto {
     static fetchOne(id) {
         return db.execute(`
             SELECT t.nombre, p.fechainicio, p.duracion, p.idTicket
-            FROM TICKET t, PROYECTO p
+            FROM ticket t, proyecto p
             WHERE  t.idTicket = p.idTicket
             AND t.idTicket = ?;
         `,[id]);
@@ -87,7 +87,7 @@ module.exports = class Proyecto {
     static datos(dato) {
         return db.execute(`
         SELECT u.nombre, efectividadAsignada, front_back
-        FROM TAREA t, RESPONSABLE r, TRABAJA tr, USUARIO u, PROYECTO p, TICKET ti
+        FROM tarea t, responsable r, trabaja tr, usuario u, proyecto p, ticket ti
         WHERE u.idUsuario= tr.idUsuario
         AND u.idUsuario = r.idUsuario
         AND r.idTarea = t.idTicket
@@ -101,11 +101,11 @@ module.exports = class Proyecto {
     static epics(epic) {
         return db.execute(`
         SELECT nombre, t.idTicket
-        FROM TICKET t, EPIC e, PROYECTO p
+        FROM ticket t, epic e, proyecto p
         WHERE t.idTicket = e.idTicket
         AND perteneProyecto = p.idTicket 
         AND perteneProyecto IN (SELECT idTicket
-                                   FROM TICKET
+                                   FROM ticket
                                    WHERE idTicket = (?));
         `, [epic]);
     }
