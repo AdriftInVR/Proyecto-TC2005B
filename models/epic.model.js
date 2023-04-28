@@ -76,9 +76,9 @@ module.exports = class Epic {
         `, [epicID])
     }
 
-    static async setEpicProj(epics){
-        for(let i=0;i<epics.length;i++){
-            await db.execute(`UPDATE EPICS SET perteneProyecto = ? WHERE idTicket = ?`,[epics[i].idPrj,epics[i].idTicket])
+    static async setEpicProj(id, epics){        
+        for(let i=0;i<epics.length;i++){            
+            await db.execute(`UPDATE EPIC SET perteneProyecto = ? WHERE idTicket = ?`,[id,epics[i]])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });

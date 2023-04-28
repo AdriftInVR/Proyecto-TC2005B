@@ -805,12 +805,18 @@ control.processCsv = async(req,res)=>{
 
 control.postProject = (req, res, next) =>{
     msgErrorAddProject = false;
-    
+        
     const data = {
         nombre : req.body.projectName,
         fechaInicio : req.body.projectStart,
-        epics: req.body.epics
+        epics: 0
     };
+    
+    if(Array.isArray(req.body.epics)){
+        data.epics = req.body.epics;
+    }else{
+        data.epics = [req.body.epics];
+    }
     
     const newProject = new Proyect(data);    
     

@@ -1,9 +1,10 @@
 const db = require('../util/database');
-
+const Epic = require('../models/epic.model')
 module.exports = class Proyecto {
     constructor(_newProyecto) {
         this.nombre = _newProyecto.nombre;
         this.fechaInicio = _newProyecto.fechaInicio;
+        this.epics = _newProyecto.epics;        
     }
 
     save() {
@@ -53,6 +54,7 @@ module.exports = class Proyecto {
                             console.log(err);
                         });
 
+                    Epic.setEpicProj(id_temporal,this.epics )
                 }
                 return error;
             })
