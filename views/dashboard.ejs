@@ -105,10 +105,7 @@
 <script>
     // Estos scripts crean graficas de Pie para los diferentes estatus de un proyecto o Epic
     var pieChart;
-    function ProjectPieChart(projectID){
-        if (pieChart) {
-            pieChart.destroy();
-        }    
+    function ProjectPieChart(projectID){  
         const pie = document.getElementById('statusPie');
         fetch('/data/project/status/' + projectID, {
             method: 'GET',
@@ -118,6 +115,7 @@
         }).then(result => {
             return result.json();
         }).then(data => {
+
             let data_labels = [];
             let data_count = [];
             for (let tag of data.status) {
@@ -152,14 +150,14 @@
                     responsive: true,                    
                 }
             };
+            if (pieChart) {
+                pieChart.destroy();
+            }  
             pieChart = new Chart(pie, config);
         })
     }
     
     function EpicPieChart(epicID){
-        if (pieChart) {
-            pieChart.destroy();
-        }  
         const pie = document.getElementById('statusPie');
         fetch('/data/project/epic/status/' + epicID, {
             method: 'GET',
@@ -169,6 +167,9 @@
         }).then(result => {
             return result.json();
         }).then(data => {
+            if (pieChart) {
+                pieChart.destroy();
+            }  
             let data_labels = [];
             let data_count = [];
             for (let tag of data.status) {
@@ -213,58 +214,6 @@
     // Estos scripts crean graficas de Linea para los AP completados en una semana
     var burnupChart;
 
-    //Actualiza datos
-    function BurnupLineChart(projectID) {
-        if (burnupChart) {
-            burnupChart.destroy()
-        }
-        const buap = document.getElementById('burnupAP');
-        fetch('/data/project/estimate/' + projectID, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then(result => {
-            return result.json();
-        }).then(estimateData => {
-            let data_labels = []
-            for (i=0;i<estimateData.status[0][0].Estimate;i++){
-                data_labels.push(i+1);
-            }
-            fetch('/data/project/totalAPp/' + projectID, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }).then(result => {
-                return result.json;
-            }).then(data => {
-                let array = [];
-                
-            })
-
-            const APBurnUp = {
-            labels: data_labels,
-            datasets: [{
-                data: [2, 2, 2, 2, 2],
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-            };
-            const configura = {
-                type: 'line',
-                data: APBurnUp,
-            };
-            burnupChart = new Chart(buap, configura);
-        })
-    }   
-</script>
-
-
-<script>
-    // Estos scripts crean graficas de Linea para los AP completados en una semana
-    var APlineChart;
 
     function getProjectAP(projectID, start, end, APdata, i) {
         fetch('/data/project/completeAP/' + projectID + "/" + start.toISOString() + "/" + end.toISOString(), {
@@ -284,6 +233,7 @@
         )
     }
 
+
     function getEpicAP(epicID, start, end, APdata, i) {
         fetch('/data/project/epic/completeAP/' + epicID + "/" + start.toISOString() + "/" + end.toISOString(), {
             method: 'GET',
@@ -294,13 +244,288 @@
                 return result.json();
             }).then(data => {
                 if (data.status[0]) {
-                    APdata[i] = data.status[0].WeekAP;
+                    APdata[i] = data.status[0].TotalAP;
                 } else {
                     APdata[i] = 0;
                 }
             }
         )
     }
+
+    function totalAPProject(projectID, end, i, APdata){
+        fetch("/data/project/totalAP/" + projectID + "/" + end.toISOString(), {    
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+        }).then(result => {
+            return result.json();
+        }).then(data =>{
+            if (data.status[0]) {
+                APdata[i] = data.status[0].TotalAP;
+            } else {
+                APdata[i] = 0;
+            }
+        })
+    }
+
+    function totalAPEpic(epicID, end, i, APdata){
+        fetch("/data/project/epic/totalAPe/" + epicID + "/" + end.toISOString(), {    
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+        }).then(result => {
+            return result.json();
+        }).then(data =>{
+            if (data.status[0]) {
+                APdata[i] = data.status[0].APTotalesE;
+            } else {
+                APdata[i] = 0;
+            }
+        })
+    }
+
+
+    //Actualiza datos
+    function BurnupLineChart(projectID) {
+        if (burnupChart) {
+            burnupChart.destroy()
+        }
+        const buap = document.getElementById('burnupAP');
+        fetch('/data/project/estimate/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let data_labels = [0];
+            let data_values = new Array (estimateData.status[0][0].Estimate);
+            let data_completeAP = new Array (estimateData.status[0][0].Estimate);
+            let dataValuesExpected = [];
+            var start = new Date(estimateData.status[0][0].Inicio);
+            var end = new Date(start);
+            end.setDate(end.getDate() + 7);
+            
+
+
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
+                data_labels.push(i+1);
+                getProjectAP(projectID, start, end, data_completeAP, i);
+                totalAPProject(projectID, end, i, data_values);
+                start.setDate(start.getDate()+7);
+                end.setDate(end.getDate()+7);
+            }
+            
+            var thisWeek = 0
+            var goalLine = []
+            let segmentChange = []
+            setTimeout(() => {
+                goalLine = [data_values[0]].concat(data_values);
+                for(i=0;i<data_values.length;i++){
+                    if (data_values[i+1]){
+                        if (data_values[i] != data_values[i+1]){
+                            segmentChange.push(true)
+                        } else {
+                            segmentChange.push(false)
+                        }
+                    }
+                }
+                let segmentGoal = [segmentChange.indexOf(true)+1]
+                for(i=1;i<segmentChange.length;i++){
+                    if (segmentChange[i]){
+                        segmentGoal.push(i+1)
+                    } else {
+                        segmentGoal.push(segmentGoal[i-1])
+                    }
+                }
+                segmentGoal.push(goalLine.length-1)
+                for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                    thisWeek = (goalLine[i]+i) / segmentGoal[i];
+                    dataValuesExpected.push(thisWeek);
+                }
+            }, "1100")
+            setTimeout(() => {
+                for (i=1;i<data_completeAP.length;i++){
+                    data_completeAP[i]+=data_completeAP[i-1];
+                    dataValuesExpected[i]+=dataValuesExpected[i-1];
+                    if(goalLine[i+1]){
+                        if (dataValuesExpected[i]>=goalLine[i+1]){
+                            dataValuesExpected[i]=goalLine[i+1]
+                        }
+                    } 
+                }
+                let completeLine = [0].concat(data_completeAP);
+                let expectedLine = [0].concat(dataValuesExpected);
+                const APBurnUp = {
+                    labels: data_labels,
+                    datasets: [{
+                        type: 'line',
+                        label: 'Expected',
+                        data: expectedLine,
+                        borderColor: 'rgb(0,0,0)',
+                    },{
+                        type: 'line',
+                        label: 'Goal',
+                        data: goalLine,
+                        fill: false,
+                        borderColor: 'rgb(54,162,235)'
+                    },{
+                        type: 'line',
+                        label: 'Complete',
+                        data: completeLine,
+                        fill: true,
+                        borderColor: 'rgb(255,99,132)',
+                        backgroundColor: 'rgba(255,99,132,0.2)'
+                    }]
+                };
+
+                const configura = {
+                    type: 'line',
+                    data: APBurnUp,
+                    options: {
+                        scales:{
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Burn up AP'
+                            },
+                        },
+                        responsive: true,                    
+                    } 
+                };
+                burnupChart = new Chart(buap, configura);
+            }, "1400")
+        })
+    }
+    
+    
+/*EPIC*/
+    function BurnupLineChartEpic(epicID) {
+        if (burnupChart) {
+            burnupChart.destroy()
+        }
+        const buap = document.getElementById('burnupAP');
+        fetch('/data/project/estimate/' + $('#projects').val(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            let data_labels = [0];
+            let data_values = new Array (estimateData.status[0][0].Estimate);
+            let data_completeAP = new Array (estimateData.status[0][0].Estimate);
+            let dataValuesExpected = [0];
+            var start = new Date(estimateData.status[0][0].Inicio);
+            var end = new Date(start);
+            end.setDate(end.getDate() + 7);
+            
+
+            for (i=0;i<estimateData.status[0][0].Estimate;i++){
+                data_labels.push(i+1);
+                getEpicAP(epicID, start, end, data_completeAP, i);
+                totalAPEpic(epicID, end, i, data_values);
+                start.setDate(start.getDate()+7);
+                end.setDate(end.getDate()+7);
+            }
+            
+            var thisWeek = 0
+            var goalLine = []
+            let segmentChange = []
+            setTimeout(() => {
+                goalLine = [data_values[0]].concat(data_values);
+                for(i=1;i<data_values.length;i++){
+                    if (data_values[i] != data_values[i-1]){
+                        segmentChange.push(true)
+                    } else {
+                        segmentChange.push(false)
+                    }
+                }
+                let segmentGoal = [segmentChange.indexOf(true)+1] 
+                for(i=1;i<segmentChange.length;i++){
+                    if (segmentChange[i]){
+                        segmentGoal.push(i+1)
+                    } else {
+                        segmentGoal.push(segmentGoal[i-1])
+                    }
+                }
+                segmentGoal[segmentGoal.length-1] = goalLine.length-1
+                for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                    thisWeek = goalLine[i] / segmentGoal[i];
+                    dataValuesExpected.push(thisWeek);
+                }
+            }, "1100")
+            setTimeout(() => {
+                for (i=1;i<data_completeAP.length;i++){
+                    data_completeAP[i]+=data_completeAP[i-1];
+                    dataValuesExpected[i]+=dataValuesExpected[i-1];
+                    if (dataValuesExpected[i]>=goalLine[i]){
+                        dataValuesExpected[i]=goalLine[i]
+                    }
+                }
+                let completeLine = [0].concat(data_completeAP);
+                let expectedLine = [0].concat(dataValuesExpected);
+                const APBurnUp = {
+                    labels: data_labels,
+                    datasets: [{
+                        type: 'line',
+                        label: 'Expected',
+                        data: expectedLine,
+                        borderColor: 'rgb(0,0,0)',
+                    },{
+                        type: 'line',
+                        label: 'Goal',
+                        data: goalLine,
+                        fill: false,
+                        borderColor: 'rgb(54,162,235)'
+                    },{
+                        type: 'line',
+                        label: 'Complete',
+                        data: completeLine,
+                        fill: true,
+                        borderColor: 'rgb(255,99,132)',
+                        backgroundColor: 'rgba(255,99,132,0.2)'
+                    }]
+                };
+
+                const configura = {
+                    type: 'line',
+                    data: APBurnUp,
+                    options: {
+                        scales:{
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Burn up AP'
+                            },
+                        },
+                        responsive: true,                    
+                    } 
+                };
+                burnupChart = new Chart(buap, configura);
+            }, "1500")
+        })
+    }
+
+</script>
+
+
+<script>
+    // Estos scripts crean graficas de Linea para los AP completados en una semana
+    var APlineChart;
+
 
     function WeeklyAPLineChart(projectID){
         if (APlineChart) {
@@ -355,7 +580,6 @@
             }, "100");
         })
     }
-
     
     function EpicWeeklyAPLineChart(epicID){
         if (APlineChart) {
@@ -407,7 +631,7 @@
                     }
                 };
                 APlineChart = new Chart(ap, config);
-            }, "100");
+            }, "300");
         })
     }
 </script>
@@ -543,6 +767,7 @@
             EpicPieChart($("#epics").val());
             EpicWeeklyAPLineChart($("#epics").val());
             areasBarChartEpic($("#epics").val());
+            BurnupLineChartEpic($("#epics").val());
         }
     }
 </script>

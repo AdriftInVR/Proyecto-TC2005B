@@ -16,9 +16,10 @@ router.get('/project/title/:idProject', dataController.getNotTitle);
 
 router.get('/project/estimate/:idProject', dataController.getEstimate);
 
-router.get('/project/totalAPp/:idProject', dataController.getAPproyect);
-
-router.get('/project/epic/totalAPe/:idEpic', dataController.getAPepic);
+/*---------------------AP proyect and epic----------------------------*/
+router.get('/project/totalAP/:idProject/:end', dataController.getProjectCompleteAP);
+router.get('/project/epic/totalAPe/:idEpic/:end', dataController.getAPepic);
+/*--------------------------------------------------------------------*/
 
 router.get('/project/completeAP/:idProject/:start/:end', dataController.getCompletedAP);
 
@@ -27,5 +28,11 @@ router.get('/project/epic/completeAP/:idEpic/:start/:end', dataController.getCom
 router.get('/project/area/:idProyecto', dataController.getArea);
 
 router.get('/project/epic/area/:idEpic', dataController.getAreaEpic);
+
+router.get('/project/burnUpLine/:idProject', dataController.burnUpLine);
+
+
+
+router.get('/project/epic/burnUoLineE/:idEpic', dataController.burnUpLine);
 
 module.exports = router;
