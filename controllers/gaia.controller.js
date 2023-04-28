@@ -19,17 +19,21 @@ control.getLogin = (req, res) => {
     res.render('login')
 };
 
-control.getProjects = (req, res) => {
-    Proyect.fetchAll()
-    .then(([rows, filedData]) => {
-        res.render('home', {
-            active: 'projects',
-            proyectos: rows,
-            msgErr: msgErrorAddProject
-        });
-    })
-    .catch(err => {
+control.getProjects = async (req, res) => {
+    msgErr = msgErrorAddProject
+
+    try{
+        [proyectos, fieldData] = await Proyect.fetchAll();
+
+        [epics, filedData] = await Epic.fetchAllNoAsignate();
+    }catch(err){
         console.log(err);
+    }
+    res.render('home', {
+        active: 'projects',
+        proyectos: proyectos,
+        epics: epics,
+        msgErr: msgErrorAddProject,
     });
 };
 
@@ -47,10 +51,29 @@ control.getProject = async (req, res) => {
         console.log(err);
     }
 
+    var fecha = new Date(namePrj[0].fechainicio);
+
+    // Obtiene los componentes de la fecha
+    var dia = fecha.getDate();
+    var mes = fecha.getMonth() + 1; // Se suma 1 porque el mes comienza en 0
+    var anio = fecha.getFullYear();
+
+    // Ajusta el formato de día y mes a dos dígitos
+    if (dia < 10) {
+    dia = "0" + dia;
+    }
+    if (mes < 10) {
+    mes = "0" + mes;
+    }
+
+    // Construye la cadena de fecha formateada
+    var fechaFormateada = dia + "/" + mes + "/" + anio;
+
     res.render('project', {
         active: 'projects',
         epics: epics,
         projectName: namePrj[0].nombre,
+        date: fechaFormateada,
         datos: datos, 
     });
     
@@ -782,10 +805,11 @@ control.processCsv = async(req,res)=>{
 
 control.postProject = (req, res, next) =>{
     msgErrorAddProject = false;
-
+    
     const data = {
         nombre : req.body.projectName,
-        fechaInicio : req.body.projectStart
+        fechaInicio : req.body.projectStart,
+        epics: req.body.epics
     };
     
     const newProject = new Proyect(data);    

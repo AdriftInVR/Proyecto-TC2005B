@@ -30,6 +30,15 @@ module.exports = class Epic {
         `);
     }
 
+    static fetchAllNoAsignate(){
+        return db.execute(`
+            SELECT t.nombre as 'EpicName', e.idTicket as 'EpicID', e.perteneProyecto as 'ProjectID'
+            FROM EPIC e, TICKET t
+            WHERE e.idTicket = t.idTicket
+            AND e.perteneProyecto IS NULL
+        `);
+    }
+
     static fetchStatus(epicID) {
         return db.execute(`
             SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM ESTATUS s, FASE f, TAREA t, EPIC e, PROYECTO p
@@ -65,5 +74,14 @@ module.exports = class Epic {
         AND e.idTicket = ?
         GROUP BY p.idTicket
         `, [epicID])
+    }
+
+    static async setEpicProj(epics){
+        for(let i=0;i<epics.length;i++){
+            await db.execute(`UPDATE EPICS SET perteneProyecto = ? WHERE idTicket = ?`,[epics[i].idPrj,epics[i].idTicket])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+        }    
     }
 }

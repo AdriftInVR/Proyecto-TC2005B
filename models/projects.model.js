@@ -64,7 +64,7 @@ module.exports = class Proyecto {
             SELECT *
             FROM PROYECTO p, TICKET t 
             WHERE p.idTicket = t.idTicket
-            GROUP BY nombre;`);
+            GROUP BY nombre;`);    
     }
 
     static fetchAll() {
