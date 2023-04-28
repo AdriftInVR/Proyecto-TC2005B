@@ -112,8 +112,8 @@ exports.getAPproyect = async (req, res) => {
     });
 }
 
-exports.getAPepic = (req, res) => {
-    Epic.fetchAPproject(req.params.idEpic)
+exports.getAPepic = async (req, res) => {
+    await Proyecto.fetchAPepic(req.params.idEpic)
         .then(([rows, fieldData]) => {
             res.status(200).json({status: rows})
         })
