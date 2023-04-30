@@ -323,6 +323,32 @@ control.processCsv = async(req,res)=>{
         }
     }
     
+    //soft delete for tickets
+    if(isCorrect){
+        let entriesDelete = [];
+        await Ticket.fetchAll()
+        .then(([rows, fieldData])=>{
+            for(let i=0; i<rows.length; i++){
+                for(let j=0; j<objList.length; j++){
+                    if(rows[i].idTicket == objList[j].issueid){
+                        break;
+                    }
+                    else if(j==objList.length){
+                        let ticketInsert = {
+                            idTicket: objList[j].issueid,
+                            idEstatus:  7,
+                            fechaCambio: Date.now()
+                        };    
+                        entriesDelete.push(ticketInsert)                    
+                    }
+                }                
+            }
+        })
+        .catch(err=>console.log(err))
+
+        await Fase.addOne(entriesDelete)
+    }
+
     //Send data to database
     if(isCorrect){        
         //Data to table ticket

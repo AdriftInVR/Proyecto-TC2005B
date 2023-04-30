@@ -2,8 +2,8 @@ const db = require('../util/database');
 
 module.exports = class Ticket {
 
-    static fetchAll() {
-        return db.execute('SELECT * FROM ticket');
+    static async fetchAll() {
+        return await db.execute('SELECT * FROM ticket');
     }
     
     static async add(data){        
