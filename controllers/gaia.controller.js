@@ -136,6 +136,86 @@ control.getTasks = async (req, res) => {
     })
     .catch(err =>console.log(err));
 };
+control.getTasksarea = async (req, res) => {
+    id = req.params.prj;
+    let idProyect = 0;
+    await Epic.fetchPrjPertenece(id)
+    .then(([rows, fieldData])=>{
+        idProyect = rows[0].perteneProyecto;
+    })
+    try {
+        [taskarea1, fieldData] = await Tarea.tasktdoarea(id,wa);        
+
+        [taskarea2, fieldData] = await Tarea.taskinproarea(id,wa);    
+
+        [taskarea3, fieldData] = await Tarea.taskcodearea(id,wa);        
+
+        [taskarea4, fieldData] = await Tarea.taskqualityarea(id,wa);        
+
+        [taskarea5, fieldData] = await Tarea.taskreleasearea(id,wa);        
+
+        [taskarea6, fieldData] = await Tarea.taskdonearea(id,wa);        
+
+        [taskarea7, fieldData] = await Tarea.taskclosedarea(id,wa);
+        
+        [epics, filedData] = await Proyect.epic(idProyect);
+
+    } catch (err) {
+        console.log(err);
+    }
+    
+    for(let i=0;i<taskarea1.length;i++){
+        fecha = taskarea1[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea1[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea2.length;i++){
+        fecha = taskarea2[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea2[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea3.length;i++){
+        fecha = taskarea3[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea3[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea4.length;i++){
+        fecha = taskarea4[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea4[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea5.length;i++){
+        fecha = task5area[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task5area[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea6.length;i++){
+        fecha = task6area[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea6[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea7.length;i++){
+        fecha = taskarea7[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea7[i].fechaCambio = fechaFormateada;
+    }    
+    
+    Epic.fetchAll()
+    .then(([rows, fieldData])=>{        
+        res.render('tasks', {
+            active: 'projects',
+            tasksa1: taskarea1,
+            tasksa2: taskarea2,
+            tasksa3: taskarea3,
+            tasksa4: taskarea4,
+            tasksa5: taskarea5,
+            tasksa6: taskarea6,
+            tasksa7: taskarea7,
+            epics: epics,
+        });
+    })
+    .catch(err =>console.log(err));
+};
 
 function formatDate(dateAnt){
     const diasSemana = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

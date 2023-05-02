@@ -55,7 +55,7 @@ module.exports = class Tarea {
 
     }
 
-    static taskinpro(){
+    static taskinpro(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -65,10 +65,9 @@ module.exports = class Tarea {
         AND f.idEstatus = 2
         AND e.idTicket = ?
         `,[id])
-
     }
 
-    static taskcode(){
+    static taskcode(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -80,7 +79,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static taskquality(){
+    static taskquality(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -92,7 +91,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static taskrelease(){
+    static taskrelease(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -104,7 +103,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static taskdone(){
+    static taskdone(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -116,7 +115,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static taskclosed(){
+    static taskclosed(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -128,7 +127,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static async fetchOne(){
+    static async fetchOne(id){
         return await db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta
@@ -138,14 +137,96 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    /*static fetchfrontback(idfront){
-        return db.execute(`
+    /*-------------------------- Work area -------------------------------*/
+
+    static tasktdoarea(id, wa){
+        return db.execute (`
         SELECT *
-        FROM TICKET t, PROYECTO p, EPIC e, TAREA ta
-        WHERE t.idTicket = p.idTicket
-        AND p.idTicket = e.perteneProyecto
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 1
+        AND e.idTicket = ?
         AND ta.front_back = ?
-        `[idfront])
-    }*/
+        `,[id,wa])
+    }
+
+    static taskinproarea(id,wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 2
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskcodearea(id,wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 3
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskqualityarea(id,wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 4
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskreleasearea(id,wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 5
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskdonearea(id,wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 6
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskclosedarea(id,wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 7
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
 }
