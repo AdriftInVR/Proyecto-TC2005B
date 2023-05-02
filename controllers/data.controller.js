@@ -275,8 +275,8 @@ exports.burnUpLine = async (req, res) =>{
 
 exports.burnUpLinesEpic= async (req, res) =>{
     let data={
-        stimate : 0,
-        aptotales : 0
+        stimate: 0,
+        aptotales: 0
     }
     await Proyecto.fetchEstimate(req.params.idProject)
     .then(([rows, fieldData]) => {
