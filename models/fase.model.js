@@ -28,6 +28,16 @@ module.exports = class Fase {
         }        
     }
 
+
+    static async softDelete(data){        
+        for(let i=0;i<data.length;i++){
+            await db.execute(`INSERT INTO fase(idTicket,idEstatus) VALUES (?,?);`,[data[i].idTicket,data[i].idEstatus])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+        }        
+    }
+    
     static async updateOne(data){
         for(let i=0;i<data.length;i++){
             await db.execute(`UPDATE fase SET fechaCambio = ? WHERE idTicket = ? AND idEstatus = 1`,[data[i].fechaCambio,data[i].idTicket])

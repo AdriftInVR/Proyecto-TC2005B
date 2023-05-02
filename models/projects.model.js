@@ -1,9 +1,10 @@
 const db = require('../util/database');
-
+const Epic = require('../models/epic.model')
 module.exports = class Proyecto {
     constructor(_newProyecto) {
         this.nombre = _newProyecto.nombre;
         this.fechaInicio = _newProyecto.fechaInicio;
+        this.epics = _newProyecto.epics;        
     }
 
     save() {
@@ -53,6 +54,7 @@ module.exports = class Proyecto {
                             console.log(err);
                         });
 
+                    Epic.setEpicProj(id_temporal,this.epics )
                 }
                 return error;
             })
@@ -64,7 +66,7 @@ module.exports = class Proyecto {
             SELECT *
             FROM proyecto p, ticket t 
             WHERE p.idTicket = t.idTicket
-            GROUP BY nombre;`);
+            GROUP BY nombre;`);    
     }
 
     static fetchAll() {
@@ -112,7 +114,44 @@ module.exports = class Proyecto {
 
     /* ---------------------------DELETE PROJECT--------------------------------- */
 
-    
+    static trabajadelete(id) {
+        return db.execute(`
+        DELETE
+        FROM trabaja 
+        WHERE idProyecto = ?
+        `,[id])
+    }
+
+    static clearepic(id){
+        return db.execute(`
+        UPDATE epic
+        SET epic.perteneProyecto = NULL
+        WHERE epic.perteneProyecto = ?
+        `, [id])
+    }
+
+    static proyectodelete(id){
+        return db.execute(`
+        DELETE
+        FROM proyecto
+        WHERE idTicket = ?
+        `, [id])
+    }
+
+    static ticketdelete(){
+        return db.execute(`
+        DELETE
+        FROM ticket
+        WHERE idTicket = ?
+        `, [id])
+    }
+
+    static async fetchPrjPertenece(id){                
+        return await db.execute(`SELECT idTicket FROM proyecto WHERE idTicket = ?`,[id])
+        .catch(err => {
+            console.log({sql:err.sql, msg:err.sqlMessage});
+        });        
+    }
 
     /* -------------------------------------------------------------------------- */
 }
