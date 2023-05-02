@@ -8,7 +8,7 @@ module.exports = class Ticket {
     
     static async add(data){        
         for(let i=0;i<data.length;i++){
-            await db.execute(`INSERT INTO TICKET(idTicket,nombre) VALUES (?,?) `,[data[i].idTicket,data[i].nombre])
+            await db.execute(`INSERT INTO ticket(idTicket,nombre) VALUES (?,?) `,[data[i].idTicket,data[i].nombre])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
@@ -17,7 +17,7 @@ module.exports = class Ticket {
     
     static async update(data){        
         for(let i=0;i<data.length;i++){
-            await db.execute(`UPDATE TICKET SET nombre = ? WHERE idTicket = ?`,[data[i].nombre,data[i].idTicket])
+            await db.execute(`UPDATE ticket SET nombre = ? WHERE idTicket = ?`,[data[i].nombre,data[i].idTicket])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });

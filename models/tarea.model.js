@@ -13,19 +13,19 @@ module.exports = class Tarea {
     static fetchAll(epic){    
         return db.execute(`
         SELECT nombre
-        FROM TICKET t, EPIC e, PROYECTO p
+        FROM ticket t, epic e, proyecto p
         WHERE t.idTicket = e.idTicket
         AND perteneProyecto = p.idTicket 
         AND perteneProyecto IN (SELECT idTicket
-                                   FROM TICKET
+                                   FROM ticket
                                    WHERE nombre = (?));
         `,[epic]);
     }
     
     static async add(data){        
         for(let i=0;i<data.length;i++){            
-            await db.execute(`INSERT INTO TAREA(idTicket,perteneceEpic,puntosAgiles,esTipo,front_back) VALUES (?,?,?,?,?) `,
-            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back])
+            await db.execute(`INSERT INTO tarea(idTicket,perteneceEpic,puntosAgiles,esTipo,front_back, asignacionEpiTar) VALUES (?,?,?,?,?,?) `,
+            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back, data[i].asignation])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
@@ -34,8 +34,8 @@ module.exports = class Tarea {
 
     static async update(data){        
         for(let i=0;i<data.length;i++){            
-            await db.execute(`UPDATE TAREA SET idTicket = ?,perteneceEpic = ?, puntosAgiles = ?,esTipo = ?, front_back = ? WHERE idTicket = ? `,
-            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back, data[i].idTicket])
+            await db.execute(`UPDATE tarea SET idTicket = ?,perteneceEpic = ?, puntosAgiles = ?,esTipo = ?, front_back = ?, asignacionEpiTar = ? WHERE idTicket = ? `,
+            [data[i].idTicket,data[i].perteneceEpic,data[i].puntosAgiles,data[i].esTipo,data[i].front_back, data[i].asignation, data[i].idTicket])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
@@ -45,7 +45,7 @@ module.exports = class Tarea {
     static tasktdo(id){
         return db.execute (`
         SELECT *
-        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -58,7 +58,7 @@ module.exports = class Tarea {
     static taskinpro(){
         return db.execute (`
         SELECT *
-        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -71,7 +71,7 @@ module.exports = class Tarea {
     static taskcode(){
         return db.execute (`
         SELECT *
-        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -83,7 +83,7 @@ module.exports = class Tarea {
     static taskquality(){
         return db.execute (`
         SELECT *
-        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -95,7 +95,7 @@ module.exports = class Tarea {
     static taskrelease(){
         return db.execute (`
         SELECT *
-        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -107,7 +107,7 @@ module.exports = class Tarea {
     static taskdone(){
         return db.execute (`
         SELECT *
-        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -119,7 +119,7 @@ module.exports = class Tarea {
     static taskclosed(){
         return db.execute (`
         SELECT *
-        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, EPIC e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic
@@ -131,7 +131,7 @@ module.exports = class Tarea {
     static async fetchOne(){
         return await db.execute (`
         SELECT *
-        FROM TICKET ti, FASE f, TAREA ta
+        FROM ticket ti, fase f, tarea ta
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket                
         AND ti.idTicket = ?
