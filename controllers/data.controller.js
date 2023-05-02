@@ -99,20 +99,7 @@ exports.getProjectCompleteAP = (req, res) => {
         });
 };
 
-//Puntos agiles por tarea y epic
-exports.getAPproyect = async (req, res) => {
-    await Proyecto.fetchAPproject(req.params.idProject)
-        .then(([rows, fieldData]) => {
-            console.log(rows)
-            res.status(200).json({status: rows})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({message: "Internal Server Error"});
-    });
-}
-
-exports.getAPepic = (req, res) => {
+exports.getEpicCompleteAP = (req, res) => {
     Epic.fetchAPepic(req.params.idEpic, req.params.end)
         .then(([rows, fieldData]) => {
             res.status(200).json({status: rows})
