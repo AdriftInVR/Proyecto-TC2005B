@@ -142,6 +142,13 @@ control.getTasks = async (req, res) => {
         fechaFormateada = formatDate(fecha);
         task7[i].fechaCambio = fechaFormateada;
     }    
+    let nameActual = '';
+    for(let i=0; i<epics.length; i++){
+        if(epics[i].idTicket == id){
+            nameActual = epics[i].nombre;
+            break;
+        }
+    }
     
     Epic.fetchAll()
     .then(([rows, fieldData])=>{        
@@ -154,7 +161,9 @@ control.getTasks = async (req, res) => {
             tasks5: task5,
             tasks6: task6,
             tasks7: task7,
-            epics: epics
+            epics: epics,
+            actual: nameActual,
+            prj: idProyect
         });
     })
     .catch(err =>console.log(err));
@@ -336,8 +345,7 @@ control.processCsv = async(req,res)=>{
         let entriesDelete = [];
         await Tarea.fetchAllAll()
         .then(([rows, fieldData])=>{
-            console.log(rows.length);
-            console.log(objList.length);
+            
             for(let i=0; i<rows.length; i++){                
                 for(let j=0; j<objList.length; j++){
                     if(rows[i].idTicket == objList[j].issueid){
@@ -355,8 +363,7 @@ control.processCsv = async(req,res)=>{
             }
         })
         .catch(err=>console.log(err))
-
-        console.log(entriesDelete);
+        
         await Fase.softDelete(entriesDelete);
     }
 

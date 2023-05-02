@@ -11,7 +11,10 @@ module.exports = {
       },
       height: {
         'main': '90vh',
-      }
+      },
+      background:{
+        'main': 'rgb(11, 11, 66)'
+      } 
     },
   },
   plugins: [],
