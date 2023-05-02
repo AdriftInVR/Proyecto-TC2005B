@@ -84,6 +84,19 @@ control.getProject = async (req, res) => {
     
 };
 
+control.getEditProject = (req, res, next) => {
+    Proyect.editar(NewData, projeId)
+    .then(([rows,fieldData])=>{
+       res.render('project', {
+        active: 'projects',
+        dataNew: dataNew,
+        projeId: projeId,
+        NewData: NewData[0].datos
+
+       }) 
+    });
+}
+
 control.getTasks = async (req, res) => {
     id = req.params.prj;
     let idProyect = 0;
@@ -835,8 +848,6 @@ control.postProject = (req, res, next) =>{
     res.redirect('/');
 }
 
-
-
 control.postEpicsDB = (req, res, next) =>{
     const epicDato = req.body.EpicID;
     const newTask = new Tarea(epicDato);    
@@ -845,6 +856,26 @@ control.postEpicsDB = (req, res, next) =>{
     res.redirect('/project');
 }
 
+control.postEditProject = (req, res, next) => {
+    const NewData = {
+        projName: req.body.projectNameNew,
+        startDate: req.body.projectStartNew,
+        userName: req.body.users,
+        APUser: req.body.APNew,
+        newEpics: req.body.epicss
+    };
 
+    console.log(NewData)
+    const newDataProject = new Proyect(NewData);
+    idproject = req.params.prj;
+
+    newDataProject.editar(NewData, idproject)
+    .then(([rows,fieldData]) => {
+       res.render('project', {
+        active: 'projects',
+        dataNew: dataNew,
+        }) 
+    });
+}
 
 module.exports = control

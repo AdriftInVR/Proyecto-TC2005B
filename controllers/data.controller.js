@@ -90,10 +90,22 @@ exports.getCompletedAPEpic = (req, res) => {
     });
 }
 
-//Puntos agiles por tarea y epic
-exports.getAPproyect = (req, res) => {
-    Proyecto.fetchAPproject(req.params.idProject)
+exports.getProjectCompleteAP = (req, res) => {
+    Proyecto.fetchAPproject(req.params.idProject, req.params.end)
         .then(([rows, fieldData]) => {
+            res.status(200).json({status:rows})  
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({message: "Internal Server Error"});
+        });
+};
+
+//Puntos agiles por tarea y epic
+exports.getAPproyect = async (req, res) => {
+    await Proyecto.fetchAPproject(req.params.idProject)
+        .then(([rows, fieldData]) => {
+            console.log(rows)
             res.status(200).json({status: rows})
         })
         .catch(err => {
@@ -102,8 +114,8 @@ exports.getAPproyect = (req, res) => {
     });
 }
 
-exports.getAPepic = (req, res) => {
-    Epic.fetchAPproject(req.params.idEpic)
+exports.getAPepic = async (req, res) => {
+    await Proyecto.fetchAPepic(req.params.idEpic)
         .then(([rows, fieldData]) => {
             res.status(200).json({status: rows})
         })
@@ -223,3 +235,68 @@ exports.getAreaEpic = async (req, res) => {
     
     res.status(200).json(area);
 };
+
+exports.burnUpLine = async (req, res) =>{
+    let data={
+        stimate : 0,
+        aptotales : 0,
+        real : []
+    }
+    await Proyecto.fetchEstimate(req.params.idProject)
+    .then(([rows, fieldData]) => {
+        data.stimate = rows;
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({message: "Internal Server Error"});
+    });
+
+    let startPrjDate = '';
+    await Proyecto.fetchOne(req.params.idProject)
+    .then(([rows, fieldData])=>{
+        startPrjDate = rows[0].fechainicio;
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({message: "Internal Server Error"});
+    })
+    
+    await Proyecto.fetchGreenLine(req.params.idProject)
+    .then(([rows, fieldData])=>{
+        let maxDate = rows[0].fechaCambio;
+        let daysClose = (maxDate - startPrjDate)/86400000;
+
+        
+        res.status(500).json(data);
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({message: "Internal Server Error"});
+    })
+}
+
+
+exports.burnUpLinesEpic= async (req, res) =>{
+    let data={
+        stimate : 0,
+        aptotales : 0
+    }
+    await Proyecto.fetchEstimate(req.params.idProject)
+    .then(([rows, fieldData]) => {
+        data.stimate = rows;
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({message: "Internal Server Error"});
+    });
+
+    await Epic.fetchAPproject(req.params.idEpic)
+    .then(([rows,fieldData])=>{
+        data.aptotales = rows[0].APTotalesE;
+        res.status(500).json(data);
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({message: "Internal Server Error"});
+    })   
+}

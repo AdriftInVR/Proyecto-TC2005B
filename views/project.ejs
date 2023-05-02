@@ -117,7 +117,7 @@
                             <span class="sr-only">Close modal</span>
                         </button>
                         <h3 class="px-6 py-6 lg:px-8 mb-4 text-xl font-medium text-gray-900 dark:text-white">Editing <%=projectName%></h3>
-                        <form class="space-y-6" action="/gaia/project/" method="POST" onsubmit="return validar()">
+                        <form class="space-y-6" action="/gaia/project/edit" method="POST">
                         
                         
                             <div class="px-6 lg:px-8 grid grid-cols-2 gap-2">  
@@ -153,7 +153,7 @@
                                                     <% for (let user of userName) { %>
                                                         <li>
                                                             <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
-                                                                <input id="users" name="users" onchange="blockBox()" type="checkbox" value="<%= user.idUser %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                                <input id="users" name="users" value="<%user.nombre%>" onchange="blockBox()" type="checkbox" value="<%= user.idUser %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                                     <label for="checkbox-item-11" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= user.nombre %></label>
                                                                     
                                                                     <!--AGILE POINTS-->
@@ -185,40 +185,7 @@
                                             }
                                         }
                                     </script>
-
-
-
-                                    <!--WORK AREA-->
-                                    <div >
-                                        <div class="mb-8 w-80">
-                                            <label for="WorkAreaNew" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Work Area:</label>
-                                            <button id="dropdownSearchButton" data-dropdown-toggle="WorkArea" class="w-full inline-flex items-center px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="button">Work area:
-                                                <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                                </svg>
-                                            </button>
-                                            <!-- Dropdown menu -->
-                                            <div id="WorkArea" class="z-10 hidden bg-white rounded-lg shadow w-60 h-24 dark:bg-gray-700">
-                                                <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
-                                                    <li>
-                                                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
-                                                            <input id="Front" name="Front" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                                <label for="checkbox-item-11" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Frontend</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
-                                                            <input id="Back" name="Back" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                                <label for="checkbox-item-11" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Backend</label>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
                                  
-
                                 <!--EPICS-->
                                 <div >
                                     <div class="mb-8 w-80">
@@ -234,8 +201,8 @@
                                                 <% for (let epic of epi) { %>
                                                     <li>
                                                         <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
-                                                            <input id="epics" name="epics" type="checkbox" value="<%= epic.EpicID %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                                <label for="checkbox-item-11" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= epic.EpicName %></label>
+                                                            <input id="epicss" name="epicss" type="checkbox" value="<%= epic.EpicID %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                                <label for="checkbox-item-11" value="<%epic.EpicName%>" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= epic.EpicName %></label>
                                                         </div>
                                                     </li>
                                                 <% } %>

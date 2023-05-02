@@ -3,11 +3,11 @@ const db = require('../util/database');
 module.exports = class Epic {
 
     static fetchAll() {
-        return db.execute('SELECT * FROM EPIC');
+        return db.execute('SELECT * FROM epic');
     }
     
     static async fetchPrjPertenece(id){                
-        return await db.execute(`SELECT perteneProyecto FROM EPIC WHERE idTicket = ?`,[id])
+        return await db.execute(`SELECT perteneProyecto FROM epic WHERE idTicket = ?`,[id])
         .catch(err => {
             console.log({sql:err.sql, msg:err.sqlMessage});
         });        
@@ -15,7 +15,7 @@ module.exports = class Epic {
 
     static async add(data){        
         for(let i=0;i<data.length;i++){
-            await db.execute(`INSERT INTO EPIC(idTicket) VALUES (?)`,[data[i].idTicket])
+            await db.execute(`INSERT INTO epic(idTicket) VALUES (?)`,[data[i].idTicket])
             .catch(err => {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
@@ -25,7 +25,7 @@ module.exports = class Epic {
     static fetchAllIDs() {
         return db.execute(`
             SELECT t.nombre as 'EpicName', e.idTicket as 'EpicID', e.perteneProyecto as 'ProjectID'
-            FROM EPIC e, TICKET t
+            FROM epic e, ticket t
             WHERE e.idTicket = t.idTicket
         `);
     }
@@ -41,7 +41,7 @@ module.exports = class Epic {
 
     static fetchStatus(epicID) {
         return db.execute(`
-            SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM ESTATUS s, FASE f, TAREA t, EPIC e, PROYECTO p
+            SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM estatus s, fase f, tarea t, epic e, proyecto p
             WHERE s.idEstatus = f.idEstatus
             AND f.idTicket = t.idTicket
             AND t.perteneceEpic = e.idTicket
@@ -53,7 +53,7 @@ module.exports = class Epic {
     static fetchCompletedAP(epicID, SoW, EoW) {
         return db.execute(`
         SELECT E.idTicket, SUM(T.puntosAgiles) as 'WeekAP'
-        FROM TAREA T, EPIC E, FASE F, ESTATUS S
+        FROM tarea T, epic E, fase F, estatus S
         WHERE E.idTicket = T.perteneceEpic
         AND T.idTicket = F.idTicket
         AND F.idEstatus = S.idEstatus
@@ -64,15 +64,16 @@ module.exports = class Epic {
         `, [SoW, EoW, epicID])
     };
 
-    static fetchAPproject(epicID){
+/* LINEA VERDE EPICS :D */
+    static fetchGreenEpicLine(epicID){
         return db.execute (`
-        SELECT SUM(ta.puntosAgiles)
-        FROM proyecto p, ticket t, epic e, tarea ta
-        WHERE p.idTicket = t.idTicket
-        AND p.idTicket = e.perteneProyecto
-        AND ta.perteneceEpic = e.idTicket
+        SELECT COUNT(ta.idTicket)
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 6 
         AND e.idTicket = ?
-        GROUP BY p.idTicket
         `, [epicID])
     }
 
