@@ -45,7 +45,11 @@ control.getProject = async (req, res) => {
     
         [epics, filedData] = await Proyect.epics(projectName);        
         
-        [namePrj, filedData] = await Proyect.fetchOne(projectName);        
+        [namePrj, filedData] = await Proyect.fetchOne(projectName);
+        
+        [epi, filedData] = await Epic.fetchAllIDs();
+        
+        [userName, filedData] = await User.UserNoAsignated();
     } catch (err) {
         console.log(err);
     }
@@ -71,9 +75,11 @@ control.getProject = async (req, res) => {
     res.render('project', {
         active: 'projects',
         epics: epics,
+        epi: epi,
         projectName: namePrj[0].nombre,
         date: fechaFormateada,
         datos: datos, 
+        userName: userName, 
     });
     
 };
