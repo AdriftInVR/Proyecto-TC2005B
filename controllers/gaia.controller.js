@@ -808,7 +808,7 @@ control.processCsv = async(req,res)=>{
                     };
                     entriesNew.push(ticketInsert);
                 }
-            }
+000000            }
         })
         await User.addRespon(entriesNew);
 

@@ -119,17 +119,56 @@ module.exports = class Proyecto {
         `, [epic]);
     }
 
-    static editar(data, idProj) {
-        return db.execute(`
-        UPDATE ticket
-        JOIN proyecto ON ticket.idTicket = proyecto.idTicket
-        JOIN epic ON proyecto.idTicket = epic.perteneProyecto
-        JOIN trabaja ON proyecto.idTicket = trabaj  a.idProyecto
-        JOIN usuario ON trabaja.idUsuario = usuario.idUsuario
-        SET ticket.nombre = ?, proyecto.fechaInicio = ?, usuario.nombre = ?
-        WHERE proyecto.idTicket = ?
-        `, [data.nombre, data.fechaInicio, data.nombre, idProj]);
-    }      
+
+    static async editar(data, idProj) {
+        
+        await db.execute(`
+                        
+            -- CAMBIAR NOMBRE
+            UPDATE ticket
+            SET nombre = ? --NUEVO
+            WHERE nombre = ?; -- BUSCA
+        `, [])
+
+        db.execute(`
+            
+            -- CAMBIAR FECHA DE INICIO
+            UPDATE proyecto
+            SET fechaInicio = ?
+            WHERE fechaInicio = ?;
+        `, [])
+
+        db.execute(`
+            
+            -- CAMBIAR TRABAJADORES
+            UPDATE trabaja
+            SET idUsuario = ?
+            WHERE idUsuario = ?;
+        `, [])
+
+        db.execute(`
+            
+            -- CAMBIAR SUS PUNTOS ÁGILES
+            UPDATE trabaja
+            SET efectividadAsignada = ?
+            WHERE efectividadAsignada = ?;
+        `, [])
+
+        db.execute(`
+
+            -- CAMBIAR PERTENECE EPICS
+            UPDATE epic
+            SET perteneProyecto = ?
+            WHERE PerteneProyecto = ?;
+        `, [])
+
+            .then(([rows, fieldData]) => {
+
+            })
+            .catch(err => {
+                console.log(err);
+            });     
+    }  
 
 }
 
