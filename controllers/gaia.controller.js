@@ -19,17 +19,21 @@ control.getLogin = (req, res) => {
     res.render('login')
 };
 
-control.getProjects = (req, res) => {
-    Proyect.fetchAll()
-    .then(([rows, filedData]) => {
-        res.render('home', {
-            active: 'projects',
-            proyectos: rows,
-            msgErr: msgErrorAddProject
-        });
-    })
-    .catch(err => {
+control.getProjects = async (req, res) => {
+    msgErr = msgErrorAddProject
+
+    try{
+        [proyectos, fieldData] = await Proyect.fetchAll();
+
+        [epics, filedData] = await Epic.fetchAllNoAsignate();
+    }catch(err){
         console.log(err);
+    }
+    res.render('home', {
+        active: 'projects',
+        proyectos: proyectos,
+        epics: epics,
+        msgErr: msgErrorAddProject,
     });
 };
 
@@ -47,11 +51,60 @@ control.getProject = async (req, res) => {
         console.log(err);
     }
 
+    var fecha = new Date(namePrj[0].fechainicio);    
+    var dia = fecha.getDate();
+    var mes = fecha.getMonth() + 1; 
+    var anio = fecha.getFullYear();
+    if (dia < 10) {
+    dia = "0" + dia;
+    }
+    if (mes < 10) {
+    mes = "0" + mes;
+    }
+    var fechaFormateada = dia + "/" + mes + "/" + anio;
+
+    let complete = 0, all = 0, end = '';
+    await Proyecto.fetchAllPrj(projectName)
+    .then(([rows, fieldData])=>{
+        all = rows[0].Completed;        
+    })
+    .catch(err=>console.log(err));
+    
+    await Proyecto.fetchCompletePrj(projectName)
+    .then(([rows, fieldData])=>{
+        complete = rows[0].Complete;
+    })
+    .catch(err=>console.log(err));
+
+    console.log('1: ',all, '2:', complete)
+    if(complete == all){
+        await Proyecto.fetchDateFinal(projectName)
+        .then(([rows, fieldData])=>{
+            end = rows[0].fechaCambio;
+            fecha = new Date(end);    
+            dia = fecha.getDate();
+            mes = fecha.getMonth() + 1; 
+            anio = fecha.getFullYear();
+            if (dia < 10) {
+            dia = "0" + dia;
+            }
+            if (mes < 10) {
+            mes = "0" + mes;
+            }
+            end = dia + "/" + mes + "/" + anio;
+        })
+        .catch(err=>console.log(err));
+    }else{
+        end = 'In progress'
+    }
+
     res.render('project', {
         active: 'projects',
         epics: epics,
         projectName: namePrj[0].nombre,
+        date: fechaFormateada,
         datos: datos, 
+        end: end
     });
     
 };
@@ -119,6 +172,13 @@ control.getTasks = async (req, res) => {
         fechaFormateada = formatDate(fecha);
         task7[i].fechaCambio = fechaFormateada;
     }    
+    let nameActual = '';
+    for(let i=0; i<epics.length; i++){
+        if(epics[i].idTicket == id){
+            nameActual = epics[i].nombre;
+            break;
+        }
+    }
     
     Epic.fetchAll()
     .then(([rows, fieldData])=>{        
@@ -132,6 +192,8 @@ control.getTasks = async (req, res) => {
             tasks6: task6,
             tasks7: task7,
             epics: epics,
+            actual: nameActual,
+            prj: idProyect
         });
     })
     .catch(err =>console.log(err));
@@ -354,18 +416,53 @@ control.processCsv = async(req,res)=>{
         'Labels',
         'Labels',
         'Labels'];                
-        for (let i = 0; i < requiredFields.length; i++) {            
-            if (requiredFields[i] != fieldNames[i]) {
-                isCorrect = false;
+        for (let i = 0; i < requiredFields.length; i++) {  
+            for(let j=0; j < fieldNames.length; j++){
+                if (requiredFields[i] == fieldNames[j]) {
+                    isCorrect = true;
+                    break;
+                }
+                if(j == (fieldNames.length - 1)){
+                    isCorrect = false;                    
+                }
+            }            
+            if(!isCorrect){                
+                console.log('Invalid CSV');
                 break;
             }
-            if(i == (requiredFields.length - 1)){
-                isCorrect = true;
-                console.log('valid CSV');
+            if(i == (requiredFields.length - 1) && isCorrect){
+                console.log('Valid CSV');
             }
         }
     }
     
+    //soft delete for tickets
+    if(isCorrect){
+        let entriesDelete = [];
+        await Tarea.fetchAllAll()
+        .then(([rows, fieldData])=>{
+            
+            for(let i=0; i<rows.length; i++){                
+                for(let j=0; j<objList.length; j++){
+                    if(rows[i].idTicket == objList[j].issueid){
+                        break;
+                    }
+                    if(j==objList.length-1){
+                        console.log('Ya no esta')
+                        let ticketInsert = {
+                            idTicket: rows[i].idTicket,
+                            idEstatus:  7                            
+                        };    
+                        entriesDelete.push(ticketInsert);  
+                    }
+                }                
+            }
+        })
+        .catch(err=>console.log(err))
+        
+        await Fase.softDelete(entriesDelete);
+    }
+
     //Send data to database
     if(isCorrect){        
         //Data to table ticket
@@ -848,11 +945,18 @@ control.processCsv = async(req,res)=>{
 
 control.postProject = (req, res, next) =>{
     msgErrorAddProject = false;
-
+        
     const data = {
         nombre : req.body.projectName,
-        fechaInicio : req.body.projectStart
+        fechaInicio : req.body.projectStart,
+        epics: 0
     };
+    
+    if(Array.isArray(req.body.epics)){
+        data.epics = req.body.epics;
+    }else{
+        data.epics = [req.body.epics];
+    }
     
     const newProject = new Proyect(data);    
     

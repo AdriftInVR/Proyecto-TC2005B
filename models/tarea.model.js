@@ -4,8 +4,8 @@ const db = require('../util/database');
 
 module.exports = class Tarea {
 
-    static fetchAllAll(){
-        return db.execute(`
+    static async fetchAllAll(){
+        return await db.execute(`
         SELECT *
         FROM tarea`);
     }
