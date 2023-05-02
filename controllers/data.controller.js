@@ -114,8 +114,8 @@ exports.getAPproyect = async (req, res) => {
     });
 }
 
-exports.getAPepic = async (req, res) => {
-    await Proyecto.fetchAPepic(req.params.idEpic)
+exports.getAPepic = (req, res) => {
+    Epic.fetchAPepic(req.params.idEpic, req.params.end)
         .then(([rows, fieldData]) => {
             res.status(200).json({status: rows})
         })
@@ -124,8 +124,7 @@ exports.getAPepic = async (req, res) => {
             res.status(500).json({message: "Internal Server Error"});
     });
 }
-//
-
+/*-----------------------------------------------------------------------------------------*/
 exports.getArea = async (req, res) => {
     let area = {
         allFront: 0,
