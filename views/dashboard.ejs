@@ -339,18 +339,26 @@
                         }
                     }
                 }
-                let segmentGoal = [segmentChange.indexOf(true)+1]
-                for(i=1;i<segmentChange.length;i++){
-                    if (segmentChange[i]){
-                        segmentGoal.push(i+1)
-                    } else {
-                        segmentGoal.push(segmentGoal[i-1])
+                let control = segmentChange.indexOf(true)+1;
+                if (control) {
+                    let segmentGoal = [segmentChange.indexOf(true)+1]
+                    for(i=1;i<segmentChange.length;i++){
+                        if (segmentChange[i]){
+                            segmentGoal.push(i+1)
+                        } else {
+                            segmentGoal.push(segmentGoal[i-1])
+                        }
                     }
-                }
-                segmentGoal.push(goalLine.length-1)
-                for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
-                    thisWeek = (goalLine[i]+i) / segmentGoal[i];
-                    dataValuesExpected.push(thisWeek);
+                    segmentGoal.push(goalLine.length-1)
+                    for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                        thisWeek = (goalLine[i]+i) / segmentGoal[i];
+                        dataValuesExpected.push(thisWeek);
+                    }
+                } else {
+                    for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                        thisWeek = goalLine[i] / estimateData.status[0][0].Estimate;
+                        dataValuesExpected.push(thisWeek);
+                    }
                 }
             }, "1100")
             setTimeout(() => {
@@ -458,18 +466,26 @@ function BurnupLineChartEpic(epicID) {
                         }
                     }
                 }
-                let segmentGoal = [segmentChange.indexOf(true)+1]
-                for(i=1;i<segmentChange.length;i++){
-                    if (segmentChange[i]){
-                        segmentGoal.push(i+1)
-                    } else {
-                        segmentGoal.push(segmentGoal[i-1])
+                let control = segmentChange.indexOf(true)+1;
+                if (control) {
+                    let segmentGoal = [segmentChange.indexOf(true)+1]
+                    for(i=1;i<segmentChange.length;i++){
+                        if (segmentChange[i]){
+                            segmentGoal.push(i+1)
+                        } else {
+                            segmentGoal.push(segmentGoal[i-1])
+                        }
                     }
-                }
-                segmentGoal.push(goalLine.length-1)
-                for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
-                    thisWeek = (goalLine[i]+i) / segmentGoal[i];
-                    dataValuesExpected.push(thisWeek);
+                    segmentGoal.push(goalLine.length-1)
+                    for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                        thisWeek = (goalLine[i]+i) / segmentGoal[i];
+                        dataValuesExpected.push(thisWeek);
+                    }
+                } else {
+                    for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                        thisWeek = goalLine[i] / estimateData.status[0][0].Estimate;
+                        dataValuesExpected.push(thisWeek);
+                    }
                 }
             }, "1100")
             setTimeout(() => {
