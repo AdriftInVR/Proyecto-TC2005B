@@ -484,12 +484,19 @@ function BurnupLineChartEpic(epicID) {
                     }
                     segmentGoal.push(goalLine.length-1)
                     for(i=0;i<estimateData.status[0][0].Estimate;i++){
-                        thisWeek = (goalLine[i]+i) / segmentGoal[i];
+                        if(goalLine[i+1]==0){
+                            thisWeek = 0;
+                        }
+                        else {  
+                            thisWeek = (goalLine[i]+1) / segmentGoal[i];
+                        }
+                        console.log(thisWeek)
                         dataValuesExpected[i]=thisWeek;
                     }
                 } else {
-                    for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                    for(i=0;i<estimateData.status[0][0].Estimate;i++){
                         thisWeek = goalLine[i] / estimateData.status[0][0].Estimate;
+                        console.log(thisWeek)
                         dataValuesExpected[i]=thisWeek;
                     }
                 }
