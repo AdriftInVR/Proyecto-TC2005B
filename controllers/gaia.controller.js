@@ -51,23 +51,52 @@ control.getProject = async (req, res) => {
         console.log(err);
     }
 
-    var fecha = new Date(namePrj[0].fechainicio);
-
-    // Obtiene los componentes de la fecha
+    var fecha = new Date(namePrj[0].fechainicio);    
     var dia = fecha.getDate();
-    var mes = fecha.getMonth() + 1; // Se suma 1 porque el mes comienza en 0
+    var mes = fecha.getMonth() + 1; 
     var anio = fecha.getFullYear();
-
-    // Ajusta el formato de día y mes a dos dígitos
     if (dia < 10) {
     dia = "0" + dia;
     }
     if (mes < 10) {
     mes = "0" + mes;
     }
-
-    // Construye la cadena de fecha formateada
     var fechaFormateada = dia + "/" + mes + "/" + anio;
+
+    let complete = 0, all = 0, end = '';
+    await Proyecto.fetchAllPrj(projectName)
+    .then(([rows, fieldData])=>{
+        all = rows[0].Completed;        
+    })
+    .catch(err=>console.log(err));
+    
+    await Proyecto.fetchCompletePrj(projectName)
+    .then(([rows, fieldData])=>{
+        complete = rows[0].Complete;
+    })
+    .catch(err=>console.log(err));
+
+    console.log('1: ',all, '2:', complete)
+    if(complete == all){
+        await Proyecto.fetchDateFinal(projectName)
+        .then(([rows, fieldData])=>{
+            end = rows[0].fechaCambio;
+            fecha = new Date(end);    
+            dia = fecha.getDate();
+            mes = fecha.getMonth() + 1; 
+            anio = fecha.getFullYear();
+            if (dia < 10) {
+            dia = "0" + dia;
+            }
+            if (mes < 10) {
+            mes = "0" + mes;
+            }
+            end = dia + "/" + mes + "/" + anio;
+        })
+        .catch(err=>console.log(err));
+    }else{
+        end = 'In progress'
+    }
 
     res.render('project', {
         active: 'projects',
@@ -75,6 +104,7 @@ control.getProject = async (req, res) => {
         projectName: namePrj[0].nombre,
         date: fechaFormateada,
         datos: datos, 
+        end: end
     });
     
 };
