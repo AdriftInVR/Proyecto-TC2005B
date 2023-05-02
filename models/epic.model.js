@@ -73,7 +73,7 @@ module.exports = class Epic {
     static fetchGreenEpicLine(epicID){
         return db.execute (`
         SELECT COUNT(ta.idTicket)
-        FROM TICKET ti, FASE f, TAREA ta, EPIC e
+        FROM ticket ti, fase f, tarea ta, epic e
         WHERE ti.idTicket = f.idTicket
         AND ti.idTicket = ta.idTicket
         AND e.idTicket = ta.perteneceEpic

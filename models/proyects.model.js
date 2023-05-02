@@ -36,7 +36,7 @@ module.exports = class Proyecto {
     static async fetchOne(id) {
         return await db.execute(`
             SELECT t.nombre, p.fechainicio, p.duracion
-            FROM TICKET t, PROYECTO p
+            FROM ticket t, proyecto p
             WHERE  t.idTicket = p.idTicket
             AND p.idTicket = ?
         `,[id]);
@@ -150,7 +150,7 @@ module.exports = class Proyecto {
     static async fetchAPproject(projectID, EoW){
         return await db.execute (`
         SELECT SUM(ta.puntosAgiles) as 'TotalAP'
-        FROM PROYECTO p, TICKET t, EPIC e, TAREA ta
+        FROM proyecto p, ticket t, epic e, tarea ta
         WHERE p.idTicket = t.idTicket
         AND p.idTicket = e.perteneProyecto
         AND ta.perteneceEpic = e.idTicket
@@ -179,7 +179,7 @@ module.exports = class Proyecto {
     static fetchGreenLine(projectID){
         return db.execute(`
         SELECT f.fechaCambio, t.puntosAgiles
-        FROM TAREA t, EPIC e, PROYECTO p, FASE f
+        FROM tarea t, epic e, proyecto p, fase f
         WHERE t.perteneceEpic = e.idTicket
         AND e.perteneProyecto = p.idTicket
         AND p.idTicket = 3

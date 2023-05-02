@@ -105,10 +105,7 @@
 <script>
     // Estos scripts crean graficas de Pie para los diferentes estatus de un proyecto o Epic
     var pieChart;
-    function ProjectPieChart(projectID){
-        if (pieChart) {
-            pieChart.destroy();
-        }    
+    function ProjectPieChart(projectID){  
         const pie = document.getElementById('statusPie');
         fetch('/data/project/status/' + projectID, {
             method: 'GET',
@@ -153,14 +150,14 @@
                     responsive: true,                    
                 }
             };
+            if (pieChart) {
+                pieChart.destroy();
+            }  
             pieChart = new Chart(pie, config);
         })
     }
     
     function EpicPieChart(epicID){
-        if (pieChart) {
-            pieChart.destroy();
-        }  
         const pie = document.getElementById('statusPie');
         fetch('/data/project/epic/status/' + epicID, {
             method: 'GET',
@@ -170,6 +167,9 @@
         }).then(result => {
             return result.json();
         }).then(data => {
+            if (pieChart) {
+                pieChart.destroy();
+            }  
             let data_labels = [];
             let data_count = [];
             for (let tag of data.status) {
@@ -342,12 +342,10 @@
                     }
                 }
                 segmentGoal.push(goalLine.length-1)
-                console.log(segmentGoal)
                 for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
                     thisWeek = (goalLine[i]+i) / segmentGoal[i];
                     dataValuesExpected.push(thisWeek);
                 }
-                console.log(dataValuesExpected);
             }, "1100")
             setTimeout(() => {
                 for (i=1;i<data_completeAP.length;i++){
@@ -367,21 +365,20 @@
                         type: 'line',
                         label: 'Expected',
                         data: expectedLine,
-                        borderColor: 'rgb(16, 70, 220)',
+                        borderColor: 'rgb(0,0,0)',
                     },{
                         type: 'line',
                         label: 'Goal',
                         data: goalLine,
                         fill: false,
-                        borderColor: 'rgb(232, 255, 16)'
-                    },
-                    {
+                        borderColor: 'rgb(54,162,235)'
+                    },{
                         type: 'line',
                         label: 'Complete',
                         data: completeLine,
                         fill: true,
-                        borderColor: 'rgb(24,212,86)',
-                        backgroundColor: 'rgba(24,212,86,0.2)'
+                        borderColor: 'rgb(255,99,132)',
+                        backgroundColor: 'rgba(255,99,132,0.2)'
                     }]
                 };
 
@@ -461,13 +458,11 @@
                     }
                 }
                 segmentGoal[segmentGoal.length-1] = goalLine.length-1
-                console.log(segmentGoal)
                 for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
                     thisWeek = goalLine[i] / segmentGoal[i];
                     dataValuesExpected.push(thisWeek);
                 }
-                console.log(dataValuesExpected);
-            }, "2100")
+            }, "1100")
             setTimeout(() => {
                 for (i=1;i<data_completeAP.length;i++){
                     data_completeAP[i]+=data_completeAP[i-1];
@@ -520,7 +515,7 @@
                     } 
                 };
                 burnupChart = new Chart(buap, configura);
-            }, "2400")
+            }, "1500")
         })
     }
 
