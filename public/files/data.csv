@@ -3,7 +3,6 @@ PART-66,20985,Configure CI devDependencies,Task,,To Do,PART-234,Express Tech Exc
 PART-69,20986,Optimize paginated care request queries (memory),Task,,To Do,PART-234,Express Tech Excellence,,,24/Jan/23 1:24 PM,24/Feb/23 2:47 PM,part/Backend,,,
 PART-76,20987,FE: add jest-mock-extended library - testing with TS easily,Task,,To Do,PART-234,Express Tech Excellence,,,25/Jan/23 5:13 PM,24/Feb/23 2:47 PM,,,,
 PART-79,20988,Lint FE on CI - phase 1,Task,,To Do,PART-234,Express Tech Excellence,Kevin Anderson,62cdf0d01e326fd93012992d,27/Jan/23 1:14 PM,07/Apr/23 1:37 PM,part/Frontend,,,
-PART-81,20789,Refactor the finalize care - risk strat bypass implementation,Task,3,To Do,PART-234,Express Tech Excellence,Giorgi Gelashvili,62cdef6c6eba71983721e037,30/Jan/23 2:35 PM,07/Mar/23 7:33 AM,part/Frontend,,,
 PART-83,20989,GitHub pr template: feature gate & pic/vid checkbox,Task,,Done,PART-234,Express Tech Excellence,Kevin Anderson,62cdf0d01e326fd93012992d,31/Jan/23 11:38 AM,05/Apr/23 8:36 AM,,,,
 PART-91,20991,TechDebt: Eager loading associations in queries,Task,1,To Do,PART-234,Express Tech Excellence,Antonio Antillon,61f81bb630f6b8006aa75942,01/Feb/23 3:31 PM,14/Mar/23 2:11 PM,part/tech-debt,,,
 PART-92,20992,Backend refactor to risk strat bypass implementation,Task,3,To Do,PART-234,Express Tech Excellence,Bernardo Gomez-Romero,61c9eb457c6f980070deda99,02/Feb/23 2:08 PM,24/Feb/23 2:48 PM,part/Backend,,,

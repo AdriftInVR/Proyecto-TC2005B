@@ -334,20 +334,22 @@ control.processCsv = async(req,res)=>{
     //soft delete for tickets
     if(isCorrect){
         let entriesDelete = [];
-        await Ticket.fetchAll()
+        await Tarea.fetchAllAll()
         .then(([rows, fieldData])=>{
-            for(let i=0; i<rows.length; i++){
+            console.log(rows.length);
+            console.log(objList.length);
+            for(let i=0; i<rows.length; i++){                
                 for(let j=0; j<objList.length; j++){
                     if(rows[i].idTicket == objList[j].issueid){
                         break;
                     }
-                    else if(j==objList.length){
+                    if(j==objList.length-1){
+                        console.log('Ya no esta')
                         let ticketInsert = {
-                            idTicket: objList[j].issueid,
-                            idEstatus:  7,
-                            fechaCambio: Date.now()
+                            idTicket: rows[i].idTicket,
+                            idEstatus:  7                            
                         };    
-                        entriesDelete.push(ticketInsert)                    
+                        entriesDelete.push(ticketInsert);  
                     }
                 }                
             }
@@ -355,7 +357,7 @@ control.processCsv = async(req,res)=>{
         .catch(err=>console.log(err))
 
         console.log(entriesDelete);
-        await Fase.addOne(entriesDelete)
+        await Fase.softDelete(entriesDelete);
     }
 
     //Send data to database
