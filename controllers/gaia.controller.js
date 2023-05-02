@@ -311,14 +311,22 @@ control.processCsv = async(req,res)=>{
         'Labels',
         'Labels',
         'Labels'];                
-        for (let i = 0; i < requiredFields.length; i++) {            
-            if (requiredFields[i] != fieldNames[i]) {
-                isCorrect = false;
+        for (let i = 0; i < requiredFields.length; i++) {  
+            for(let j=0; j < fieldNames.length; j++){
+                if (requiredFields[i] == fieldNames[j]) {
+                    isCorrect = true;
+                    break;
+                }
+                if(j == (fieldNames.length - 1)){
+                    isCorrect = false;                    
+                }
+            }            
+            if(!isCorrect){                
+                console.log('Invalid CSV');
                 break;
             }
-            if(i == (requiredFields.length - 1)){
-                isCorrect = true;
-                console.log('valid CSV');
+            if(i == (requiredFields.length - 1) && isCorrect){
+                console.log('Valid CSV');
             }
         }
     }
@@ -346,6 +354,7 @@ control.processCsv = async(req,res)=>{
         })
         .catch(err=>console.log(err))
 
+        console.log(entriesDelete);
         await Fase.addOne(entriesDelete)
     }
 
