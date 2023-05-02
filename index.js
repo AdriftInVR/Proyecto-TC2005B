@@ -16,7 +16,7 @@ const config = {
     authRequired: false,
     auth0Logout: true,
     secret: process.env.AUTH0_SECRET,
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://3.129.22.6',
     clientID: process.env.AUTH0_CLIENT,
     issuerBaseURL: process.env.AUTH0_DOMAIN
   };
@@ -65,4 +65,4 @@ app.use('/gaia', gaiaRoutes);
 app.use('/data', dataRoutes);
 
 console.log('Is running...')
-app.listen(3000);
+app.listen(80);
