@@ -125,8 +125,9 @@
 
 
     <!--ERROR-->
-    <% if(msgErr){ %>
-        <div id="ErrorValue" aria-hidden="true" class="w-96 h-48 fixed top-60 right-100 rounded-lg bg-white text-left shadow-xl transition-all border border-gray-600 flex flex-col">
+    
+   <% if(msgErr){ %>
+        <div id="ErrorValue" hidden="true" class="ErrorValue w-96 h-48 fixed top-60 right-100 rounded-lg bg-white text-left shadow-xl transition-all border border-gray-600 flex flex-col">
             <div class=" px-4 pb-4 pt-5">
                 <div class="flex items-start">
                     <div class="flex w-12 inset-x-9 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
@@ -142,29 +143,84 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class=" rounded-md bg-red-600 px-3 py-2 mb-2 text-sm font-semibold  text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" data-modal-hide="ErrorValue">Acept</button>
+            <button id="btnCerrarPop" type="button" class=" rounded-md bg-red-600 px-3 py-2 mb-2 text-sm font-semibold  text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" data-modal-hide="ErrorValue">Acept</button>
         </div>
     <% } %>
-
+        <div></div>
+    
+    <!--<div id="ErrorValue" hidden class="ErrorValue w-96 h-48 fixed top-60 right-100 rounded-lg bg-white text-left shadow-xl transition-all border border-gray-600 flex flex-col">
+        <div class=" px-4 pb-4 pt-5">
+            <div class="flex items-start">
+                <div class="flex w-12 inset-x-9 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                </div>
+                <div class="my-8 mx-8">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">ERROR</h3>
+                    <div>
+                        <p class=" text-sm text-gray-500"><%= msgErr%></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="btnCerrarPop" type="button" class=" rounded-md bg-red-600 px-3 py-2 mb-2 text-sm font-semibold  text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" data-modal-hide="ErrorValue">Acept</button>
+    </div>-->
 
 </div>
 <%- include('partials/endHTML.ejs') %>
 
+
 <!--ERROR POPUP-->
+<% if(msgErr){%>
+    <p style="visibility: hidden;" id="msgErr"></p>
+    <script>
+        var newName = document.getElementById('projectName').textContent;
+        
+        var msgErr = document.getElementById('msgErr').textContent;
+        
+        //console.log(msgErr);
+
+        var popUp = document.getElementById('ErrorValue');
+        
+        var btnPop = document.getElementById('btnCerrarPop');
+
+        btnPop.addEventListener("click",function(){
+            popUp.classList.remove('active');
+        });
+
+        for (let proyecto of proyectos) {
+            if(proyecto.nombre == newName){
+                popUp.hidden = false;
+                //popUp.classList.add('active');   
+            } else {
+                popUp.hidden = true;
+                //popUp.classList.remove('active');
+            }
+        }
+    
+    </script>  
+<%}%>
+
 <!--
 <script>
-    function hiddenPopUp() {
-        const popUp = document.getElementById('ErrorValue');
+    var popUp = document.getElementById('ErrorValue');
+    var btnPop = dcument.getElementById('btnCerrarPop');
 
-        if (popUp.hidden == true) {
-            popUp.hidden = false;
-        } else {
-            popUp.hidden = true;
-        }
+    btnPop.addEventListener("click", function(){
+        popUp.classList.remove('active');
+    })
+
+    if (popUp.hidden == true) {
+        popUp.classList.active('active');
+        //popUp.hidden = false;
+    } else {
+        //popUp.hidden = true;
+        popUp.classList.remove('active');
     }
-</script>
--->                    
-
+    
+</script>                  
+-->
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>

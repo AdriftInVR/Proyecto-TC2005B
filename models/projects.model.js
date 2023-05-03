@@ -34,10 +34,12 @@ module.exports = class Proyecto {
                     if (rows[i].nombre == this.nombre) {
                         this.nombre = '';
                         error = "The name introduced has already taken";
+                        resulta = 'err';
                         break;
                     }
                 }
                 if (this.nombre == "" || this.nombre == undefined) {
+                    resulta = 'err';
                 } else {
                     let id_temporal = makeid(6);
                     
