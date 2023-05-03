@@ -21,7 +21,6 @@ control.getLogin = (req, res) => {
 
 control.getProjects = async (req, res) => {
     msgErr = msgErrorAddProject
-
     try{
         [proyectos, fieldData] = await Proyect.fetchAll();
 
@@ -37,7 +36,6 @@ control.getProjects = async (req, res) => {
     });
 };
 
-
 control.getProject = async (req, res) => {
     projectName = req.params.prj
 
@@ -46,7 +44,11 @@ control.getProject = async (req, res) => {
     
         [epics, filedData] = await Proyect.epics(projectName);        
         
-        [namePrj, filedData] = await Proyect.fetchOne(projectName);        
+        [namePrj, filedData] = await Proyect.fetchOne(projectName);
+        
+        [epi, filedData] = await Epic.fetchAllIDs();
+        
+        [userName, filedData] = await User.UserNoAsignated();
     } catch (err) {
         console.log(err);
     }
@@ -101,19 +103,34 @@ control.getProject = async (req, res) => {
     res.render('project', {
         active: 'projects',
         epics: epics,
+        epi: epi,
         projectName: namePrj[0].nombre,
         date: fechaFormateada,
         datos: datos, 
-        end: end
+        end: end,
+        userName: userName, 
     });
     
 };
+
+control.getEditProject = (req, res, next) => {
+    Proyect.editar(NewData, projeId)
+    .then(([rows,fieldData])=>{
+       res.render('project', {
+        active: 'projects',
+        dataNew: dataNew,
+        projeId: projeId,
+        NewData: NewData[0].datos
+
+       }) 
+    });
+}
 
 control.getTasks = async (req, res) => {
     id = req.params.prj;
     let idProyect = 0;
     await Epic.fetchPrjPertenece(id)
-    .then(([rows, fieldData])=>{
+    .then(([rows, fieldData]) => {
         idProyect = rows[0].perteneProyecto;
     })
     try {
@@ -281,9 +298,38 @@ control.getTasksarea = async (req, res) => {
 
 /* ---------------------------DELETE PROJECT--------------------------------- */
 control.deleteP = async (req, res) => {
-    id = req.params.prj;
-    await Proyect.fetchPrjPertenece(id)
-    .then
+
+    /*control.getProjects = async (req, res) => {
+        msgErr = msgErrorAddProject
+        try{
+            [proyectos, fieldData] = await Proyect.fetchAll();
+    
+            [epics, filedData] = await Epic.fetchAllNoAsignate();
+        }catch(err){
+            console.log(err);
+        }
+        res.render('home', {
+            active: 'projects',
+            proyectos: proyectos,
+            epics: epics,
+            msgErr: msgErrorAddProject,
+        });
+    };*/
+
+    try {
+
+        [deletePTra, fieldData] = await Proyect.trabajadelete(id);
+
+        [deletePTra, fieldData] = await Proyect.trabajadelete(id);
+
+        [deletePTra, fieldData] = await Proyect.trabajadelete(id);
+
+        [deletePTra, fieldData] = await Proyect.trabajadelete(id);
+
+    } catch(err){
+        console.log(err);
+    }
+    
 }
 /* -------------------------------------------------------------------------- */
 
@@ -940,7 +986,7 @@ control.processCsv = async(req,res)=>{
                     };
                     entriesNew.push(ticketInsert);
                 }
-            }
+000000            }
         })
         await User.addRespon(entriesNew);
 
@@ -969,7 +1015,7 @@ control.postProject = (req, res, next) =>{
     const newProject = new Proyect(data);    
     
     if(data.nombre == ''){
-        msgErrorAddProject = "The field name of project are blank";
+        msgErrorAddProject = "The field name of project is blank";
     }
 
     newProject.save()
@@ -986,5 +1032,34 @@ control.postProject = (req, res, next) =>{
     res.redirect('/');
 }
 
+control.postEpicsDB = (req, res, next) =>{
+    const epicDato = req.body.EpicID;
+    const newTask = new Tarea(epicDato);    
+    console.log(newTask)
+    newTask.save()
+    res.redirect('/project');
+}
+
+control.postEditProject = (req, res, next) => {
+    const NewData = {
+        projName: req.body.projectNameNew,
+        startDate: req.body.projectStartNew,
+        userName: req.body.users,
+        APUser: req.body.APNew,
+        newEpics: req.body.epicss
+    };
+
+    console.log(NewData)
+    const newDataProject = new Proyect(NewData);
+    idproject = req.params.prj;
+
+    newDataProject.editar(NewData, idproject)
+    .then(([rows,fieldData]) => {
+       res.render('project', {
+        active: 'projects',
+        dataNew: dataNew,
+        }) 
+    });
+}
 
 module.exports = control

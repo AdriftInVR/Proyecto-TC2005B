@@ -65,41 +65,6 @@
                         </p>
                     </div>
                 <% } %>
-                <div class="boton-modal p-2.5">
-                    <label for="btn-modal">
-                        Delete
-                    </label>
-                </div>
-
-                <input type="checkbox" id="btn-modal">
-                <div class="container-modal">
-                    <div class="content-modal">
-                        <h2 class="text-center bg-red-700 rounded-xl text-slate-200">Alert!!</h2>
-                        <p class="text-center">Confirm DELETE <%=projectName%></p>
-                        <div class="btn-cerrar">
-
-                            <div class="boton-modal p-2.5">
-                                <label for="btn-modal2" class="">
-                                    Acepted
-                                </label>
-                            </div>
-
-                            <label for="btn-modal">Cancel</label>
-                        </div>
-
-                        <input type="checkbox" id="btn-modal2">
-                        <div class="container-modal2">
-                            <div class="content-modal2">
-                                <h2 class="text-center bg-green-700 rounded-xl text-slate-200">Alert!!</h2>
-                                <p class="text-center">Confirm DELETE</p>
-                                <div class="btn-cerrar2">
-                                    <a href="/gaia/">Close</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <label for="btn-modal" class="cerrar-modal"></label>
-                </div>
             </div>
 
             <!--EPICS-->
@@ -121,7 +86,7 @@
                                 <tbody>
                                     <% for (let epic of epics) { %>
                                         <tr>
-                                            <td class="font-medium p-2 text-gray-900 rounded-lg dark:text-white hover:bg-blue-400">
+                                            <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 <a href="/gaia/tasks/<%= epic.idTicket%>"><%= epic.nombre %></a>
                                             </td>
                                         </tr>
@@ -140,55 +105,159 @@
                                 
                            </div>
                         <% } %>                          
-
-
                     </div>
                 </div>
             </div>
-        </div>        
 
-        <!-- EDITING PROJECT -->
-        <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div class="relative w-full h-full max-w-md md:h-auto">
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="authentication-modal">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                    <h3 class="px-6 py-6 lg:px-8 mb-4 text-xl font-medium text-gray-900 dark:text-white">Editing <%=projectName%></h3>
-                    <form class="space-y-6" action="/gaia/" method="POST" onsubmit="return validar()">
-                    
-                    
-                        <div class="px-6 lg:px-8 grid grid-cols-2 gap-2">    
-                            <div>
-                                <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Co-Workers:</label>
-                                <div class="mb-6">
-                                    <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+
+            <!-- EDITING PROJECT -->
+            <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-auto p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
+                <div class="relative w-auto h-full max-w-auto md:h-auto">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="authentication-modal">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                        <h3 class="px-6 py-6 lg:px-8 mb-4 text-xl font-medium text-gray-900 dark:text-white">Editing <%=projectName%></h3>
+                        <form class="space-y-6" action="/gaia/project/edit" method="POST">
+                        
+                        
+                            <div class="px-6 lg:px-8 grid grid-cols-2 gap-2">  
+                                <!--PROJECT'S NAME-->
+                                <div>
+                                    <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Project's name:</label>
+                                    <div class="mb-6 w-96">
+                                        <input type="text" id="projectNameNew" value="<%=projectName%>" name="projectNameNew" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                    </div>
                                 </div>
+                                <!--DATE-->
+                                <div>
+                                    <label for="startDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start date</label>
+                                    <div class="mb-6 w-96">
+                                        <input type="date" id="projectStartNew" name="projectStartNew" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    </div>
+                                </div>                
                             </div>
-                            <div>
-                                <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Agile points:</label>
-                                <div class="mb-6">
-                                    <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <div class="px-6 lg:px-8 grid grid-cols-2 gap-2">  
+                                
+                                <!--CO-WORKERS-->                                  
+                                    <div >
+                                        <div class="mb-8 w-80">
+                                            <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Co-Workers:</label>
+                                            <button id="DropDownCoWorkers" data-dropdown-toggle="CoWorkersNew" class="w-full inline-flex items-center px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="button">Co-Workers:
+                                                <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </button>
+                                            <!-- Dropdown menu -->
+                                            <div id="CoWorkersNew" class="z-10 hidden bg-white rounded-lg shadow w-80 dark:bg-gray-700">
+                                                <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+                                                    <% for (let user of userName) { %>
+                                                        <li>
+                                                            <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
+                                                                <input id="users" name="users" value="<%user.nombre%>" onchange="blockBox()" type="checkbox" value="<%= user.idUser %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                                    <label for="checkbox-item-11" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= user.nombre %></label>
+                                                                    
+                                                                    <!--AGILE POINTS-->
+                                                                    <div> 
+                                                                        <label for="AguilePoints" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Agile points:</label>
+                                                                        <div class="mb-6">
+                                                                            <input type="text" id="APNew" name="APNew" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 h-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled = true>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--BLOCK AGILE POINTS SECTION-->
+                                                                    <script>
+                                                                        function blockBox() {
+                                                                            const checkbox = document.getElementById('users');
+                                                                            const input = document.getElementById('APNew');
+
+                                                                            if (checkbox.checked) {
+                                                                                input.disabled = false;
+                                                                            } else {
+                                                                                input.disabled = true;
+                                                                            }
+                                                                        }
+                                                                    </script>
+                                                                </input>
+                                                            </div>
+                                                        </li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 
+                                <!--EPICS-->
+                                <div >
+                                    <div class="mb-8 w-80">
+                                        <label for="NewEpics" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Epics:</label>
+                                         <button id="dropdownSearchButton" data-dropdown-toggle="EpicsDrop" class="w-full inline-flex items-center px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="button">Epics:
+                                            <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <!-- Dropdown menu -->
+                                        <div id="EpicsDrop" class="z-10 hidden bg-white rounded-lg shadow w-60 dark:bg-gray-700">
+                                            <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+                                                <% for (let epic of epi) { %>
+                                                    <li>
+                                                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
+                                                            <input id="epicss" name="epicss" type="checkbox" value="<%= epic.EpicID %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                                <label for="checkbox-item-11" value="<%epic.EpicName%>" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= epic.EpicName %></label>
+                                                        </div>
+                                                    </li>
+                                                <% } %>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Work area:</label>
-                                <div class="mb-6">
-                                    <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+
+                                <div class="boton-modal p-2.5">
+                                    <label for="btn-modal">
+                                        Delete
+                                    </label>
                                 </div>
-                            </div>
-                            <div>
-                                <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Co-Workers:</label>
-                                <div class="mb-6">
-                                    <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                
+                                <input type="checkbox" id="btn-modal">
+                                <div class="container-modal">
+                                    <div class="content-modal">
+                                        <h2 class="text-center bg-red-700 rounded-xl text-slate-200">Alert!!</h2>
+                                        <p class="text-center">Confirm DELETE <%=projectName%></p>
+                                        <div class="btn-cerrar">
+                
+                                            <div class="boton-modal p-2.5">
+                                                <label for="btn-modal2" class="">
+                                                    Acepted
+                                                </label>
+                                            </div>
+                
+                                            <label for="btn-modal">Cancel</label>
+                                        </div>
+                
+                                        <input type="checkbox" id="btn-modal2">
+                                        <div class="container-modal2">
+                                            <div class="content-modal2">
+                                                <h2 class="text-center bg-green-700 rounded-xl text-slate-200">Alert!!</h2>
+                                                <p class="text-center">Confirm DELETE</p>
+                                                <div class="btn-cerrar2">
+                                                    <a href="/gaia/">Close</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label for="btn-modal" class="cerrar-modal"></label>
                                 </div>
+
                             </div>
-                        </div>
-                        <input data-modal-target="ErrorValue" data-modal-toggle="ErrorValue" type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Confirm edit project" />
-                    </form>
+                            <input data-modal-target="ErrorValue" data-modal-toggle="ErrorValue" type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Save project" />
+                        </form>
+                    </div>
                 </div>
             </div>
+
+
+
+
         </div>
 
     </div>

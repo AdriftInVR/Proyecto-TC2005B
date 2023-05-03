@@ -37,7 +37,7 @@ module.exports = class Proyecto {
                 if (this.nombre == "" || this.nombre == undefined) {
                 } else {
                     let id_temporal = makeid(6);
-
+                    
                     db.execute(`
                     INSERT INTO ticket (idTicket, nombre)
                     VALUES (?, ?)
@@ -47,12 +47,18 @@ module.exports = class Proyecto {
                     INSERT INTO proyecto (idTicket, fechaInicio)
                     VALUES (?, ?)
                 `, [id_temporal, this.fechaInicio])
-                        .then(([rows, fieldData]) => {
 
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
+                    db.execute(`
+                    INSERT INTO EPIC (perteneProyecto)
+                    VALUES (?)
+                `, [id_temporal])
+
+                    .then(([rows, fieldData]) => {
+
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });     
 
                     Epic.setEpicProj(id_temporal,this.epics )
                 }
@@ -64,10 +70,13 @@ module.exports = class Proyecto {
 
         return db.execute(`
             SELECT *
+
             FROM proyecto p, ticket t 
             WHERE p.idTicket = t.idTicket
-            GROUP BY nombre;`);    
+            GROUP BY nombre;`
+        );    
     }
+
 
     static fetchAll() {
         return db.execute(`
@@ -154,4 +163,56 @@ module.exports = class Proyecto {
     }
 
     /* -------------------------------------------------------------------------- */
+
+    static async editar(data, idProj) {
+        
+        await db.execute(`
+                        
+            -- CAMBIAR NOMBRE
+            UPDATE ticket
+            SET nombre = ? --NUEVO
+            WHERE nombre = ?; -- BUSCA
+        `, [])
+
+        db.execute(`
+            
+            -- CAMBIAR FECHA DE INICIO
+            UPDATE proyecto
+            SET fechaInicio = ?
+            WHERE fechaInicio = ?;
+        `, [])
+
+        db.execute(`
+            
+            -- CAMBIAR TRABAJADORES
+            UPDATE trabaja
+            SET idUsuario = ?
+            WHERE idUsuario = ?;
+        `, [])
+
+        db.execute(`
+            
+            -- CAMBIAR SUS PUNTOS ÁGILES
+            UPDATE trabaja
+            SET efectividadAsignada = ?
+            WHERE efectividadAsignada = ?;
+        `, [])
+
+        db.execute(`
+
+            -- CAMBIAR PERTENECE EPICS
+            UPDATE epic
+            SET perteneProyecto = ?
+            WHERE PerteneProyecto = ?;
+        `, [])
+
+            .then(([rows, fieldData]) => {
+
+            })
+            .catch(err => {
+                console.log(err);
+            });     
+    }  
+
 }
+

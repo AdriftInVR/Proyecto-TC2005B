@@ -61,6 +61,8 @@ module.exports = class Proyecto {
         `, [projectID]);
     }
 
+
+
     static fetchEpics(projectID) {
         return db.execute(`
             SELECT t.nombre as 'EpicName', e.idTicket as 'EpicID', e.perteneProyecto as 'ProjectID'
