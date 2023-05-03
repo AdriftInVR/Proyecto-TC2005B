@@ -299,36 +299,27 @@ control.getTasksarea = async (req, res) => {
 /* ---------------------------DELETE PROJECT--------------------------------- */
 control.deleteP = async (req, res) => {
 
-    /*control.getProjects = async (req, res) => {
-        msgErr = msgErrorAddProject
-        try{
-            [proyectos, fieldData] = await Proyect.fetchAll();
-    
-            [epics, filedData] = await Epic.fetchAllNoAsignate();
-        }catch(err){
-            console.log(err);
-        }
-        res.render('home', {
-            active: 'projects',
-            proyectos: proyectos,
-            epics: epics,
-            msgErr: msgErrorAddProject,
-        });
-    };*/
-
     try {
 
         [deletePTra, fieldData] = await Proyect.trabajadelete(id);
 
-        [deletePTra, fieldData] = await Proyect.trabajadelete(id);
+        [cleanE, fieldData] = await Proyect.clearepic(id);
 
-        [deletePTra, fieldData] = await Proyect.trabajadelete(id);
+        [deletePPro, fieldData] = await Proyect.proyectodelete(id);
 
-        [deletePTra, fieldData] = await Proyect.trabajadelete(id);
+        [deletePTic, fieldData] = await Proyect.ticketdelete(id);
 
     } catch(err){
         console.log(err);
     }
+
+    res.render('project', {
+        active: 'project',
+        delTra: deletePTra,
+        eNull: cleanE,
+        delPro: deletePPro,
+        delTick: deletePTic,
+    })
     
 }
 /* -------------------------------------------------------------------------- */
