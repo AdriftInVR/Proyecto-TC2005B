@@ -65,6 +65,41 @@
                         </p>
                     </div>
                 <% } %>
+                <div class="boton-modal p-2.5">
+                    <label for="btn-modal">
+                        Delete
+                    </label>
+                </div>
+
+                <input type="checkbox" id="btn-modal">
+                <div class="container-modal">
+                    <div class="content-modal">
+                        <h2 class="text-center bg-red-700 rounded-xl text-slate-200">Alert!!</h2>
+                        <p class="text-center">Confirm DELETE <%=projectName%></p>
+                        <div class="btn-cerrar">
+
+                            <div class="boton-modal p-2.5">
+                                <label for="btn-modal2">
+                                    Acepted
+                                </label>
+                            </div>
+
+                            <label for="btn-modal">Cancel</label>
+                        </div>
+
+                        <input type="checkbox" id="btn-modal2">
+                        <div class="container-modal2">
+                            <div class="content-modal2">
+                                <h2 class="text-center bg-green-700 rounded-xl text-slate-200">Alert!!</h2>
+                                <p class="text-center">Confirm DELETE</p>
+                                <div class="btn-cerrar2">
+                                    <a href="/gaia/" class="">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <label for="btn-modal" class="cerrar-modal"></label>
+                </div>                
             </div>
 
             <!--EPICS-->

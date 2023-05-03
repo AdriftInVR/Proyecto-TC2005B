@@ -1,45 +1,48 @@
 <%- include('partials/header.ejs') %>
 <%- include('partials/spinner.ejs') %>
     
-<body>
-    <div class="h-[main] w-full flex justify-center p-8">
-        <div class="w-1/3 bg-white">
-            <div class="sticky top-[10vh]">    
-                <input type="radio" id="pj" name="graph_selection" value="project" onchange='EpicToggle()' checked>
-                <label for="project">By Project</label>&nbsp;
-                <input type="radio" id="ep" name="graph_selection" value="epic" onchange='EpicToggle()'>
-                <label for="epic">By Epic</label><br>
+<body class="bg-gray-100">
+    <div class="h-[main] w-full flex justify-center p-4">
+        <div class="w-1/4 h-[85vh] mx-4 p-4 text-center bg-purple-400 rounded-lg sticky top-[12vh] flex flex-col">
+            <div class="">
+                <h2 class="font-bold p-4 my-4 text-3xl">Filters: </h2>  
+                  
+                <input class="mx-2" type="radio" id="pj" name="graph_selection" value="project" onchange='EpicToggle()' checked>
+                <label class="mx-2 font-semibold" for="pj">By Project</label>
+                
+                <input class="mx-2" type="radio" id="ep" name="graph_selection" value="epic" onchange='EpicToggle()'>
+                <label class="mx-2 font-semibold" for="ep">By Epic</label><br>
             </div>
-            <section id ='projectDiv' class="sticky top-[15vh]">
+            <section id ='projectDiv' class="py-8 font-semibold">
                 Project: 
-                <select id="projects">
+                <select id="projects" class="z-10 font-semibold bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                     <% let i = true %> 
                     <% for (project of projects) { %>
                         <option value="<%= project.ProjectID %>" <% if (i) { %> selected <% i = false  } %>><%= project.ProjectName %></option>
                     <% } %>
                 </select>
             </section>
-            <section id='epicDiv' style="visibility:hidden" class="sticky top-[20vh]">
+            <section id='epicDiv' style="visibility:hidden" class="py-8 font-semibold">
                 Epics: 
-                <select id="epics">
+                <select id="epics" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                     
                 </select>
             </section>
         </div>
 
-        <div class="w-2/3">
+        <div class="w-3/4 grid grid-cols-2 gap-2">
             
-            <div class="p-16">
+            <div class="p-4 bg-white rounded-lg">
                 <canvas id ='burnupAP'></canvas>
             </div>
-            <div class="p-16">
+            <div class="p-4 bg-white rounded-lg">
                 <canvas id ='frontBackAP'></canvas>
             </div>
-            <div class="p-16">
+            <div class="p-4 bg-white rounded-lg">
                 <canvas id="statusPie"></canvas>
             </div>
 
-            <div class="p-16">
+            <div class="p-4 bg-white rounded-lg">
                 <canvas id ='weeklyAP'></canvas>
             </div>
         </div>

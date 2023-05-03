@@ -87,7 +87,8 @@
                                         </th>
                                     </tr>
                                 </thead>
-
+                                
+                                <% for (let taska1 of tasksa1) { %>
                                     <% for (let task1 of tasks1) { %>
                                         <tbody class="" category="">
                                             <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis hover:bg-blue-400" >
@@ -129,12 +130,13 @@
                                                                 </div>                                                            
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>                                            
-                                            </th>
-                                        </tr>
+                                                    </div>                                            
+                                                </th>
+                                            </tr>
+                                        </tbody>
                                     <% } %>
-                                </tbody>
+                                <% } %>
+                            </tbody>
                             </table>
                         </div>
                     <% }  else { %>
@@ -467,6 +469,9 @@
                                 <% for (let task6 of tasks6) { %>
                                     
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700" >
+                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl store-itemtk6">
+                                                <!-- Modal toggle -->
+                                                <button data-modal-target="<%=task6.nombre%><%=task6.idTicket%>" data-modal-toggle="<%=task6.nombre%><%=task6.idTicket%>" data-filter="<%=task6.front_back%><%=task6.front_back %>">
                                             <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
                                                 <!-- Modal toggle -->
                                                 <button data-modal-target="<%=task6.nombre%><%=task6.idTicket%>" class="text-left text-xs" data-modal-toggle="<%=task6.nombre%><%=task6.idTicket%>" >
