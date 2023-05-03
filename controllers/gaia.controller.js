@@ -20,6 +20,7 @@ control.getLogin = (req, res) => {
 };
 
 control.getProjects = async (req, res) => {
+    
     msgErr = msgErrorAddProject
 
     try{
@@ -85,6 +86,29 @@ control.getProject = async (req, res) => {
 };
 
 control.getEditProject = (req, res, next) => {
+    
+
+/*
+    const NewData = {
+        projName: req.body.projectNameNew,
+        startDate: req.body.projectStartNew,
+        userName: req.body.users,
+        APUser: req.body.APNew,
+        newEpics: req.body.epicss
+    };
+
+    console.log(NewData)
+    const newDataProject = new Proyect(NewData);
+    idproject = req.params.prj;
+
+    newDataProject.editar(NewData, idproject)
+    .then(([rows,fieldData]) => {
+       res.render('project', {
+        active: 'projects',
+        dataNew: dataNew,
+        }) 
+    });
+
     Proyect.editar(NewData, projeId)
     .then(([rows,fieldData])=>{
        res.render('project', {
@@ -95,7 +119,10 @@ control.getEditProject = (req, res, next) => {
 
        }) 
     });
+*/
+
 }
+
 
 control.getTasks = async (req, res) => {
     id = req.params.prj;
@@ -808,7 +835,7 @@ control.processCsv = async(req,res)=>{
                     };
                     entriesNew.push(ticketInsert);
                 }
-000000            }
+            }
         })
         await User.addRespon(entriesNew);
 
@@ -857,25 +884,7 @@ control.postEpicsDB = (req, res, next) =>{
 }
 
 control.postEditProject = (req, res, next) => {
-    const NewData = {
-        projName: req.body.projectNameNew,
-        startDate: req.body.projectStartNew,
-        userName: req.body.users,
-        APUser: req.body.APNew,
-        newEpics: req.body.epicss
-    };
-
-    console.log(NewData)
-    const newDataProject = new Proyect(NewData);
-    idproject = req.params.prj;
-
-    newDataProject.editar(NewData, idproject)
-    .then(([rows,fieldData]) => {
-       res.render('project', {
-        active: 'projects',
-        dataNew: dataNew,
-        }) 
-    });
+    
 }
 
 module.exports = control

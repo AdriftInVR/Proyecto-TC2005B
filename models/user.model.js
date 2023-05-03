@@ -57,5 +57,31 @@ module.exports = class User {
         []);
     }
 
+    /* -- Actualizar usuario -- */
+    static update(NewData){
+        return db.execute(`
+            UPDATE trabaja
+            SET idUsuario = ?
+            WHERE idTicket = ?;
+        `, [NewData.idUsuario, NewData.idTicket])
+    }
+
+    /* -- CAMBIAR SUS PUNTOS ÁGILES -- */
+    static updateAgPo(NewData){
+        db.execute(`
+            UPDATE trabaja
+            SET efectividadAsignada = ?
+            WHERE idTicket = ?;
+        `, [NewData.efectividadAsignada, NewData.idTicket])
+    }
+
+    /*-- CAMBIAR PERTENECE EPICS-- */
+    static updatePertenEpic(NewData){
+        return db.execute(`
+            UPDATE epic
+            SET perteneProyecto = ?
+            WHERE idTicket = ?;
+        `, [NewData.perteneProyecto, NewData.idTicket])  
+    }
 
 }

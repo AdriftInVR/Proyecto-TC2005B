@@ -2,6 +2,7 @@ const db = require('../util/database');
 
 module.exports = class Proyecto {
     constructor(_newProyecto) {
+        this.id = _newProyecto.idTicket;
         this.nombre = _newProyecto.nombre;
         this.fechaInicio = _newProyecto.fechaInicio;
     }
@@ -119,55 +120,14 @@ module.exports = class Proyecto {
         `, [epic]);
     }
 
-
-    static async editar(data, idProj) {
-        
-        await db.execute(`
-                        
-            -- CAMBIAR NOMBRE
-            UPDATE ticket
-            SET nombre = ? --NUEVO
-            WHERE nombre = ?; -- BUSCA
-        `, [])
-
-        db.execute(`
-            
-            -- CAMBIAR FECHA DE INICIO
+    /*-- Actualizar fecha -- */
+    static updateDate(NewData) {
+        return db.execute(`
             UPDATE proyecto
             SET fechaInicio = ?
-            WHERE fechaInicio = ?;
-        `, [])
-
-        db.execute(`
-            
-            -- CAMBIAR TRABAJADORES
-            UPDATE trabaja
-            SET idUsuario = ?
-            WHERE idUsuario = ?;
-        `, [])
-
-        db.execute(`
-            
-            -- CAMBIAR SUS PUNTOS ÁGILES
-            UPDATE trabaja
-            SET efectividadAsignada = ?
-            WHERE efectividadAsignada = ?;
-        `, [])
-
-        db.execute(`
-
-            -- CAMBIAR PERTENECE EPICS
-            UPDATE epic
-            SET perteneProyecto = ?
-            WHERE PerteneProyecto = ?;
-        `, [])
-
-            .then(([rows, fieldData]) => {
-
-            })
-            .catch(err => {
-                console.log(err);
-            });     
+            WHERE idTicket = ?;
+        `, [NewData.fechaInicio, NewData.idTicket])
+  
     }  
 
 }

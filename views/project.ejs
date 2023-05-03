@@ -136,8 +136,7 @@
                                     </div>
                                 </div>                
                             </div>
-                            <div class="px-6 lg:px-8 grid grid-cols-2 gap-2">  
-                                
+                            <div class="px-6 lg:px-8 grid grid-cols-2 gap-2">
                                 <!--CO-WORKERS-->                                  
                                     <div >
                                         <div class="mb-8 w-80">
@@ -163,19 +162,6 @@
                                                                             <input type="text" id="APNew" name="APNew" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 h-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled = true>
                                                                         </div>
                                                                     </div>
-                                                                    <!--BLOCK AGILE POINTS SECTION-->
-                                                                    <script>
-                                                                        function blockBox() {
-                                                                            const checkbox = document.getElementById('users');
-                                                                            const input = document.getElementById('APNew');
-
-                                                                            if (checkbox.checked) {
-                                                                                input.disabled = false;
-                                                                            } else {
-                                                                                input.disabled = true;
-                                                                            }
-                                                                        }
-                                                                    </script>
                                                                 </input>
                                                             </div>
                                                         </li>
@@ -184,6 +170,20 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!--BLOCK AGILE POINTS SECTION-->
+                                    <script>
+                                        function blockBox() {
+                                            const checkbox = document.getElementById('users');
+                                            const input = document.getElementById('APNew');
+
+                                            if (checkbox.checked) {
+                                                input.disabled = false;
+                                            } else {
+                                                input.disabled = true;
+                                            }
+                                        }
+                                    </script>
                                  
                                 <!--EPICS-->
                                 <div >
