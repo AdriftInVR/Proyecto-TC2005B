@@ -26,15 +26,15 @@
             
                 <div class="m-4">
                     <div class="inline-flex shadow-sm" role="group">
-                        <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        <a href="a<%= id %>" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
                         ALL
-                        </button>
-                        <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600 hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        </a>
+                        <a href="f<%= id %>" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600 hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
                         FRONTEND
-                        </button>
-                        <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
+                        </a>
+                        <a href="b<%= id %>" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-b border-gray-600  hover:bg-indigo-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white  ">
                         BACKEND
-                        </button>
+                        </a>
                     </div>
                 </div>        
             </div>
@@ -51,7 +51,7 @@
                             
                                 <% for(let i=0;i<epics.length;i++){%>
                                         <li>
-                                            <a href="<%= epics[i].idTicket %>" class="block px-4 py-2 rounded-lg hover:bg-indigo-900 hover:text-white"><%= epics[i].nombre %></a>
+                                            <a href="a<%= epics[i].idTicket %>" class="block px-4 py-2 rounded-lg hover:bg-indigo-900 hover:text-white"><%= epics[i].nombre %></a>
                                         </li>
                                 <% }%>
                             <% }%>

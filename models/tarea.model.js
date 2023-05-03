@@ -53,7 +53,7 @@ module.exports = class Tarea {
 
     }
 
-    static taskinpro(){
+    static taskinpro(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -66,7 +66,7 @@ module.exports = class Tarea {
 
     }
 
-    static taskcode(){
+    static taskcode(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -78,7 +78,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static taskquality(){
+    static taskquality(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -90,7 +90,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static taskrelease(){
+    static taskrelease(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -102,7 +102,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static taskdone(){
+    static taskdone(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -114,7 +114,7 @@ module.exports = class Tarea {
         `,[id])
     }
 
-    static taskclosed(){
+    static taskclosed(id){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -136,4 +136,97 @@ module.exports = class Tarea {
         AND ti.idTicket = ?
         `,[id])
     }
+    static tasktdoWA(id, wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 1
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+
+    }
+
+    static taskinproWA(id, wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 2
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+
+    }
+
+    static taskcodeWA(id, wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 3
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskqualityWA(id, wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 4
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskreleaseWA(id, wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 5
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskdoneWA(id, wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 6
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id,wa])
+    }
+
+    static taskclosedWA(id, wa){
+        return db.execute (`
+        SELECT *
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 7
+        AND e.idTicket = ?
+        AND ta.front_back = ?
+        `,[id, wa])
+    }
+    
 }
