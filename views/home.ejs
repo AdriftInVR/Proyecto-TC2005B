@@ -125,8 +125,8 @@
 
 
     <!--ERROR-->
-    <% if(msgErr){ %>
-        <div id="ErrorValue" aria-hidden="true" class="w-96 h-48 fixed top-60 right-100 rounded-lg bg-white text-left shadow-xl transition-all border border-gray-600 flex flex-col">
+    <% if(msgErr){ %>        
+        <div id="ErrorValue" aria-hidden="true" class="w-96 absolute top-52 right-80 rounded-lg bg-white text-left shadow-xl transition-all border border-gray-600 flex flex-col">
             <div class=" px-4 pb-4 pt-5">
                 <div class="flex items-start">
                     <div class="flex w-12 inset-x-9 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
@@ -142,7 +142,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold  text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" data-modal-hide="ErrorValue">Acept</button>
+            <button type="button" class=" rounded-md bg-red-600 px-3 py-2 mb-2 text-sm font-semibold  text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" data-modal-hide="ErrorValue">Acept</button>
         </div>
     <% } %>
 

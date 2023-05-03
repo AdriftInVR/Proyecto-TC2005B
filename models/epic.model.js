@@ -48,6 +48,10 @@ module.exports = class epic {
         `);
     }
 
+    static async dropPrj(id){
+        return await db.execute('UPDATE epic SET perteneProyecto = NULL WHERE perteneProyecto = ?', [id]);
+    }
+
     static fetchStatus(epicID) {
         return db.execute(`
             SELECT s.descripcion as 'Nombre', COUNT(*) as Cantidad FROM estatus s, fase f, tarea t, epic e, proyecto p

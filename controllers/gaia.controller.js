@@ -46,7 +46,12 @@ control.getProject = async (req, res) => {
     
         [epics, filedData] = await Proyect.epics(projectName);        
         
-        [namePrj, filedData] = await Proyect.fetchOne(projectName);        
+        [namePrj, filedData] = await Proyect.fetchOne(projectName);  
+        
+        [epi, filedData] = await Epic.fetchAllIDs();
+        
+        [userName, fieldData] = await User.fetchAll();
+
     } catch (err) {
         console.log(err);
     }
@@ -77,7 +82,7 @@ control.getProject = async (req, res) => {
     .catch(err=>console.log(err));
 
     console.log('1: ',all, '2:', complete)
-    if(complete == all){
+    if(complete == all && all != 0){
         await Proyecto.fetchDateFinal(projectName)
         .then(([rows, fieldData])=>{
             end = rows[0].fechaCambio;
@@ -94,43 +99,63 @@ control.getProject = async (req, res) => {
             end = dia + "/" + mes + "/" + anio;
         })
         .catch(err=>console.log(err));
+    }else if(all == 0){
+        end = 'No tasks yet';
     }else{
-        end = 'In progress'
+        end = 'In progress';
     }
 
     res.render('project', {
         active: 'projects',
         epics: epics,
+        epi: epi,
         projectName: namePrj[0].nombre,
         date: fechaFormateada,
         datos: datos, 
-        end: end
+        end: end,
+        id: projectName,
+        userName: userName        
     });
     
 };
 
 control.getTasks = async (req, res) => {
-    id = req.params.prj;
+    id = req.params.prj.slice(1);
+    wa = req.params.prj[0];
     let idProyect = 0;
     await Epic.fetchPrjPertenece(id)
     .then(([rows, fieldData])=>{
         idProyect = rows[0].perteneProyecto;
     })
     try {
-        [task1, fieldData] = await Tarea.tasktdo(id);        
+        if(wa == 'a'){
+            [task1, fieldData] = await Tarea.tasktdo(id);        
+            [task2, fieldData] = await Tarea.taskinpro(id);    
+            [task3, fieldData] = await Tarea.taskcode(id);        
+            [task4, fieldData] = await Tarea.taskquality(id);        
+            [task5, fieldData] = await Tarea.taskrelease(id);        
+            [task6, fieldData] = await Tarea.taskdone(id);        
+            [task7, fieldData] = await Tarea.taskclosed(id);
+        }else{
+            if(wa == 'f'){
+                [task1, fieldData] = await Tarea.tasktdoWA(id,0);        
+                [task2, fieldData] = await Tarea.taskinproWA(id,0);    
+                [task3, fieldData] = await Tarea.taskcodeWA(id,0);        
+                [task4, fieldData] = await Tarea.taskqualityWA(id,0);        
+                [task5, fieldData] = await Tarea.taskreleaseWA(id,0);        
+                [task6, fieldData] = await Tarea.taskdoneWA(id,0);        
+                [task7, fieldData] = await Tarea.taskclosedWA(id,0);
+            }else{
+                [task1, fieldData] = await Tarea.tasktdoWA(id,1);        
+                [task2, fieldData] = await Tarea.taskinproWA(id,1);    
+                [task3, fieldData] = await Tarea.taskcodeWA(id,1);        
+                [task4, fieldData] = await Tarea.taskqualityWA(id,1);        
+                [task5, fieldData] = await Tarea.taskreleaseWA(id,1);        
+                [task6, fieldData] = await Tarea.taskdoneWA(id,1);        
+                [task7, fieldData] = await Tarea.taskclosedWA(id,1);
+            }
+        }
 
-        [task2, fieldData] = await Tarea.taskinpro(id);    
-
-        [task3, fieldData] = await Tarea.taskcode(id);        
-
-        [task4, fieldData] = await Tarea.taskquality(id);        
-
-        [task5, fieldData] = await Tarea.taskrelease(id);        
-
-        [task6, fieldData] = await Tarea.taskdone(id);        
-
-        [task7, fieldData] = await Tarea.taskclosed(id);
-        
         [epics, filedData] = await Proyect.epics(idProyect);
 
     } catch (err) {
@@ -193,24 +218,91 @@ control.getTasks = async (req, res) => {
             tasks7: task7,
             epics: epics,
             actual: nameActual,
-            prj: idProyect
+            prj: idProyect,
+            id: id
         });
     })
     .catch(err =>console.log(err));
-    
-    
+};
+control.getTasksarea = async (req, res) => {
+    id = req.params.prj;
+    let idProyect = 0;
+    await Epic.fetchPrjPertenece(id)
+    .then(([rows, fieldData])=>{
+        idProyect = rows[0].perteneProyecto;
+    })
+    try {
+        [taskarea1, fieldData] = await Tarea.tasktdoarea(id,wa);        
 
-    /*Tarea.estat(req.params.idEstatus)
-    .then(([rows, fieldData]) => {
-        console.log(rows);
+        [taskarea2, fieldData] = await Tarea.taskinproarea(id,wa);    
+
+        [taskarea3, fieldData] = await Tarea.taskcodearea(id,wa);        
+
+        [taskarea4, fieldData] = await Tarea.taskqualityarea(id,wa);        
+
+        [taskarea5, fieldData] = await Tarea.taskreleasearea(id,wa);        
+
+        [taskarea6, fieldData] = await Tarea.taskdonearea(id,wa);        
+
+        [taskarea7, fieldData] = await Tarea.taskclosedarea(id,wa);
+        
+        [epics, filedData] = await Proyect.epic(idProyect);
+
+    } catch (err) {
+        console.log(err);
+    }
+    
+    for(let i=0;i<taskarea1.length;i++){
+        fecha = taskarea1[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea1[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea2.length;i++){
+        fecha = taskarea2[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea2[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea3.length;i++){
+        fecha = taskarea3[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea3[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea4.length;i++){
+        fecha = taskarea4[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea4[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea5.length;i++){
+        fecha = task5area[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        task5area[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea6.length;i++){
+        fecha = task6area[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea6[i].fechaCambio = fechaFormateada;
+    }    
+    for(let i=0;i<taskarea7.length;i++){
+        fecha = taskarea7[i].fechaCambio;
+        fechaFormateada = formatDate(fecha);
+        taskarea7[i].fechaCambio = fechaFormateada;
+    }    
+    
+    Epic.fetchAll()
+    .then(([rows, fieldData])=>{        
         res.render('tasks', {
-            task: rows,
             active: 'projects',
+            tasksa1: taskarea1,
+            tasksa2: taskarea2,
+            tasksa3: taskarea3,
+            tasksa4: taskarea4,
+            tasksa5: taskarea5,
+            tasksa6: taskarea6,
+            tasksa7: taskarea7,
+            epics: epics,
         });
     })
-    .catch(err => {
-        console.log(err);
-    })*/
+    .catch(err =>console.log(err));
 };
 
 function formatDate(dateAnt){
@@ -876,6 +968,18 @@ control.processCsv = async(req,res)=>{
     }
     
 };
+
+control.getDeletePrj = async(req, res, next) =>{
+    let idPrj = req.params.id;
+
+    await Epic.dropPrj(idPrj)
+    .catch(err=> console.log(err));
+    await User.dropPrj(idPrj);
+    await Proyecto.dropPrj(idPrj);
+    await Ticket.dropPrj(idPrj);
+
+    res.redirect('/gaia/')
+}
 
 control.postProject = (req, res, next) =>{
     msgErrorAddProject = false;

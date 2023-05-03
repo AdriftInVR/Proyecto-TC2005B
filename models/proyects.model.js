@@ -188,4 +188,22 @@ module.exports = class Proyecto {
         `, [epicID, EoW])
     }
 */
+
+    /* LINEA VERDE PROYECTOS :) */
+    static fetchGreenLine(projectID){
+        return db.execute(`
+        SELECT f.fechaCambio, t.puntosAgiles
+        FROM tarea t, epic e, proyecto p, fase f
+        WHERE t.perteneceEpic = e.idTicket
+        AND e.perteneProyecto = p.idTicket
+        AND p.idTicket = 3
+        AND t.idTicket = f.idTicket
+        AND (f.idEstatus = 7 OR f.idEstatus = 6)
+        ORDER BY f.fechaCambio DESC
+        `, [projectID])
+    }
+
+    static async dropPrj(id) {
+        return await db.execute('DELETE FROM proyecto WHERE idTicket = ?', [id]);
+    }
 }
