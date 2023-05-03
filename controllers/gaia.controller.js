@@ -50,7 +50,7 @@ control.getProject = async (req, res) => {
         
         [epi, filedData] = await Epic.fetchAllIDs();
         
-        [userName, fieldData] = await User.UserNoAsignated();
+        [userName, fieldData] = await User.fetchAll();
 
     } catch (err) {
         console.log(err);

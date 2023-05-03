@@ -53,8 +53,8 @@ module.exports = class User {
     static UserNoAsignated(){
         return db.execute (`
         SELECT nombre 
-        FROM USUARIO 
-        WHERE idUsuario NOT IN (SELECT idUsuario FROM TRABAJA)
+        FROM usuario 
+        WHERE idUsuario NOT IN (SELECT idUsuario FROM trabaja)
         `,[])
     }
 }
