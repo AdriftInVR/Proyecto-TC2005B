@@ -11,7 +11,7 @@
                         <ol class="inline-flex items-center space-x-1 md:space-x-3">
                         <li>
                             <div class="flex items-center">            
-                            <a href="/gaia/" class="ml-1 text-sm font-medium text-gray-900 hover:text-gray-400 md:ml-2 ">Project</a>
+                            <a href="/gaia/project/<%= prj %>" class="ml-1 text-sm font-medium text-gray-900 hover:text-gray-400 md:ml-2 ">Project</a>
                             </div>
                         </li>
                         <li aria-current="page">
@@ -44,7 +44,7 @@
                     <% if(epics){%>
                     <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
                         class="h-1/2 w-4/5 text-white bg-indigo-900 rounded-l-lg hover:bg-indigo-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
-                        type="button"><%= epics[0].nombre %><svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                        type="button"><%= actual %><svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
                     <!-- Dropdown menu -->                
                     <div id="dropdownHover" class=" z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow max-w-4/5 min-w-44">
                         <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownHoverButton">
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div class="m-2 p-8 flex flex-row flex-wrap justify-around">
+        <div class="m-2 py-8 flex flex-row flex-wrap justify-around">
         
 
     </div>
@@ -75,20 +75,21 @@
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-4 py-2">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-2 py-2">
                                             Point
                                         </th>
                                     </tr>
                                 </thead>
+                            <tbody >
                                 <% for (let task1 of tasks1) { %>
-                                    <tbody >
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis hover:bg-blue-400" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">                                            
+                                    
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14 text-ellipsis hover:bg-blue-400" >
+                                            <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900 text-left dark:text-gray text-ellipsis    rounded-s-3xl">                                            
                                                 <!-- Modal toggle -->
-                                                <button data-modal-target="<%=task1.nombre%><%=task1.idTicket%>" data-modal-toggle="<%=task1.nombre%><%=task1.idTicket%>" >
+                                                <button data-modal-target="<%=task1.nombre%><%=task1.idTicket%>" class="text-left text-xs" data-modal-toggle="<%=task1.nombre%><%=task1.idTicket%>" >
                                                     <%= task1.nombre %>                                                    
                                                 </button>  
                                                 <td class="px-6 py-4 rounded-e-3xl">
@@ -104,7 +105,7 @@
                                                                 <h3 id="defaultModal<%=task1.idTicket%>" tabindex="-1" class="text-xl font-semibold text-gray-900 dark:text-white">
                                                                     <%= task1.nombre %> 
                                                                 </h3>
-                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="<%=task1.nombre%><%=task1.idTicket%>">
                                                                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                     <span class="sr-only">Close modal</span>
                                                                 </button>
@@ -124,8 +125,9 @@
                                                 </div>                                            
                                             </th>
                                         </tr>
-                                    </tbody>
+                                    
                                 <% } %>
+                            </tbody>
                             </table>
                         </div>
                     <% }  else { %>
@@ -148,21 +150,22 @@
     
                             <thead class="text-xs text-gray-900 uppercase dark:text-gray-400 ">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-4 py-2">
                                         Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-2 py-2">
                                         Point
                                     </th>
                                 </tr>
                             </thead>
-    
+                            
+                            <tbody>
                             <% for (let task2 of tasks2) { %>
-                                <tbody>
+                                
                                     <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis    hover:bg-amber-400" >
-                                        <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">                                            
+                                        <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">                                            
                                             <!-- Modal toggle -->
-                                            <button data-modal-target="<%=task2.nombre%><%=task2.idTicket%>" data-modal-toggle="<%=task2.nombre%><%=task2.idTicket%>" >
+                                            <button data-modal-target="<%=task2.nombre%><%=task2.idTicket%>" class="text-left text-xs" data-modal-toggle="<%=task2.nombre%><%=task2.idTicket%>" >
                                                 <%= task2.nombre %>                                                    
                                             </button>  
                                             <td class="px-6 py-4 rounded-e-3xl">
@@ -178,7 +181,7 @@
                                                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                                                 <%= task2.nombre %> 
                                                             </h3>
-                                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="<%=task2.nombre%><%=task2.idTicket%>">
                                                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                 <span class="sr-only">Close modal</span>
                                                             </button>
@@ -198,8 +201,9 @@
                                             </div>
                                         </th>                                        
                                     </tr>
-                                </tbody>
+                                
                             <% } %>
+                        </tbody>
                         </table>
                     </div>
                 <% }  else { %>
@@ -220,20 +224,21 @@
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-4 py-2">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-2 py-2">
                                             Point
                                         </th>
                                     </tr>
                                 </thead>
+                                <tbody>
                                 <% for (let task3 of tasks3) { %>
-                                    <tbody>
+                                    
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-400" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
                                                 <!-- Modal toggle -->
-                                                <button data-modal-target="<%=task3.nombre%><%=task3.idTicket%>" data-modal-toggle="<%=task3.nombre%><%=task3.idTicket%>" >
+                                                <button data-modal-target="<%=task3.nombre%><%=task3.idTicket%>" class="text-left text-xs" data-modal-toggle="<%=task3.nombre%><%=task3.idTicket%>" >
                                                     <%= task3.nombre %>                                                    
                                                 </button>  
                                                 <td class="px-6 py-4 rounded-e-3xl">
@@ -249,7 +254,7 @@
                                                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                                                     <%= task3.nombre %> 
                                                                 </h3>
-                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="<%=task3.nombre%><%=task3.idTicket%>">
                                                                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                     <span class="sr-only">Close modal</span>
                                                                 </button>
@@ -270,8 +275,9 @@
                                             </th>
                                             
                                         </tr>
-                                    </tbody>
+                                    
                                 <% } %>
+                            </tbody>
                             </table>
                         </div>
                     <% }  else { %>
@@ -292,20 +298,21 @@
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-4 py-2">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-2 py-2">
                                             Point
                                         </th>
                                     </tr>
                                 </thead>
+                                <tbody>
                                 <% for (let task4 of tasks4) { %>
-                                    <tbody>
+                                    
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-red-400">
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
                                                 <!-- Modal toggle -->
-                                                <button data-modal-target="<%=task4.nombre%><%=task4.idTicket%>" data-modal-toggle="<%=task4.nombre%><%=task4.idTicket%>" >
+                                                <button data-modal-target="<%=task4.nombre%><%=task4.idTicket%>"class="text-left text-xs" data-modal-toggle="<%=task4.nombre%><%=task4.idTicket%>" >
                                                     <%= task4.nombre %>                                                    
                                                 </button>  
                                                 <td class="px-6 py-4 rounded-e-3xl">
@@ -321,7 +328,7 @@
                                                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                                                     <%= task4.nombre %> 
                                                                 </h3>
-                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="<%=task4.nombre%><%=task4.idTicket%>">
                                                                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                     <span class="sr-only">Close modal</span>
                                                                 </button>
@@ -342,8 +349,9 @@
                                             </th>
                                             
                                         </tr>
-                                    </tbody>
+                                    
                                 <% } %>
+                            </tbody>
                             </table>
                         </div>
                     <% }  else { %>
@@ -364,20 +372,21 @@
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-4 py-2">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-2 py-2">
                                             Point
                                         </th>
                                     </tr>
                                 </thead>
+                                <tbody>
                                 <% for (let task5 of tasks5) { %>
-                                    <tbody>
+                                    
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-green-500" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
                                                 <!-- Modal toggle -->
-                                                <button data-modal-target="<%=task5.nombre%><%=task5.idTicket%>" data-modal-toggle="<%=task5.nombre%><%=task5.idTicket%>" >
+                                                <button data-modal-target="<%=task5.nombre%><%=task5.idTicket%>" class="text-left text-xs" data-modal-toggle="<%=task5.nombre%><%=task5.idTicket%>" >
                                                     <%= task5.nombre %>                                                    
                                                 </button>  
                                                 <td class="px-6 py-4 rounded-e-3xl">
@@ -393,7 +402,7 @@
                                                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                                                     <%= task5.nombre %> 
                                                                 </h3>
-                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="<%=task5.nombre%><%=task5.idTicket%>">
                                                                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                     <span class="sr-only">Close modal</span>
                                                                 </button>
@@ -413,8 +422,9 @@
                                                 </div>
                                             </th>               
                                         </tr>
-                                    </tbody>
+                                    
                                 <% } %>
+                            </tbody>
                             </table>
                         </div>
                     <% }  else { %>
@@ -435,20 +445,21 @@
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-4 py-2">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-2 py-2">
                                             Point
                                         </th>
                                     </tr>
                                 </thead>
+                                <tbody>
                                 <% for (let task6 of tasks6) { %>
-                                    <tbody>
+                                    
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
                                                 <!-- Modal toggle -->
-                                                <button data-modal-target="<%=task6.nombre%><%=task6.idTicket%>" data-modal-toggle="<%=task6.nombre%><%=task6.idTicket%>" >
+                                                <button data-modal-target="<%=task6.nombre%><%=task6.idTicket%>" class="text-left text-xs" data-modal-toggle="<%=task6.nombre%><%=task6.idTicket%>" >
                                                     <%= task6.nombre %>                                                    
                                                 </button>  
                                                 <td class="px-6 py-4 rounded-e-3xl">
@@ -464,7 +475,7 @@
                                                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                                                     <%= task6.nombre %> 
                                                                 </h3>
-                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="<%=task6.nombre%><%=task6.idTicket%>">
                                                                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                     <span class="sr-only">Close modal</span>
                                                                 </button>
@@ -484,8 +495,9 @@
                                                 </div>
                                             </th>                                            
                                         </tr>
-                                    </tbody>
+                                    
                                 <% } %>
+                            </tbody>
                             </table>
                         </div>
                     <% }  else { %>
@@ -506,20 +518,21 @@
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-4 py-2">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-2 py-2">
                                             Point
                                         </th>
                                     </tr>
                                 </thead>
+                                <tbody> 
                                 <% for (let task7 of tasks7) { %>
-                                    <tbody> 
+                                    
                                         <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-blue-300" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
+                                            <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
                                                 <!-- Modal toggle -->
-                                                <button data-modal-target="<%=task7.nombre%><%=task7.idTicket%>" data-modal-toggle="<%=task7.nombre%><%=task7.idTicket%>" >
+                                                <button data-modal-target="<%=task7.nombre%><%=task7.idTicket%>" class="text-left text-xs" data-modal-toggle="<%=task7.nombre%><%=task7.idTicket%>" >
                                                     <%= task7.nombre %>                                                    
                                                 </button>  
                                                 <td class="px-6 py-4 rounded-e-3xl">
@@ -535,7 +548,7 @@
                                                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                                                     <%= task7.nombre %> 
                                                                 </h3>
-                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="<%=task7.nombre%><%=task7.idTicket%>">
                                                                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                                                     <span class="sr-only">Close modal</span>
                                                                 </button>
@@ -556,8 +569,9 @@
                                             </th>
                                             
                                         </tr>
-                                    </tbody>
+                                    
                                 <% } %>
+                            </tbody>
                             </table>
                         </div>
                     <% }  else { %>

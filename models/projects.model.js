@@ -1,10 +1,13 @@
 const db = require('../util/database');
-
+const Epic = require('../models/epic.model')
 module.exports = class Proyecto {
     constructor(_newProyecto) {
         this.id = _newProyecto.idTicket;
         this.nombre = _newProyecto.nombre;
         this.fechaInicio = _newProyecto.fechaInicio;
+        this.epics = _newProyecto.epics;   
+        this.idUsuario = _newProyecto.idUsuario;
+        this.efectividadAsignada = _newProyecto.idUsuario;
     }
 
     save() {
@@ -48,10 +51,20 @@ module.exports = class Proyecto {
                     VALUES (?, ?)
                 `, [id_temporal, this.fechaInicio])
 
-                    db.execute(`
+                    /*db.execute(`
                     INSERT INTO EPIC (perteneProyecto)
                     VALUES (?)
                 `, [id_temporal])
+
+                    db.execute(`
+                    INSERT INTO trabaja (idProyecto, idUsuario)
+                    VALUES (?, ?)
+                `, [id_temporal, this.idUsuario])
+
+                    db.execute(`
+                    INSERT INTO usuario (idUsuario)
+                    VALUES (?)
+                `, [this.idUsuario])*/
 
                     .then(([rows, fieldData]) => {
 
@@ -60,6 +73,7 @@ module.exports = class Proyecto {
                         console.log(err);
                     });     
 
+                    Epic.setEpicProj(id_temporal,this.epics )
                 }
                 return error;
             })
@@ -120,13 +134,17 @@ module.exports = class Proyecto {
         `, [epic]);
     }
 
-    /*-- Actualizar fecha -- */
-    static updateDate(NewData) {
+    /*--  -- */
+    static updateProj(id) {
         return db.execute(`
-            UPDATE proyecto
-            SET fechaInicio = ?
-            WHERE idTicket = ?;
-        `, [NewData.fechaInicio, NewData.idTicket])
+            SELECT t.nombre, p.fechaInicio, u.nombre, tr.efectividadAsignada, e.idTicket
+            FROM proyecto p, ticket t, epic e, trabaja tr, usuario u
+            WHERE t.idTicket = p.idTicket
+            AND p.idTicket = e.perteneProyecto
+            AND p.idTicket = tr.idProyecto
+            AND tr.idUsuario = u.idUsuario
+            AND p.idTicket = ?
+        `, [id])
   
     }  
 

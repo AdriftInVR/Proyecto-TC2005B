@@ -115,6 +115,20 @@ module.exports = class Proyecto {
         `,[projectID])
     }
     
+    static async fetchDateFinal(projectID) {
+        return await db.execute(`
+            SELECT *
+            FROM tarea t, epic e, proyecto p, fase f, estatus s
+            WHERE t.idTicket = f.idTicket
+            AND f.idEstatus = s.idEstatus
+            AND t.perteneceEpic = e.idTicket
+            AND (s.descripcion = 'Done' OR s.descripcion = 'Closed')
+            AND e.perteneProyecto = p.idTicket
+            AND p.idTicket = ?
+            ORDER BY fechaCambio DESC
+        `,[projectID])
+    }
+    
     static async fetchAllPrj(projectID) {
         return await db.execute(`
             SELECT t.front_back, COUNT(puntosAgiles) as 'Completed'

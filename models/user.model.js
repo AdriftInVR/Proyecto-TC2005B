@@ -56,8 +56,8 @@ module.exports = class User {
         WHERE idUsuario NOT IN (SELECT idUsuario FROM TRABAJA)`,
         []);
     }
-
-    /* -- Actualizar usuario -- */
+/*
+    /* -- Actualizar usuario -- 
     static update(NewData){
         return db.execute(`
             UPDATE trabaja
@@ -66,8 +66,8 @@ module.exports = class User {
         `, [NewData.idUsuario, NewData.idTicket])
     }
 
-    /* -- CAMBIAR SUS PUNTOS ÁGILES -- */
-    static updateAgPo(NewData){
+        CAMBIAR SUS PUNTOS ÁGILES
+         static updateAgPo(NewData){
         db.execute(`
             UPDATE trabaja
             SET efectividadAsignada = ?
@@ -75,7 +75,7 @@ module.exports = class User {
         `, [NewData.efectividadAsignada, NewData.idTicket])
     }
 
-    /*-- CAMBIAR PERTENECE EPICS-- */
+    CAMBIAR PERTENECE EPICS
     static updatePertenEpic(NewData){
         return db.execute(`
             UPDATE epic
@@ -83,5 +83,6 @@ module.exports = class User {
             WHERE idTicket = ?;
         `, [NewData.perteneProyecto, NewData.idTicket])  
     }
+*/
 
 }
