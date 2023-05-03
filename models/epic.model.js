@@ -72,6 +72,18 @@ module.exports = class epic {
         GROUP BY E.idTicket
         `, [SoW, EoW, epicID])
     };
+
+    static fetchAPepic(epicID, EoW){
+        return db.execute (`
+        SELECT SUM(ta.puntosAgiles) as 'TotalAP'
+        FROM proyecto p, ticket t, epic e, tarea ta
+        WHERE p.idTicket = t.idTicket
+        AND p.idTicket = e.perteneProyecto
+        AND ta.perteneceEpic = e.idTicket
+        AND e.idTicket = ?
+        AND ta.asignacionEpiTar < ?
+        `, [epicID, EoW])
+    }
 /*
     static fetchAPepic(epicID, EoW){
         return db.execute (`
@@ -87,25 +99,4 @@ module.exports = class epic {
     }
     */
 
-/* LINEA VERDE EPICS :D */
-    static fetchGreenEpicLine(epicID){
-        return db.execute (`
-        SELECT COUNT(ta.idTicket)
-        FROM ticket ti, fase f, tarea ta, epic e
-        WHERE ti.idTicket = f.idTicket
-        AND ti.idTicket = ta.idTicket
-        AND e.idTicket = ta.perteneceEpic
-        AND f.idEstatus = 6 
-        AND e.idTicket = ?
-        `, [epicID])
-    }
-
-    static async setEpicProj(id, epics){        
-        for(let i=0;i<epics.length;i++){            
-            await db.execute(`UPDATE epic SET perteneProyecto = ? WHERE idTicket = ?`,[id,epics[i]])
-            .catch(err => {
-                console.log({sql:err.sql, msg:err.sqlMessage});
-            });
-        }    
-    }
 }

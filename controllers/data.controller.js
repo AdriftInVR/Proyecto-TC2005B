@@ -99,21 +99,8 @@ exports.getProjectCompleteAP = (req, res) => {
         });
 };
 
-//Puntos agiles por tarea y epic
-exports.getAPproyect = async (req, res) => {
-    await Proyecto.fetchAPproject(req.params.idProject)
-        .then(([rows, fieldData]) => {
-            console.log(rows)
-            res.status(200).json({status: rows})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({message: "Internal Server Error"});
-    });
-}
-
-exports.getAPepic = async (req, res) => {
-    await Proyecto.fetchAPepic(req.params.idEpic)
+exports.getEpicCompleteAP = (req, res) => {
+    Epic.fetchAPepic(req.params.idEpic, req.params.end)
         .then(([rows, fieldData]) => {
             res.status(200).json({status: rows})
         })
@@ -122,8 +109,7 @@ exports.getAPepic = async (req, res) => {
             res.status(500).json({message: "Internal Server Error"});
     });
 }
-//
-
+/*-----------------------------------------------------------------------------------------*/
 exports.getArea = async (req, res) => {
     let area = {
         allFront: 0,
@@ -276,8 +262,8 @@ exports.burnUpLine = async (req, res) =>{
 
 exports.burnUpLinesEpic= async (req, res) =>{
     let data={
-        stimate : 0,
-        aptotales : 0
+        stimate: 0,
+        aptotales: 0
     }
     await Proyecto.fetchEstimate(req.params.idProject)
     .then(([rows, fieldData]) => {

@@ -175,7 +175,7 @@ module.exports = class Proyecto {
 
 
 
-    static async fetchAPepic(epicID, EoW){
+    /*static async fetchAPepic(epicID, EoW){
         return await db.execute (`
         SELECT SUM(ta.puntosAgiles) as 'APTotalesE'
         FROM proyecto p, ticket t, epic e, tarea ta
@@ -187,19 +187,5 @@ module.exports = class Proyecto {
         GROUP BY p.idTicket
         `, [epicID, EoW])
     }
-
-
-    /* LINEA VERDE PROYECTOS :) */
-    static fetchGreenLine(projectID){
-        return db.execute(`
-        SELECT f.fechaCambio, t.puntosAgiles
-        FROM tarea t, epic e, proyecto p, fase f
-        WHERE t.perteneceEpic = e.idTicket
-        AND e.perteneProyecto = p.idTicket
-        AND p.idTicket = 3
-        AND t.idTicket = f.idTicket
-        AND (f.idEstatus = 7 OR f.idEstatus = 6)
-        ORDER BY f.fechaCambio DESC
-        `, [projectID])
-    }
+*/
 }
