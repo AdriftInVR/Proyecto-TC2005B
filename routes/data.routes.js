@@ -31,8 +31,7 @@ router.get('/project/epic/area/:idEpic', dataController.getAreaEpic);
 
 router.get('/project/burnUpLine/:idProject', dataController.burnUpLine);
 
-
-
 router.get('/project/epic/burnUoLineE/:idEpic', dataController.burnUpLine);
+
 
 module.exports = router;

@@ -185,6 +185,32 @@ control.getUsers = async (req, res) => {
     });
 };
 
+control.postDeleteUsers = async (req, res) => {
+
+    let usuarios_proyectos = [];
+    let usuarios_front_back = [];
+    
+    User.DeleteUser(req.body.user)
+
+    setTimeout(() => {
+        User.fetchAll().then(([usuarios,fieldData]) => {
+            for (let usuario of usuarios) {
+                [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
+                usuarios_proyectos[usuario.nombre] = proyectos;
+    
+                [front_back, fieldData] = await User.fetchUserTasks(usuario.nombre);
+                usuarios_front_back[usuario.nombre] = front_back;
+            }
+        
+            res.render('users', {
+                active: 'users',
+                usuarios_proyectos: usuarios_proyectos,
+                usuarios_front_back: usuarios_front_back,
+            })
+        }).catch();
+    }, "200")
+};
+
 control.getDashboard = (req, res) => {
     Proyecto.fetchAllIDs().then(([projects, filedData]) => {
         res.render('dashboard', {

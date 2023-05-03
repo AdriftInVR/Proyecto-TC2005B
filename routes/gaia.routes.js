@@ -14,6 +14,7 @@ router.get('/', auth, gaiaController.getProjects);
 router.get('/project/:prj', auth, gaiaController.getProject);
 router.get('/tasks/:prj', auth, gaiaController.getTasks);
 router.get('/users', auth, gaiaController.getUsers);
+router.post('/users', auth, gaiaController.postDeleteUser);
 router.get('/dashboard', auth, gaiaController.getDashboard);
 router.get('/import/:result', auth, gaiaController.getImport);
 
