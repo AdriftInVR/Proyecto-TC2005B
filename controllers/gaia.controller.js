@@ -77,7 +77,7 @@ control.getProject = async (req, res) => {
     .catch(err=>console.log(err));
 
     console.log('1: ',all, '2:', complete)
-    if(complete == all){
+    if(complete == all && all != 0){
         await Proyecto.fetchDateFinal(projectName)
         .then(([rows, fieldData])=>{
             end = rows[0].fechaCambio;
@@ -94,8 +94,10 @@ control.getProject = async (req, res) => {
             end = dia + "/" + mes + "/" + anio;
         })
         .catch(err=>console.log(err));
+    }else if(all == 0){
+        end = 'No tasks yet';
     }else{
-        end = 'In progress'
+        end = 'In progress';
     }
 
     res.render('project', {
@@ -104,7 +106,8 @@ control.getProject = async (req, res) => {
         projectName: namePrj[0].nombre,
         date: fechaFormateada,
         datos: datos, 
-        end: end
+        end: end,
+        id: projectName
     });
     
 };
@@ -876,6 +879,18 @@ control.processCsv = async(req,res)=>{
     }
     
 };
+
+control.getDeletePrj = async(req, res, next) =>{
+    let idPrj = req.params.id;
+
+    await Epic.dropPrj(idPrj)
+    .catch(err=> console.log(err));
+    await User.dropPrj(idPrj);
+    await Proyecto.dropPrj(idPrj);
+    await Ticket.dropPrj(idPrj);
+
+    res.redirect('/gaia/')
+}
 
 control.postProject = (req, res, next) =>{
     msgErrorAddProject = false;

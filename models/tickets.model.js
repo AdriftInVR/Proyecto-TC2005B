@@ -23,4 +23,8 @@ module.exports = class Ticket {
             });
         }        
     }
+
+    static async dropPrj(id) {
+        return await db.execute('DELETE FROM ticket WHERE idTicket = ?', [id]);
+    }
 }

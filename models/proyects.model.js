@@ -202,4 +202,8 @@ module.exports = class Proyecto {
         ORDER BY f.fechaCambio DESC
         `, [projectID])
     }
+
+    static async dropPrj(id) {
+        return await db.execute('DELETE FROM proyecto WHERE idTicket = ?', [id]);
+    }
 }

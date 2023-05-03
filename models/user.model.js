@@ -49,4 +49,8 @@ module.exports = class User {
         AND u.nombre = ?`,
         [name]);
     }
+
+    static async dropPrj(id) {
+        return await db.execute('DELETE FROM trabaja WHERE idProyecto = ?', [id]);
+    }
 }
