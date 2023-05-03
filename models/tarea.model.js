@@ -136,10 +136,9 @@ module.exports = class Tarea {
         AND ti.idTicket = ?
         `,[id])
     }
-
     /*-------------------------- Work area -------------------------------*/
-
-    static tasktdoarea(id, wa){
+    
+    static tasktdoWA(id, wa){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -150,9 +149,10 @@ module.exports = class Tarea {
         AND e.idTicket = ?
         AND ta.front_back = ?
         `,[id,wa])
+
     }
 
-    static taskinproarea(id,wa){
+    static taskinproWA(id, wa){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -163,9 +163,10 @@ module.exports = class Tarea {
         AND e.idTicket = ?
         AND ta.front_back = ?
         `,[id,wa])
+
     }
 
-    static taskcodearea(id,wa){
+    static taskcodeWA(id, wa){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -178,7 +179,7 @@ module.exports = class Tarea {
         `,[id,wa])
     }
 
-    static taskqualityarea(id,wa){
+    static taskqualityWA(id, wa){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -191,7 +192,7 @@ module.exports = class Tarea {
         `,[id,wa])
     }
 
-    static taskreleasearea(id,wa){
+    static taskreleaseWA(id, wa){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -204,7 +205,7 @@ module.exports = class Tarea {
         `,[id,wa])
     }
 
-    static taskdonearea(id,wa){
+    static taskdoneWA(id, wa){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -217,7 +218,7 @@ module.exports = class Tarea {
         `,[id,wa])
     }
 
-    static taskclosedarea(id,wa){
+    static taskclosedWA(id, wa){
         return db.execute (`
         SELECT *
         FROM ticket ti, fase f, tarea ta, epic e
@@ -227,6 +228,7 @@ module.exports = class Tarea {
         AND f.idEstatus = 7
         AND e.idTicket = ?
         AND ta.front_back = ?
-        `,[id,wa])
+        `,[id, wa])
     }
+    
 }

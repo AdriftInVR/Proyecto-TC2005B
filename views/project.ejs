@@ -87,7 +87,7 @@
                                     <% for (let epic of epics) { %>
                                         <tr>
                                             <td class="font-medium p-2 text-gray-900 rounded-lg dark:text-white hover:bg-blue-400">
-                                                <a href="/gaia/tasks/<%= epic.idTicket%>"><%= epic.nombre %></a>
+                                                <a href="/gaia/tasks/a<%= epic.idTicket%>"><%= epic.nombre %></a>
                                             </td>
                                         </tr>
                                     <% } %>
@@ -224,13 +224,11 @@
                             <div class="container-modal">
                                 <div class="content-modal">
                                     <h2 class="text-center bg-red-700 rounded-xl text-slate-200">Alert!!</h2>
-                                    <p class="text-center">Confirm DELETE <%=projectName%></p>
+                                    <p class="text-center">Confirm DELETE <%=projectName%>??</p>
                                     <div class="btn-cerrar">
             
-                                        <div class="boton-modal p-2.5">
-                                            <label for="btn-modal2" class="">
-                                                Acepted
-                                            </label>
+                                        <div class="p-2.5">
+                                            <a href="/gaia/deletePrj/<%=id%>" class="text-xs bg-red-200 p-2.5 rounded rounded-lg hover:bg-red-400">DELETE</a>
                                         </div>
             
                                         <label for="btn-modal">Cancel</label>

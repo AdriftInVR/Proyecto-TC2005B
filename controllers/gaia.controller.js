@@ -82,7 +82,7 @@ control.getProject = async (req, res) => {
     .catch(err=>console.log(err));
 
     console.log('1: ',all, '2:', complete)
-    if(complete == all){
+    if(complete == all && all != 0){
         await Proyecto.fetchDateFinal(projectName)
         .then(([rows, fieldData])=>{
             end = rows[0].fechaCambio;
@@ -99,8 +99,10 @@ control.getProject = async (req, res) => {
             end = dia + "/" + mes + "/" + anio;
         })
         .catch(err=>console.log(err));
+    }else if(all == 0){
+        end = 'No tasks yet';
     }else{
-        end = 'In progress'
+        end = 'In progress';
     }
 
     res.render('project', {
@@ -110,34 +112,50 @@ control.getProject = async (req, res) => {
         projectName: namePrj[0].nombre,
         date: fechaFormateada,
         datos: datos, 
-        userName: userName,
-        end: end
+        end: end,
+        id: projectName,
+        userName: userName        
     });
     
 };
 
 control.getTasks = async (req, res) => {
-    id = req.params.prj;
+    id = req.params.prj.slice(1);
+    wa = req.params.prj[0];
     let idProyect = 0;
     await Epic.fetchPrjPertenece(id)
     .then(([rows, fieldData])=>{
         idProyect = rows[0].perteneProyecto;
     })
     try {
-        [task1, fieldData] = await Tarea.tasktdo(id);        
+        if(wa == 'a'){
+            [task1, fieldData] = await Tarea.tasktdo(id);        
+            [task2, fieldData] = await Tarea.taskinpro(id);    
+            [task3, fieldData] = await Tarea.taskcode(id);        
+            [task4, fieldData] = await Tarea.taskquality(id);        
+            [task5, fieldData] = await Tarea.taskrelease(id);        
+            [task6, fieldData] = await Tarea.taskdone(id);        
+            [task7, fieldData] = await Tarea.taskclosed(id);
+        }else{
+            if(wa == 'f'){
+                [task1, fieldData] = await Tarea.tasktdoWA(id,0);        
+                [task2, fieldData] = await Tarea.taskinproWA(id,0);    
+                [task3, fieldData] = await Tarea.taskcodeWA(id,0);        
+                [task4, fieldData] = await Tarea.taskqualityWA(id,0);        
+                [task5, fieldData] = await Tarea.taskreleaseWA(id,0);        
+                [task6, fieldData] = await Tarea.taskdoneWA(id,0);        
+                [task7, fieldData] = await Tarea.taskclosedWA(id,0);
+            }else{
+                [task1, fieldData] = await Tarea.tasktdoWA(id,1);        
+                [task2, fieldData] = await Tarea.taskinproWA(id,1);    
+                [task3, fieldData] = await Tarea.taskcodeWA(id,1);        
+                [task4, fieldData] = await Tarea.taskqualityWA(id,1);        
+                [task5, fieldData] = await Tarea.taskreleaseWA(id,1);        
+                [task6, fieldData] = await Tarea.taskdoneWA(id,1);        
+                [task7, fieldData] = await Tarea.taskclosedWA(id,1);
+            }
+        }
 
-        [task2, fieldData] = await Tarea.taskinpro(id);    
-
-        [task3, fieldData] = await Tarea.taskcode(id);        
-
-        [task4, fieldData] = await Tarea.taskquality(id);        
-
-        [task5, fieldData] = await Tarea.taskrelease(id);        
-
-        [task6, fieldData] = await Tarea.taskdone(id);        
-
-        [task7, fieldData] = await Tarea.taskclosed(id);
-        
         [epics, filedData] = await Proyect.epics(idProyect);
 
     } catch (err) {
@@ -200,7 +218,8 @@ control.getTasks = async (req, res) => {
             tasks7: task7,
             epics: epics,
             actual: nameActual,
-            prj: idProyect
+            prj: idProyect,
+            id: id
         });
     })
     .catch(err =>console.log(err));
@@ -949,6 +968,18 @@ control.processCsv = async(req,res)=>{
     }
     
 };
+
+control.getDeletePrj = async(req, res, next) =>{
+    let idPrj = req.params.id;
+
+    await Epic.dropPrj(idPrj)
+    .catch(err=> console.log(err));
+    await User.dropPrj(idPrj);
+    await Proyecto.dropPrj(idPrj);
+    await Ticket.dropPrj(idPrj);
+
+    res.redirect('/gaia/')
+}
 
 control.postProject = (req, res, next) =>{
     msgErrorAddProject = false;

@@ -50,6 +50,10 @@ module.exports = class User {
         [name]);
     }
 
+    static async dropPrj(id) {
+        return await db.execute('DELETE FROM trabaja WHERE idProyecto = ?', [id]);
+    }
+
     static UserNoAsignated(){
         return db.execute (`
         SELECT nombre 
