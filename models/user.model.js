@@ -49,4 +49,12 @@ module.exports = class User {
         AND u.nombre = ?`,
         [name]);
     }
+
+    static UserNoAsignated(){
+        return db.execute (`
+        SELECT nombre 
+        FROM USUARIO 
+        WHERE idUsuario NOT IN (SELECT idUsuario FROM TRABAJA)
+        `,[])
+    }
 }
