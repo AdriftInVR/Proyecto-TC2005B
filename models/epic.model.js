@@ -48,6 +48,15 @@ module.exports = class epic {
         `);
     }
 
+    static fetchAllAsignate(id){
+        return db.execute(`
+            SELECT t.nombre as 'EpicName', e.idTicket as 'EpicID', e.perteneProyecto as 'ProjectID'
+            FROM epic e, ticket t
+            WHERE e.idTicket = t.idTicket
+            AND e.perteneProyecto = ?
+        `, [id]);
+    }
+
     static async dropPrj(id){
         return await db.execute('UPDATE epic SET perteneProyecto = NULL WHERE perteneProyecto = ?', [id]);
     }

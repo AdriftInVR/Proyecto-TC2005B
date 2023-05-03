@@ -157,29 +157,33 @@
                                                 <% for (let user of userName) { %>
                                                     <li>
                                                         <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
-                                                            <input id="users" name="users" value="<%user.nombre%>" onchange="blockBox()" type="checkbox" value="<%= user.idUser %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                            <input id="users" name="users"  type="checkbox" value="<%= user.idUser %>"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                                 <label for="checkbox-item-11" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= user.nombre %></label>
                                                                 
                                                                 <!--AGILE POINTS-->
                                                                 <div> 
                                                                     <label for="AguilePoints" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Agile points:</label>
                                                                     <div class="mb-6">
-                                                                        <input type="text" id="APNew" name="APNew" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 h-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled = true>
+                                                                        <input type="text" id="APNew<%= user.idUser %>" name="APNew<%= user.idUser %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 h-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                                     </div>
-                                                                </div>
-                                                                <!--BLOCK AGILE POINTS SECTION-->
-                                                                <script>
-                                                                    function blockBox() {
-                                                                        const checkbox = document.getElementById('users');
-                                                                        const input = document.getElementById('APNew');
-
-                                                                        if (checkbox.checked) {
-                                                                            input.disabled = false;
-                                                                        } else {
-                                                                            input.disabled = true;
-                                                                        }
-                                                                    }
-                                                                </script>
+                                                                </div>                                                                
+                                                            </input>
+                                                        </div>
+                                                    </li>
+                                                <% } %>
+                                                <% for (let user of userAsign) { %>
+                                                    <li>
+                                                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
+                                                            <input id="users" name="users"  type="checkbox" value="<%= user.idUser %>" checked class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                                <label for="checkbox-item-11" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= user.nombre %></label>
+                                                                
+                                                                <!--AGILE POINTS-->
+                                                                <div> 
+                                                                    <label for="AguilePoints" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Agile points:</label>
+                                                                    <div class="mb-6">
+                                                                        <input type="text" id="APNew<%= user.idUser %>" value="<%= user.efectividadAsignada %>" name="APNew<%= user.idUser %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 h-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                    </div>
+                                                                </div>                                                                
                                                             </input>
                                                         </div>
                                                     </li>
@@ -205,6 +209,14 @@
                                                 <li>
                                                     <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
                                                         <input id="epicss" name="epicss" type="checkbox" value="<%= epic.EpicID %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                            <label for="checkbox-item-11" value="<%epic.EpicName%>" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= epic.EpicName %></label>
+                                                    </div>
+                                                </li>
+                                            <% } %>
+                                            <% for (let epic of epicAsign) { %>
+                                                <li>
+                                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
+                                                        <input id="epicss" name="epicss" type="checkbox" value="<%= epic.EpicID %>" checked class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                             <label for="checkbox-item-11" value="<%epic.EpicName%>" class="w-80 ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= epic.EpicName %></label>
                                                     </div>
                                                 </li>

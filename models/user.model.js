@@ -54,11 +54,20 @@ module.exports = class User {
         return await db.execute('DELETE FROM trabaja WHERE idProyecto = ?', [id]);
     }
 
-    static UserNoAsignated(){
+    static UserNoAsignated(id){
         return db.execute (`
-        SELECT nombre 
-        FROM usuario 
-        WHERE idUsuario NOT IN (SELECT idUsuario FROM trabaja)
-        `,[])
+            SELECT * 
+            FROM usuario 
+            WHERE idUsuario NOT IN (SELECT idUsuario FROM trabaja
+                                    WHERE idProyecto = ?)
+        `,[id])
+    }
+
+    static usersAsignate(id){
+        return db.execute(`
+        SELECT * 
+        FROM trabaja 
+        WHERE idProyecto = ?
+        `, [id])
     }
 }

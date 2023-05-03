@@ -48,15 +48,19 @@ control.getProject = async (req, res) => {
         
         [namePrj, filedData] = await Proyect.fetchOne(projectName);  
         
-        [epi, filedData] = await Epic.fetchAllIDs();
+        [epi, filedData] = await Epic.fetchAllNoAsignate();
         
-        [userName, fieldData] = await User.fetchAll();
+        [epicAsign, filedData] = await Epic.fetchAllAsignate(projectName);
+        
+        [userName, fieldData] = await User.UserNoAsignated(projectName);
+
+        [usersAsign, fieldData] = await User.usersAsignate(projectName);
 
     } catch (err) {
         console.log(err);
     }
 
-    var fecha = new Date(namePrj[0].fechainicio);    
+    var fecha = new Date(namePrj[0].fechainicio);
     var dia = fecha.getDate();
     var mes = fecha.getMonth() + 1; 
     var anio = fecha.getFullYear();
@@ -114,7 +118,9 @@ control.getProject = async (req, res) => {
         datos: datos, 
         end: end,
         id: projectName,
-        userName: userName        
+        userName: userName,
+        userAsign: usersAsign,
+        epicAsign: epicAsign     
     });
     
 };
