@@ -79,13 +79,9 @@
                                         <th scope="col" class="px-2 py-2">
                                             Point
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Area
-                                        </th>
                                     </tr>
                                 </thead>
-                                
-                                <% for (let taska1 of tasksa1) { %>
+                                                                
                                     <% for (let task1 of tasks1) { %>
                                         <tbody class="" category="">
                                             <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis hover:bg-blue-400" >
@@ -96,10 +92,7 @@
                                                     </button>  
                                                     <td class="px-6 py-4 rounded-e-3xl store-itemtk1">
                                                         <%= task1.puntosAgiles %>
-                                                    </td> 
-                                                    <td class="px-6 py-4 rounded-e-3xl store-itemtk1">
-                                                        <%= taska1.front_back %>
-                                                    </td>                                                                                                                                              
+                                                    </td>                                                                                                                                                                                                 
                                                     <!-- Main modal -->
                                                     <div id="<%=task1.nombre%><%=task1.idTicket%>" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                                         <div class="relative w-full max-w-2xl max-h-full">
@@ -130,8 +123,7 @@
                                                     </div>                                            
                                                 </th>
                                             </tr>
-                                        </tbody>
-                                    <% } %>
+                                        </tbody>                                    
                                 <% } %>
                             </tbody>
                             </table>
