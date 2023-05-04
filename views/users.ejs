@@ -64,11 +64,11 @@
                                 </ol>
                             </nav>
                         </div>
-                        <div>
-                            <form action="/gaia/users/" method='POST'>
+                        <div class="flex justify-center items-end">
+                            <form action="/gaia/users/" method='POST' class="bg-red-600 p-2 rounded-lg w-8 h-8 flex justify-center items-center hover:bg-red-800">
                                 <input type="hidden" name="user" value="<%= user %>">                
                                 <button type="submit" class="delete-user-button">
-                                    <img src="/img/Basura.svg" alt="deleteUser" class="trash_icon">Eliminar Usuario
+                                    <img src="/img/Basura.svg" alt="deleteUser" class="trash_icon w-full h-full">                                    
                                 </button>
                             </form>
                         </div>
