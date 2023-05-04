@@ -939,7 +939,7 @@ control.getDeletePrj = async(req, res, next) =>{
     res.redirect('/gaia/')
 }
 
-control.postProject = (req, res, next) =>{
+control.postProject = async (req, res, next) =>{
     msgErrorAddProject = false;
         
     const data = {
@@ -955,20 +955,8 @@ control.postProject = (req, res, next) =>{
     }
     
     const newProject = new Proyect(data);    
-    
-    if(data.nombre == ''){
-        msgErrorAddProject = "The field name of project are blank";
-    }
 
-    newProject.save()
-    .then(([rows,fieldData])=>{
-        for(let i=0;i<rows.length;i++){
-            if(rows[i].nombre == data.nombre){                
-                msgErrorAddProject = "The name introduced has already taken";
-                break;
-            }
-        }
-    });
+    msgErrorAddProject = await newProject.save();
     
     res.redirect('/');
 }
