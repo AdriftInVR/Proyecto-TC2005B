@@ -58,6 +58,54 @@ module.exports = class User {
         [name]);
     }
 
+    static async dropPrj(id) {
+        return await db.execute('DELETE FROM trabaja WHERE idProyecto = ?', [id]);
+    }
+
+    static UserNoAsignated(id){
+        return db.execute (`
+            SELECT * 
+            FROM usuario 
+            WHERE idUsuario NOT IN (SELECT idUsuario FROM trabaja
+                                    WHERE idProyecto = ?)
+        `,[id])
+    }
+
+    static usersAsignate(id){
+        return db.execute(`
+        SELECT * 
+        FROM trabaja t NATURAL JOIN usuario
+        WHERE idProyecto = ?
+        `, [id])
+    }
+
+    static async setPrjUser(id, user, pa){        
+        for(let i=0;i<user.length;i++){            
+            await db.execute(`INSERT INTO trabaja(idProyecto, idUsuario, efectividadAsignada) VALUES (?,?,?)`,[id,user[i],pa[i]])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+        }    
+    }
+    
+    static async uptPrjUser(id, user, pa){        
+        for(let i=0;i<user.length;i++){            
+            await db.execute(`UPDATE trabaja SET efectividadAsignada = ? WHERE idUsuario = ? AND idProyecto = ?`,[pa[i],user[i],id])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+        }    
+    }
+    
+    static async deletePrjUser(id, user){        
+        for(let i=0;i<user.length;i++){            
+            await db.execute(`DELETE FROM trabaja WHERE idUsuario = ? AND idProyecto = ?`,[user[i],id])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+        }    
+    }
+    
     static async DeleteUser(name) {
         return await db.execute(`
         CALL deactivateUser(?)`,

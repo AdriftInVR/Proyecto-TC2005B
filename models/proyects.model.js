@@ -113,6 +113,20 @@ module.exports = class Proyecto {
         `,[projectID])
     }
     
+    static async fetchDateFinal(projectID) {
+        return await db.execute(`
+            SELECT *
+            FROM tarea t, epic e, proyecto p, fase f, estatus s
+            WHERE t.idTicket = f.idTicket
+            AND f.idEstatus = s.idEstatus
+            AND t.perteneceEpic = e.idTicket
+            AND (s.descripcion = 'Done' OR s.descripcion = 'Closed')
+            AND e.perteneProyecto = p.idTicket
+            AND p.idTicket = ?
+            ORDER BY fechaCambio DESC
+        `,[projectID])
+    }
+    
     static async fetchAllPrj(projectID) {
         return await db.execute(`
             SELECT t.front_back, COUNT(puntosAgiles) as 'Completed'
@@ -174,4 +188,26 @@ module.exports = class Proyecto {
         `, [epicID, EoW])
     }
 */
+
+    /* LINEA VERDE PROYECTOS :) */
+    static fetchGreenLine(projectID){
+        return db.execute(`
+        SELECT f.fechaCambio, t.puntosAgiles
+        FROM tarea t, epic e, proyecto p, fase f
+        WHERE t.perteneceEpic = e.idTicket
+        AND e.perteneProyecto = p.idTicket
+        AND p.idTicket = 3
+        AND t.idTicket = f.idTicket
+        AND (f.idEstatus = 7 OR f.idEstatus = 6)
+        ORDER BY f.fechaCambio DESC
+        `, [projectID])
+    }
+
+    static async dropPrj(id) {
+        return await db.execute('DELETE FROM proyecto WHERE idTicket = ?', [id]);
+    }
+
+    static async rename(value, id){
+        return await db.execute('UPDATE proyecto SET fechaInicio = ? WHERE idTicket = ?',[value, id])
+    }
 }

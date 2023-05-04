@@ -2,8 +2,8 @@ const db = require('../util/database');
 
 module.exports = class Ticket {
 
-    static fetchAll() {
-        return db.execute('SELECT * FROM ticket');
+    static async fetchAll() {
+        return await db.execute('SELECT * FROM ticket');
     }
     
     static async add(data){        
@@ -22,5 +22,13 @@ module.exports = class Ticket {
                 console.log({sql:err.sql, msg:err.sqlMessage});
             });
         }        
+    }
+
+    static async dropPrj(id) {
+        return await db.execute('DELETE FROM ticket WHERE idTicket = ?', [id]);
+    }
+
+    static async rename(value, id){
+        return await db.execute('UPDATE ticket SET nombre = ? WHERE idTicket = ?', [value, id])
     }
 }
