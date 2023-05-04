@@ -15,6 +15,7 @@ router.get('/project/:prj', auth, gaiaController.getProject);
 router.get('/tasks/:prj', auth, gaiaController.getTasks);
 router.get('/tasksarea/:id', auth, gaiaController.getTasksarea);
 router.get('/users', auth, gaiaController.getUsers);
+router.post('/users', auth, gaiaController.postDeleteUsers);
 router.get('/dashboard', auth, gaiaController.getDashboard);
 router.get('/import/:result', auth, gaiaController.getImport);
 router.get('/deletePrj/:id', auth, gaiaController.getDeletePrj)
