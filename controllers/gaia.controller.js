@@ -182,6 +182,7 @@ control.getUsers = async (req, res) => {
         active: 'users',
         usuarios_proyectos: usuarios_proyectos,
         usuarios_front_back: usuarios_front_back,
+        state: false
     });
 };
 
@@ -210,6 +211,7 @@ control.postDeleteUsers = async (req, res) => {
             active: 'users',
             usuarios_proyectos: usuarios_proyectos,
             usuarios_front_back: usuarios_front_back,
+            state: true
         })
     }, "500")
 };
