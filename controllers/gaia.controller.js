@@ -433,8 +433,7 @@ control.processCsv = async(req,res)=>{
                     if(rows[i].idTicket == objList[j].issueid){
                         break;
                     }
-                    if(j==objList.length-1){
-                        console.log('Ya no esta')
+                    if(j==objList.length-1){                        
                         let ticketInsert = {
                             idTicket: rows[i].idTicket,
                             idEstatus:  7                            
