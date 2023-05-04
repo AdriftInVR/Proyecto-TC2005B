@@ -48,8 +48,24 @@ module.exports = class epic {
         `);
     }
 
+    static fetchAllAsignate(id){
+        return db.execute(`
+            SELECT t.nombre as 'EpicName', e.idTicket as 'EpicID', e.perteneProyecto as 'ProjectID'
+            FROM epic e, ticket t
+            WHERE e.idTicket = t.idTicket
+            AND e.perteneProyecto = ?
+        `, [id]);
+    }
+
     static async dropPrj(id){
         return await db.execute('UPDATE epic SET perteneProyecto = NULL WHERE perteneProyecto = ?', [id]);
+    }
+    
+    static async dropPrjEpicId(id){
+        for(let i=0;i<id.length;i++){
+            return await db.execute('UPDATE epic SET perteneProyecto = NULL WHERE idTicket = ?', [id[i]]);
+        }
+        
     }
 
     static fetchStatus(epicID) {
@@ -102,5 +118,25 @@ module.exports = class epic {
         `, [epicID, EoW])
     }
     */
+/* LINEA VERDE EPICS :D */
+    static fetchGreenEpicLine(epicID){
+        return db.execute (`
+        SELECT COUNT(ta.idTicket)
+        FROM ticket ti, fase f, tarea ta, epic e
+        WHERE ti.idTicket = f.idTicket
+        AND ti.idTicket = ta.idTicket
+        AND e.idTicket = ta.perteneceEpic
+        AND f.idEstatus = 6 
+        AND e.idTicket = ?
+        `, [epicID])
+    }
 
+    static async setEpicProj(id, epics){       
+        for(let i=0;i<epics.length;i++){            
+            await db.execute(`UPDATE epic SET perteneProyecto = ? WHERE idTicket = ?`,[id,epics[i]])
+            .catch(err => {
+                console.log({sql:err.sql, msg:err.sqlMessage});
+            });
+        }    
+    }
 }

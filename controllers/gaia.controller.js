@@ -48,15 +48,19 @@ control.getProject = async (req, res) => {
         
         [namePrj, filedData] = await Proyect.fetchOne(projectName);  
         
-        [epi, filedData] = await Epic.fetchAllIDs();
+        [epi, filedData] = await Epic.fetchAllNoAsignate();
         
-        [userName, fieldData] = await User.fetchAll();
+        [epicAsign, filedData] = await Epic.fetchAllAsignate(projectName);
+        
+        [userName, fieldData] = await User.UserNoAsignated(projectName);
+
+        [usersAsign, fieldData] = await User.usersAsignate(projectName);
 
     } catch (err) {
         console.log(err);
     }
 
-    var fecha = new Date(namePrj[0].fechainicio);    
+    var fecha = new Date(namePrj[0].fechainicio);
     var dia = fecha.getDate();
     var mes = fecha.getMonth() + 1; 
     var anio = fecha.getFullYear();
@@ -66,22 +70,24 @@ control.getProject = async (req, res) => {
     if (mes < 10) {
     mes = "0" + mes;
     }
-    var fechaFormateada = dia + "/" + mes + "/" + anio;
+    var fechaFormateada = mes + "/" + dia + "/" + anio;
+    let dateForm = anio + '-' + mes + '-' + dia; 
 
     let complete = 0, all = 0, end = '';
     await Proyecto.fetchAllPrj(projectName)
-    .then(([rows, fieldData])=>{
-        all = rows[0].Completed;        
+    .then(([rows, fieldData])=>{  
+        if(rows.length > 0)      
+            all = rows[0].Completed;                
     })
     .catch(err=>console.log(err));
     
     await Proyecto.fetchCompletePrj(projectName)
     .then(([rows, fieldData])=>{
-        complete = rows[0].Complete;
+        if(rows.length > 0)    
+            complete = rows[0].Complete;
     })
     .catch(err=>console.log(err));
-
-    console.log('1: ',all, '2:', complete)
+    
     if(complete == all && all != 0){
         await Proyecto.fetchDateFinal(projectName)
         .then(([rows, fieldData])=>{
@@ -114,7 +120,10 @@ control.getProject = async (req, res) => {
         datos: datos, 
         end: end,
         id: projectName,
-        userName: userName        
+        userName: userName,
+        userAsign: usersAsign,
+        epicAsign: epicAsign,
+        dateForm: dateForm
     });
     
 };
@@ -220,86 +229,6 @@ control.getTasks = async (req, res) => {
             actual: nameActual,
             prj: idProyect,
             id: id
-        });
-    })
-    .catch(err =>console.log(err));
-};
-control.getTasksarea = async (req, res) => {
-    id = req.params.prj;
-    let idProyect = 0;
-    await Epic.fetchPrjPertenece(id)
-    .then(([rows, fieldData])=>{
-        idProyect = rows[0].perteneProyecto;
-    })
-    try {
-        [taskarea1, fieldData] = await Tarea.tasktdoarea(id,wa);        
-
-        [taskarea2, fieldData] = await Tarea.taskinproarea(id,wa);    
-
-        [taskarea3, fieldData] = await Tarea.taskcodearea(id,wa);        
-
-        [taskarea4, fieldData] = await Tarea.taskqualityarea(id,wa);        
-
-        [taskarea5, fieldData] = await Tarea.taskreleasearea(id,wa);        
-
-        [taskarea6, fieldData] = await Tarea.taskdonearea(id,wa);        
-
-        [taskarea7, fieldData] = await Tarea.taskclosedarea(id,wa);
-        
-        [epics, filedData] = await Proyect.epic(idProyect);
-
-    } catch (err) {
-        console.log(err);
-    }
-    
-    for(let i=0;i<taskarea1.length;i++){
-        fecha = taskarea1[i].fechaCambio;
-        fechaFormateada = formatDate(fecha);
-        taskarea1[i].fechaCambio = fechaFormateada;
-    }    
-    for(let i=0;i<taskarea2.length;i++){
-        fecha = taskarea2[i].fechaCambio;
-        fechaFormateada = formatDate(fecha);
-        taskarea2[i].fechaCambio = fechaFormateada;
-    }    
-    for(let i=0;i<taskarea3.length;i++){
-        fecha = taskarea3[i].fechaCambio;
-        fechaFormateada = formatDate(fecha);
-        taskarea3[i].fechaCambio = fechaFormateada;
-    }    
-    for(let i=0;i<taskarea4.length;i++){
-        fecha = taskarea4[i].fechaCambio;
-        fechaFormateada = formatDate(fecha);
-        taskarea4[i].fechaCambio = fechaFormateada;
-    }    
-    for(let i=0;i<taskarea5.length;i++){
-        fecha = task5area[i].fechaCambio;
-        fechaFormateada = formatDate(fecha);
-        task5area[i].fechaCambio = fechaFormateada;
-    }    
-    for(let i=0;i<taskarea6.length;i++){
-        fecha = task6area[i].fechaCambio;
-        fechaFormateada = formatDate(fecha);
-        taskarea6[i].fechaCambio = fechaFormateada;
-    }    
-    for(let i=0;i<taskarea7.length;i++){
-        fecha = taskarea7[i].fechaCambio;
-        fechaFormateada = formatDate(fecha);
-        taskarea7[i].fechaCambio = fechaFormateada;
-    }    
-    
-    Epic.fetchAll()
-    .then(([rows, fieldData])=>{        
-        res.render('tasks', {
-            active: 'projects',
-            tasksa1: taskarea1,
-            tasksa2: taskarea2,
-            tasksa3: taskarea3,
-            tasksa4: taskarea4,
-            tasksa5: taskarea5,
-            tasksa6: taskarea6,
-            tasksa7: taskarea7,
-            epics: epics,
         });
     })
     .catch(err =>console.log(err));
@@ -1041,9 +970,105 @@ control.postProject = (req, res, next) =>{
         }
     });
     
-    //console.log(msgErrorAddProject);
     res.redirect('/');
 }
 
+control.postEditProject = async (req, res)=>{
+    let id = req.params.prj;
+    let data = req.body; 
+
+    if(Array.isArray(req.body.epicss)){
+        data.epicss = req.body.epicss;
+    }else{
+        data.epicss = [req.body.epicss];
+    }
+
+    if(Array.isArray(req.body.users)){
+        data.users = req.body.users;
+    }else{
+        data.users = [req.body.users];
+    } 
+
+    await Ticket.rename(data.projectNameNew, id);
+    await Proyecto.rename(data.projectStartNew, id);
+    
+    let rowsInsert = [], rowsDelete = [];    
+    await Epic.fetchAllAsignate(id)
+    .then(([rows, fieldData])=>{        
+        for(let i=0; i<rows.length; i++){
+            for(let j=0; j<data.epicss.length; j++){
+                if(rows[i].EpicID == data.epicss[j]){
+                    break;
+                }
+                if(j == data.epicss.length-1){
+                    rowsDelete.push(rows[i].EpicID);
+                }
+            }            
+        }
+        if(rows.length == 0){
+            rowsInsert = data.epicss;
+        }else{        
+            for(let i=0; i<data.epicss.length; i++){
+                for(let j=0; j<rows.length; j++){                
+                    if(rows[j].EpicID == data.epicss[i]){                        
+                        break;
+                    }
+                    if(j == rows.length-1){
+                        rowsInsert.push(data.epicss[i]);
+                    }
+                }            
+            }
+        }
+    })
+    .catch(err=>console.log(err));
+
+    await Epic.dropPrjEpicId(rowsDelete);
+    await Epic.setEpicProj(id, rowsInsert);
+
+    rowsInsert = [], rowsDelete = []; 
+    let rowsPA = [], rowsUpdate = [], rowsPAUpt = [];
+
+    await User.usersAsignate(id)
+    .then(([rows, fieldData])=>{
+        for(let i=0; i<rows.length; i++){
+            for(let j=0; j<data.users.length; j++){
+                if(rows[i].idUsuario == data.users[j]){                    
+                    break;
+                }
+                if(j == data.users.length-1){
+                    rowsDelete.push(rows[i].idUsuario);
+                }
+            }            
+        }
+        if(rows.length == 0){
+            rowsInsert = data.users;
+        }else{        
+            for(let i=0; i<data.users.length; i++){
+                for(let j=0; j<rows.length; j++){                
+                    if(rows[j].idUsuario == data.users[i]){   
+                        rowsUpdate.push(data.users[i]);
+                        if(data['AP'+data.users[i]] == '')
+                            data['AP'+data.users[i]] = 0;
+                        rowsPAUpt.push(data['AP'+data.users[i]]);               
+                        break;
+                    }
+                    if(j == rows.length-1){
+                        rowsInsert.push(data.users[i]);                        
+                        if(data['AP'+data.users[i]] == '')
+                            data['AP'+data.users[i]] = 0;
+                        rowsPA.push(data['AP'+data.users[i]]);
+                    }
+                }            
+            }
+        }
+    })
+    .catch(err=>console.log(err));    
+
+    await User.setPrjUser(id, rowsInsert, rowsPA);
+    await User.deletePrjUser(id,rowsDelete);                        
+    await User.uptPrjUser(id, rowsUpdate,rowsPAUpt );
+
+    res.redirect('/gaia/project/' + id);
+}
 
 module.exports = control

@@ -206,4 +206,8 @@ module.exports = class Proyecto {
     static async dropPrj(id) {
         return await db.execute('DELETE FROM proyecto WHERE idTicket = ?', [id]);
     }
+
+    static async rename(value, id){
+        return await db.execute('UPDATE proyecto SET fechaInicio = ? WHERE idTicket = ?',[value, id])
+    }
 }
