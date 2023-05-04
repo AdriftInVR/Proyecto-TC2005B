@@ -101,12 +101,12 @@
                         <form action="/gaia/users/" method='POST' class="bg-red-600 p-4 rounded-lg w-1/3 h-1/2 flex justify-center items-center hover:bg-red-800">
                             <input type="hidden" name="user" value="<%= user %>">                
                             <button type="submit" class="delete-user-button w-full h-full">
-                                Yes
+                                <span class = 'text-white font-semibold text-xl'>Yes</span>
                             </button>
                         </form>
                         
                         <button data-modal-hide="delete_<%=user%>" class="bg-blue-600 p-4 rounded-lg w-1/3 h-1/2 flex justify-center items-center hover:bg-blue-800 " style="margin-top: 0;">
-                            No
+                            <span class = 'text-white font-semibold text-xl'>No</span>
                         </button>                        
                     </div>
                 </div>
