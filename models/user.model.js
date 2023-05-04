@@ -79,7 +79,7 @@ module.exports = class User {
         `, [id])
     }
 
-    static async setPrjUser(id, user, pa){        
+    static async setPrjUser(id, user, pa){             
         for(let i=0;i<user.length;i++){            
             await db.execute(`INSERT INTO trabaja(idProyecto, idUsuario, efectividadAsignada) VALUES (?,?,?)`,[id,user[i],pa[i]])
             .catch(err => {

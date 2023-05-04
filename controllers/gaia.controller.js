@@ -977,7 +977,7 @@ control.postEditProject = async (req, res)=>{
     }else{
         data.users = [req.body.users];
     } 
-
+    
     await Ticket.rename(data.projectNameNew, id);
     await Proyecto.rename(data.projectStartNew, id);
     
@@ -1013,10 +1013,10 @@ control.postEditProject = async (req, res)=>{
 
     await Epic.dropPrjEpicId(rowsDelete);
     await Epic.setEpicProj(id, rowsInsert);
-
+    
     rowsInsert = [], rowsDelete = []; 
     let rowsPA = [], rowsUpdate = [], rowsPAUpt = [];
-
+    console.log(data)
     await User.usersAsignate(id)
     .then(([rows, fieldData])=>{
         for(let i=0; i<rows.length; i++){
@@ -1031,6 +1031,11 @@ control.postEditProject = async (req, res)=>{
         }
         if(rows.length == 0){
             rowsInsert = data.users;
+            for(let i=0; i<rowsInsert.length; i++){                                                                             
+                if(data['AP'+data.users[i]] == '')
+                    data['AP'+data.users[i]] = 0;
+                rowsPA.push(data['AP'+data.users[i]]);                
+            }
         }else{        
             for(let i=0; i<data.users.length; i++){
                 for(let j=0; j<rows.length; j++){                
@@ -1042,7 +1047,7 @@ control.postEditProject = async (req, res)=>{
                         break;
                     }
                     if(j == rows.length-1){
-                        rowsInsert.push(data.users[i]);                        
+                        rowsInsert.push(data.users[i]);                                
                         if(data['AP'+data.users[i]] == '')
                             data['AP'+data.users[i]] = 0;
                         rowsPA.push(data['AP'+data.users[i]]);
@@ -1051,8 +1056,7 @@ control.postEditProject = async (req, res)=>{
             }
         }
     })
-    .catch(err=>console.log(err));    
-
+    .catch(err=>console.log(err));        
     await User.setPrjUser(id, rowsInsert, rowsPA);
     await User.deletePrjUser(id,rowsDelete);                        
     await User.uptPrjUser(id, rowsUpdate,rowsPAUpt );
