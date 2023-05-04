@@ -1,5 +1,7 @@
 const db = require('../util/database');
 const Epic = require('../models/epic.model')
+
+let id_temporal= 0;
 module.exports = class Proyecto {
     constructor(_newProyecto) {
         this.nombre = _newProyecto.nombre;
@@ -7,7 +9,7 @@ module.exports = class Proyecto {
         this.epics = _newProyecto.epics;        
     }
 
-    save() {
+    async save() {
         let error = false;
         function makeid(length) {
             let result = '';
@@ -21,52 +23,52 @@ module.exports = class Proyecto {
         }
 
 
-        db.execute(`
+        await db.execute(`
             SELECT *
             FROM proyecto p, ticket t 
             WHERE p.idTicket = t.idTicket
             GROUP BY nombre;`)
+        .then(([rows, fieldData]) => {
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].nombre == this.nombre) {
+                    this.nombre = '';
+                    error = "The name introduced has already taken";
+                    return error;
+                    break;
+                }
+            }                              
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+        if (this.nombre == "" || this.nombre == undefined) {
+            error = 'The name introduced are blank';
+            return err;
+        } else {
+            id_temporal = makeid(6);
+
+            await db.execute(`
+                INSERT INTO ticket (idTicket, nombre)
+                VALUES (?, ?)
+            `, [id_temporal, this.nombre])
+
+            await db.execute(`
+                INSERT INTO proyecto (idTicket, fechaInicio)
+                VALUES (?, ?)
+            `, [id_temporal, this.fechaInicio])
             .then(([rows, fieldData]) => {
-                for (let i = 0; i < rows.length; i++) {
-                    if (rows[i].nombre == this.nombre) {
-                        this.nombre = '';
-                        error = "The name introduced has already taken";
-                        break;
-                    }
-                }
-                if (this.nombre == "" || this.nombre == undefined) {
-                } else {
-                    let id_temporal = makeid(6);
 
-                    db.execute(`
-                    INSERT INTO ticket (idTicket, nombre)
-                    VALUES (?, ?)
-                `, [id_temporal, this.nombre])
-
-                    db.execute(`
-                    INSERT INTO proyecto (idTicket, fechaInicio)
-                    VALUES (?, ?)
-                `, [id_temporal, this.fechaInicio])
-                        .then(([rows, fieldData]) => {
-
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-
-                    Epic.setEpicProj(id_temporal,this.epics )
-                }
-                return error;
             })
             .catch(err => {
                 console.log(err);
-            })
+            });
+        }  
 
-        return db.execute(`
-            SELECT *
-            FROM proyecto p, ticket t 
-            WHERE p.idTicket = t.idTicket
-            GROUP BY nombre;`);    
+        await Epic.setEpicProj(id_temporal,this.epics )
+        .catch(err => console.log(err))        
+
+        return false;
     }
 
     static fetchAll() {
