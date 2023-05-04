@@ -113,6 +113,7 @@ control.getProject = async (req, res) => {
         end: end
     });
     
+    
 };
 
 control.getEditProject = (req, res, next) => {
