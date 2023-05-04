@@ -32,7 +32,7 @@ module.exports = class Proyecto {
             for (let i = 0; i < rows.length; i++) {
                 if (rows[i].nombre == this.nombre) {
                     this.nombre = '';
-                    error = "The name introduced has already taken";
+                    error = "The name introduced has already been taken";
                     return error;
                     break;
                 }
@@ -43,7 +43,7 @@ module.exports = class Proyecto {
         });
 
         if (this.nombre == "" || this.nombre == undefined) {
-            error = 'The name introduced are blank';
+            error = 'Please write a name';
             return err;
         } else {
             id_temporal = makeid(6);
