@@ -95,14 +95,13 @@ module.exports = class epic {
 
     static fetchAPepic(epicID, EoW){
         return db.execute (`
-        SELECT SUM(ta.puntosAgiles) as 'APTotalesE'
+        SELECT SUM(ta.puntosAgiles) as 'TotalAP'
         FROM proyecto p, ticket t, epic e, tarea ta
         WHERE p.idTicket = t.idTicket
         AND p.idTicket = e.perteneProyecto
         AND ta.perteneceEpic = e.idTicket
         AND e.idTicket = ?
         AND ta.asignacionEpiTar < ?
-        GROUP BY p.idTicket
         `, [epicID, EoW])
     }
 /*
@@ -119,7 +118,6 @@ module.exports = class epic {
         `, [epicID, EoW])
     }
     */
-
 /* LINEA VERDE EPICS :D */
     static fetchGreenEpicLine(epicID){
         return db.execute (`

@@ -285,7 +285,7 @@
             return result.json();
         }).then(data =>{
             if (data.status[0]) {
-                APdataE[i] = data.status[0].APTotalesE;
+                APdataE[i] = data.status[0].TotalAP;
             } else {
                 APdataE[i] = 0;
                
@@ -322,8 +322,8 @@
 
             for (i=0;i<estimateData.status[0][0].Estimate;i++){
                 data_labels.push(i+1);
-                getProjectAP(projectID, start, end, data_completeAP, i);
                 totalAPProject(projectID, end, i, data_values);
+                getProjectAP(projectID, start, end, data_completeAP, i);
                 start.setDate(start.getDate()+7);
                 end.setDate(end.getDate()+7);
             }
@@ -440,7 +440,7 @@ function BurnupLineChartEpic(epicID) {
             let data_labels = [0];
             let data_values = new Array (estimateData.status[0][0].Estimate);
             let data_completeAP = new Array (estimateData.status[0][0].Estimate);
-            let dataValuesExpected = [];
+            let dataValuesExpected = new Array (estimateData.status[0][0].Estimate);
             var start = new Date(estimateData.status[0][0].Inicio);
             var end = new Date(start);
             end.setDate(end.getDate() + 7);
@@ -449,48 +449,65 @@ function BurnupLineChartEpic(epicID) {
 
             for (i=0;i<estimateData.status[0][0].Estimate;i++){
                 data_labels.push(i+1);
-                getEpicAP(epicID, start, end, data_completeAP, i);
                 totalAPEpic(epicID, end, i, data_values);
+                getEpicAP(epicID, start, end, data_completeAP, i);
                 start.setDate(start.getDate()+7);
                 end.setDate(end.getDate()+7);
             }
             
             var thisWeek = 0
+            var weeksLeft = estimateData.status[0][0].Estimate
             var goalLine = []
             let segmentChange = []
             setTimeout(() => {
+                for (i=0; i< data_values.length-1;i++){
+                    if (data_values[i]===null){
+                        data_values[i]=0
+                        dataValuesExpected[i]=0;
+                        weeksLeft--
+                    }
+                }
                 goalLine = [data_values[0]].concat(data_values);
                 for(i=0;i<data_values.length;i++){
                     if (data_values[i+1]){
-                        if (data_values[i] != data_values[i+1]){
+                        if (data_values[i] != data_values[i+1] && data_values[i]!=0){
                             segmentChange.push(true)
                         } else {
                             segmentChange.push(false)
                         }
+                    } else {
+                        segmentChange.push(false)
                     }
                 }
                 let control = segmentChange.indexOf(true)+1;
                 if (control) {
-                    let segmentGoal = [segmentChange.indexOf(true)+1]
+                    let segmentGoal = [control]
                     for(i=1;i<segmentChange.length;i++){
-                        if (segmentChange[i]){
+                        if (segmentChange[i]===true){
                             segmentGoal.push(i+1)
                         } else {
                             segmentGoal.push(segmentGoal[i-1])
                         }
                     }
-                    segmentGoal.push(goalLine.length-1)
-                    for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
-                        thisWeek = (goalLine[i]+i) / segmentGoal[i];
-                        dataValuesExpected.push(thisWeek);
+                    segmentGoal.push(data_values.length)
+                    for(i=0;i<estimateData.status[0][0].Estimate;i++){
+                        if(data_values[i]==0){
+                            thisWeek = 0;
+                        } else if (weeksLeft!=estimateData.status[0][0].Estimate) {
+                            thisWeek = data_values[i] / (segmentGoal[i] - (estimateData.status[0][0].Estimate - weeksLeft));
+                        }
+                        else {  
+                            thisWeek = data_values[i] / segmentGoal[i];
+                        }
+                        dataValuesExpected[i]=thisWeek;
                     }
                 } else {
-                    for(i=0;i<estimateData.status[0][0].Estimate;i++){ 
+                    for(i=0;i<estimateData.status[0][0].Estimate;i++){
                         thisWeek = goalLine[i] / estimateData.status[0][0].Estimate;
-                        dataValuesExpected.push(thisWeek);
+                        dataValuesExpected[i]=thisWeek;
                     }
                 }
-            }, "1100")
+            }, "1000")
             setTimeout(() => {
                 for (i=1;i<data_completeAP.length;i++){
                     data_completeAP[i]+=data_completeAP[i-1];
@@ -545,7 +562,7 @@ function BurnupLineChartEpic(epicID) {
                     } 
                 };
                 burnupChart = new Chart(buap, configura);
-            }, "1400")
+            }, "1500")
         })
     }
 
