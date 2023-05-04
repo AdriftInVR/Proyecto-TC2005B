@@ -21,7 +21,7 @@ router.get('/deletePrj/:id', auth, gaiaController.getDeletePrj)
 //Post routes
 router.post('/import',auth,gaiaController.postImport);
 router.post('/',auth,gaiaController.postProject);
-
+router.post('/project/:prj', auth, gaiaController.postEditProject)
 
 router.get('/test',gaiaController.processCsv);
 

@@ -70,22 +70,24 @@ control.getProject = async (req, res) => {
     if (mes < 10) {
     mes = "0" + mes;
     }
-    var fechaFormateada = dia + "/" + mes + "/" + anio;
+    var fechaFormateada = mes + "/" + dia + "/" + anio;
+    let dateForm = anio + '-' + mes + '-' + dia; 
 
     let complete = 0, all = 0, end = '';
     await Proyecto.fetchAllPrj(projectName)
-    .then(([rows, fieldData])=>{
-        all = rows[0].Completed;        
+    .then(([rows, fieldData])=>{  
+        if(rows.length > 0)      
+            all = rows[0].Completed;                
     })
     .catch(err=>console.log(err));
     
     await Proyecto.fetchCompletePrj(projectName)
     .then(([rows, fieldData])=>{
-        complete = rows[0].Complete;
+        if(rows.length > 0)    
+            complete = rows[0].Complete;
     })
     .catch(err=>console.log(err));
-
-    console.log('1: ',all, '2:', complete)
+    
     if(complete == all && all != 0){
         await Proyecto.fetchDateFinal(projectName)
         .then(([rows, fieldData])=>{
@@ -120,7 +122,8 @@ control.getProject = async (req, res) => {
         id: projectName,
         userName: userName,
         userAsign: usersAsign,
-        epicAsign: epicAsign     
+        epicAsign: epicAsign,
+        dateForm: dateForm
     });
     
 };
@@ -938,9 +941,105 @@ control.postProject = (req, res, next) =>{
         }
     });
     
-    //console.log(msgErrorAddProject);
     res.redirect('/');
 }
 
+control.postEditProject = async (req, res)=>{
+    let id = req.params.prj;
+    let data = req.body; 
+
+    if(Array.isArray(req.body.epicss)){
+        data.epicss = req.body.epicss;
+    }else{
+        data.epicss = [req.body.epicss];
+    }
+
+    if(Array.isArray(req.body.users)){
+        data.users = req.body.users;
+    }else{
+        data.users = [req.body.users];
+    } 
+
+    await Ticket.rename(data.projectNameNew, id);
+    await Proyecto.rename(data.projectStartNew, id);
+    
+    let rowsInsert = [], rowsDelete = [];    
+    await Epic.fetchAllAsignate(id)
+    .then(([rows, fieldData])=>{        
+        for(let i=0; i<rows.length; i++){
+            for(let j=0; j<data.epicss.length; j++){
+                if(rows[i].EpicID == data.epicss[j]){
+                    break;
+                }
+                if(j == data.epicss.length-1){
+                    rowsDelete.push(rows[i].EpicID);
+                }
+            }            
+        }
+        if(rows.length == 0){
+            rowsInsert = data.epicss;
+        }else{        
+            for(let i=0; i<data.epicss.length; i++){
+                for(let j=0; j<rows.length; j++){                
+                    if(rows[j].EpicID == data.epicss[i]){                        
+                        break;
+                    }
+                    if(j == rows.length-1){
+                        rowsInsert.push(data.epicss[i]);
+                    }
+                }            
+            }
+        }
+    })
+    .catch(err=>console.log(err));
+
+    await Epic.dropPrjEpicId(rowsDelete);
+    await Epic.setEpicProj(id, rowsInsert);
+
+    rowsInsert = [], rowsDelete = []; 
+    let rowsPA = [], rowsUpdate = [], rowsPAUpt = [];
+
+    await User.usersAsignate(id)
+    .then(([rows, fieldData])=>{
+        for(let i=0; i<rows.length; i++){
+            for(let j=0; j<data.users.length; j++){
+                if(rows[i].idUsuario == data.users[j]){                    
+                    break;
+                }
+                if(j == data.users.length-1){
+                    rowsDelete.push(rows[i].idUsuario);
+                }
+            }            
+        }
+        if(rows.length == 0){
+            rowsInsert = data.users;
+        }else{        
+            for(let i=0; i<data.users.length; i++){
+                for(let j=0; j<rows.length; j++){                
+                    if(rows[j].idUsuario == data.users[i]){   
+                        rowsUpdate.push(data.users[i]);
+                        if(data['AP'+data.users[i]] == '')
+                            data['AP'+data.users[i]] = 0;
+                        rowsPAUpt.push(data['AP'+data.users[i]]);               
+                        break;
+                    }
+                    if(j == rows.length-1){
+                        rowsInsert.push(data.users[i]);                        
+                        if(data['AP'+data.users[i]] == '')
+                            data['AP'+data.users[i]] = 0;
+                        rowsPA.push(data['AP'+data.users[i]]);
+                    }
+                }            
+            }
+        }
+    })
+    .catch(err=>console.log(err));    
+
+    await User.setPrjUser(id, rowsInsert, rowsPA);
+    await User.deletePrjUser(id,rowsDelete);                        
+    await User.uptPrjUser(id, rowsUpdate,rowsPAUpt );
+
+    res.redirect('/gaia/project/' + id);
+}
 
 module.exports = control

@@ -60,6 +60,13 @@ module.exports = class epic {
     static async dropPrj(id){
         return await db.execute('UPDATE epic SET perteneProyecto = NULL WHERE perteneProyecto = ?', [id]);
     }
+    
+    static async dropPrjEpicId(id){
+        for(let i=0;i<id.length;i++){
+            return await db.execute('UPDATE epic SET perteneProyecto = NULL WHERE idTicket = ?', [id[i]]);
+        }
+        
+    }
 
     static fetchStatus(epicID) {
         return db.execute(`
@@ -126,7 +133,7 @@ module.exports = class epic {
         `, [epicID])
     }
 
-    static async setEpicProj(id, epics){        
+    static async setEpicProj(id, epics){       
         for(let i=0;i<epics.length;i++){            
             await db.execute(`UPDATE epic SET perteneProyecto = ? WHERE idTicket = ?`,[id,epics[i]])
             .catch(err => {
