@@ -114,3 +114,28 @@
     <% } %>
 <% } %>
 <%- include('partials/endHTML.ejs') %>
+
+<div class="overlay" id="overlay">
+    <div class="popup" id="popup">
+        <a id="btn-close-pup" class="btn-close-popup"><i class="fas fa-times"></i></a>
+        <div id="overlay-changes"></div>
+    </div>
+</div>  
+
+<% if(state){%>
+    <a style="visibility: hidden;" id="deletedUser"><%= state %></a>
+    <script>
+        var deletedUser = document.getElementById('deletedUser').textContent;
+        var overlayConfirm = document.getElementById('overlay');
+        var popup = document.getElementById('popup');
+        var btnClosePopup = document.getElementById('btn-close-pup');
+
+        btnClosePopup.addEventListener("click",function(){
+            overlayConfirm.classList.remove('active');
+            popup.classList.remove('active');
+        });
+        document.getElementById('overlay-changes').innerHTML = deletedUser + ' has been deactivated.'
+        overlayConfirm.classList.add('active');
+        popup.classList.add('active');
+    </script>  
+<%}%>
