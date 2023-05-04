@@ -64,7 +64,7 @@
 
         <div class="m-2 py-8 flex flex-row flex-wrap justify-around">
         
-            <div href="#" class="block min-w-[20%] max-w-[40%] my-2 mx-1 p-6 bg-blue-200 rounded-lg shadow">
+            <div href="#" class="block   max-w-[40%] my-2 mx-1 p-6 bg-blue-200 rounded-lg shadow flex-1 min-w-min">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">To do </h5>
                 
                     <% if (tasks1.length > 0) { %>
@@ -81,9 +81,9 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                                                
+                                <tbody>                        
                                     <% for (let task1 of tasks1) { %>
-                                        <tbody class="" category="">
+                                        
                                             <tr class="text-gray-900 dark:text-gray-800 w-14  text-ellipsis hover:bg-blue-400" >
                                                 <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900 dark:text-gray text-ellipsis rounded-s-3xl store-itemtk1">                                            
                                                     <!-- Modal toggle -->
@@ -137,7 +137,7 @@
                     <% } %>
             </div>
         
-            <div href="#" class="block min-w-[20%] max-w-[40%] my-2 mx-1 p-6 bg-yellow-200 rounded-lg shadow">
+            <div href="#" class="block   max-w-[40%] my-2 mx-1 p-6 bg-yellow-200 rounded-lg shadow flex-1 min-w-min">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">In progress </h5>
     
                 <% if (tasks2.length > 0) { %>
@@ -213,7 +213,7 @@
                 <% } %>
             </div>
     
-            <div href="#" class="block min-w-[20%] max-w-[40%] my-2 mx-1 p-6 bg-green-200 rounded-lg shadow">
+            <div href="#" class="block   max-w-[40%] my-2 mx-1 p-6 bg-green-200 rounded-lg shadow flex-1 min-w-min">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Code review </h5>
     
                     <% if (tasks3.length > 0) { %>
@@ -287,7 +287,7 @@
                     <% } %>
             </div>
                 
-            <div href="#" class="block min-w-[20%] max-w-[40%] my-2 mx-1 p-6 bg-red-200 rounded-lg shadow">
+            <div href="#" class="block   max-w-[40%] my-2 mx-1 p-6 bg-red-200 rounded-lg shadow flex-1 min-w-min">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Quality review </h5>
     
                 <% if (tasks4.length > 0) { %>
@@ -361,7 +361,7 @@
                     <% } %>
             </div>
     
-            <div href="#" class="block min-w-[20%] max-w-[40%] my-2 mx-1 p-6 bg-emerald-300 rounded-lg shadow">
+            <div href="#" class="block   max-w-[40%] my-2 mx-1 p-6 bg-emerald-300 rounded-lg shadow flex-1 min-w-min">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Release ready </h5>
     
                     <% if (tasks5.length > 0) { %>
@@ -434,7 +434,7 @@
                     <% } %>
             </div>
     
-            <div href="#" class="block min-w-[20%] max-w-[40%] my-2 mx-1 p-6 bg-violet-400 rounded-lg shadow">
+            <div href="#" class="block   max-w-[40%] my-2 mx-1 p-6 bg-violet-400 rounded-lg shadow flex-1 min-w-min">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Done</h5>
     
                     <% if (tasks6.length > 0) { %>
@@ -454,10 +454,7 @@
                                 <tbody>
                                 <% for (let task6 of tasks6) { %>
                                     
-                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700" >
-                                            <th scope="row" class="px-6 py-4 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl store-itemtk6">
-                                                <!-- Modal toggle -->
-                                                <button data-modal-target="<%=task6.nombre%><%=task6.idTicket%>" data-modal-toggle="<%=task6.nombre%><%=task6.idTicket%>" data-filter="<%=task6.front_back%><%=task6.front_back %>">
+                                        <tr class="text-gray-900 dark:text-gray-800 w-14   text-ellipsis    hover:bg-purple-700" >                                                                                            
                                             <th scope="row" class="px-2 py-2 w-0.5 font-medium text-gray-900   dark:text-gray text-ellipsis    rounded-s-3xl">
                                                 <!-- Modal toggle -->
                                                 <button data-modal-target="<%=task6.nombre%><%=task6.idTicket%>" class="text-left text-xs" data-modal-toggle="<%=task6.nombre%><%=task6.idTicket%>" >
@@ -510,7 +507,7 @@
                     <% } %>
             </div>
     
-            <div href="#" class="block min-w-[20%] max-w-[40%] my-2 mx-1 p-6 bg-indigo-200 rounded-lg shadow">
+            <div href="#" class="block   max-w-[40%] my-2 mx-1 p-6 bg-indigo-200 rounded-lg shadow flex-1 min-w-min">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Closed </h5>
     
                     <% if (tasks7.length > 0) { %>
