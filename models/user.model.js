@@ -5,6 +5,14 @@ module.exports = class User {
     static fetchAll() {
         return db.execute('SELECT * FROM usuario');
     }
+
+    static fetchAllActive() {
+        return db.execute(`SELECT U.idUsuario, U.nombre
+        FROM usuario U, estado_laboral S
+        WHERE S.idEstatus = 8
+        AND U.idUsuario = S.idUsuario`
+        );
+    }
     
     static fetchAllRespon() {
         return db.execute('SELECT * FROM responsable');
@@ -47,6 +55,12 @@ module.exports = class User {
         WHERE u.idUsuario = re.idUsuario
         AND re.idTarea = ta.idTicket
         AND u.nombre = ?`,
+        [name]);
+    }
+
+    static async DeleteUser(name) {
+        return await db.execute(`
+        CALL deactivateUser(?)`,
         [name]);
     }
 }

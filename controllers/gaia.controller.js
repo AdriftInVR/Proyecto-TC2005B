@@ -168,7 +168,7 @@ control.getUsers = async (req, res) => {
     let usuarios_proyectos = [];
     let usuarios_front_back = [];
     
-    [usuarios,filedData] = await User.fetchAll();
+    [usuarios,fieldData] = await User.fetchAllActive();
 
     for (let usuario of usuarios) {
         [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
@@ -193,22 +193,25 @@ control.postDeleteUsers = async (req, res) => {
     User.DeleteUser(req.body.user)
 
     setTimeout(() => {
-        User.fetchAll().then(([usuarios,fieldData]) => {
+        User.fetchAllActive().then(([usuarios,fieldData]) => {
             for (let usuario of usuarios) {
-                [proyectos, fieldData] = await User.fetchUserProjects(usuario.nombre);
-                usuarios_proyectos[usuario.nombre] = proyectos;
-    
-                [front_back, fieldData] = await User.fetchUserTasks(usuario.nombre);
-                usuarios_front_back[usuario.nombre] = front_back;
+                User.fetchUserProjects(usuario.nombre).then(([proyectos, fieldData]) => {
+                    usuarios_proyectos[usuario.nombre] = proyectos;
+                })
+                User.fetchUserTasks(usuario.nombre).then(([front_back, fieldData]) => {
+                    usuarios_front_back[usuario.nombre] = front_back;
+                });
             }
         
-            res.render('users', {
-                active: 'users',
-                usuarios_proyectos: usuarios_proyectos,
-                usuarios_front_back: usuarios_front_back,
-            })
         }).catch();
     }, "200")
+    setTimeout(() => {
+        res.render('users', {
+            active: 'users',
+            usuarios_proyectos: usuarios_proyectos,
+            usuarios_front_back: usuarios_front_back,
+        })
+    }, "500")
 };
 
 control.getDashboard = (req, res) => {
