@@ -16,7 +16,7 @@ const config = {
     authRequired: false,
     auth0Logout: true,
     secret: process.env.AUTH0_SECRET,
-    baseURL: 'http://localhost:3000',
+    baseURL: 'https://gaiayaxmo.online',
     clientID: process.env.AUTH0_CLIENT,
     issuerBaseURL: process.env.AUTH0_DOMAIN
   };
