@@ -5,62 +5,69 @@
 
 <div class="w-main flex justify-center inline-block">
     
-    <div>
+    <div class="">
 
         <% if (proyectos.length > 0) { %>
-        <div class="overflow-x-auto rounded-lg">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Start date
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Estimated duration
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Progress
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
+        <div class="rounded-lg pt-8 flex items-center justify-center">
+            <div class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
+                <div class="w-full h-16 text-center rounded-lg text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 flex">                    
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Name
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Start date
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Estimated duration
+                        (Weeks)
+                    </div>
+                    <div scope="col" class="px-6 py-3 inline-block flex-1 text-mg font-bold">
+                        Progress
+                    </div>
+                </div>
+                <div>
+                    <% let tempID = 0 %>
                     <% for (let proyecto of proyectos) { %>
-                        <tr class ="bg-white dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="/gaia/project/<%= proyecto.nombre%>"><%= proyecto.nombre  %></a>
-                            </th>
-                            <td class="px-6 py-4">
-                                <%= proyecto.fechainicio %>
-                            </td>
-                            <td class="px-6 py-4">
-                                <%= proyecto.duracion %>
-                            </td>
-                            <td class="px-6 py-4">
-                                -
-                            </td>
-                        </tr>
+                        <div class ="w-full bg-white p-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">                            
+                            <a href="/gaia/project/<%= proyecto.idTicket%>" class="px-6 py-4 font-medium flex text-gray-900 dark:text-white">
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6">
+                                    <%= proyecto.nombre  %>
+                                </div>
+                                
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6">
+                                    <%= proyecto.fechainicio.toLocaleDateString(); %>
+                                </div>
+                                
+                                <div class="inline-block w-1/4 flex-1 text-mg px-6 text-center">
+                                    <estimate id ="<%= tempID %>"></estimate>
+                                </div>
+
+                                <div class="inline-block w-1/4 text-center">
+                                    <canvas id="<%= proyecto.idTicket %>"></canvas>
+                                </div>                                
+                            </a>                            
+                        </div>
+                        <% tempID++ %>
                     <% } %>
-                   
-                </tbody>
-            </table>
+                                       
+                </div>
+            </div>   
         </div>
         <% }  else { %>
-            <div class="flex justify-center items-center">
-                <p class="text-5xl">
-                    No proyects yet
-                </p>
-            </div>
-        <% } %>
+            <div class="justify-center flex items-center w-full h-full">
+                <div class="flex justify-center items-center h-200 w-500">
+                    <p class="text-5xl">
+                        No proyects yet
+                    </p>
+                </div>
+            </div>            
+        <% } %>      
     </div>
 
 
     <!-- NEW PROJECT BUTTON -->
     <div class="fixed bottom-16 right-28">
-        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
         New Project
         </button>        
     </div>
@@ -69,7 +76,6 @@
     <!-- CREATING NEW PROJECT -->
     <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">
         <div class="relative w-full h-full max-w-md md:h-auto">
-            <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="authentication-modal">
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -81,16 +87,169 @@
                         <div>
                             <label for="newProject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New project's name</label>
                             <div class="mb-6">
-                                <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <input type="text" id="projectName" name="projectName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="startDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start date</label>
+                            <div class="mb-6">
+                                <input type="date" id="projectStart" name="projectStart" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                             </div>
                         </div>
 
-                        <input type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Create project" />
+                        <!--Agregar dropdown seleccionar epics-->   
+                        <label for="dropdownSearch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select epics</label>                     
+                        <div class="mb-8" >                                
+                                <div id="dropdownSearch" class="z-10 bg-white rounded-lg shadow w-full dark:bg-gray-700">
+                                    <ul class="h-36 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+                                        <% for (let epic of epics) { %>
+                                            <li>
+                                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600" action="guardar_checkbox.php">
+                                                    <input id="epics" name="epics" type="checkbox" value="<%= epic.EpicID %>" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                        <label for="checkbox-item-11" class="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"><%= epic.EpicName %></label>
+                                                </div>
+                                            </li>
+                                        <% } %>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>                      
 
+                        <input data-modal-target="ErrorValue" data-modal-toggle="ErrorValue" type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Create project" />
                     </form>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
+
+
+
+    <!--ERROR-->
+    <% if(msgErr){ %>        
+        <div id="ErrorValue" aria-hidden="true" class="w-96 absolute top-52 right-80 rounded-lg bg-white text-left shadow-xl transition-all border border-gray-600 flex flex-col">
+            <div class=" px-4 pb-4 pt-5">
+                <div class="flex items-start">
+                    <div class="flex w-12 inset-x-9 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                        </svg>
+                    </div>
+                    <div class="my-8 mx-8">
+                        <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">ERROR</h3>
+                        <div>
+                            <p class=" text-sm text-gray-500"><%= msgErr%></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class=" rounded-md bg-red-600 px-3 py-2 mb-2 text-sm font-semibold  text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" data-modal-hide="ErrorValue">Acept</button>
+        </div>
+    <% } %>
+
+
 </div>
 <%- include('partials/endHTML.ejs') %>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    var barChar;
+    function progressBar(projectID){
+        if(barChar) {
+            barChar.destroy();
+        }
+        const progreso = document.getElementById(projectID);
+        fetch('/data/project/status/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            let completed = 0;
+            let sum = 0;
+            for(let tag of data.status) {
+                if(tag.Nombre == 'Done' || tag.Nombre == 'Closed') {
+                    completed += tag.Cantidad;
+                }
+                sum += tag.Cantidad;
+            }
+            sum = sum - completed;
+
+            
+
+            const barChart = {
+                labels: [""],
+                datasets: [{
+                    label: "Completed",
+                    data: [completed],
+                    borderColor: 'rgb(43, 67, 224)',
+                    backgroundColor: 'rgba(94, 110, 214, 0.3)',
+                },
+                {
+                   label: "Missing",
+                   data: [sum],
+                   borderColor: 'rgb(204, 63, 89)',
+                   backgroundColor: 'rgba(232, 118, 139, 0.3)',
+                }]
+            };
+            const config = {
+                type: 'bar',
+                data: barChart,
+                options: {
+                    indexAxis: 'y',
+                    aspectRatio:4,
+                    elements: {
+                    bar: {
+                        borderWidth: 2,
+                    }
+                    },
+                    responsive: true,
+                    plugins: {
+                    legend: {
+                        display: false
+                    },
+                    },
+                    scales: {
+                    x: {
+                        display: false,
+                        stacked: true,
+                        max: (sum+completed),
+                    },
+                    y: {
+                        display: false,
+                        stacked: true,
+                    }
+                }
+                },
+            };
+            barChar = new Chart(progreso, config);
+        })
+    }
+
+    function printEstimate(projectID, element){
+        fetch('/data/project/estimate/' + projectID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json();
+        }).then(estimateData => {
+            element.innerHTML = estimateData.status[0][0].Estimate;
+        })
+    }
+
+    canvasMatches = document.querySelectorAll('canvas');
+    estimates = document.querySelectorAll('estimate');
+
+    for(let i = 0; i < canvasMatches.length; i++) {
+        progressBar(canvasMatches[i].id);
+        printEstimate(canvasMatches[i].id, estimates[i])
+    }
+
+    
+  
+
+</script>

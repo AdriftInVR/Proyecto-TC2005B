@@ -28,7 +28,7 @@ header{
     color: white;
     background-color: rgb(237, 62, 62);
     border-radius: 10px;
-    padding: 0.8em 1.5em;
+    padding: 0.8em 1em;
 }
 
 .nav-logout:hover{
@@ -64,7 +64,9 @@ header{
     }
 }
 
-
+.tasks{
+    top: 10vh;
+}
 /*Navbar*/
 .nave{
     font-family: sans-serif;
@@ -74,7 +76,7 @@ header{
     flex-direction: column;
     align-items: center;
     position: sticky;
-    top: 0;
+    top: 10vh;
 }
 
 .gaia{
@@ -109,11 +111,11 @@ header{
     display: inline;
 }
 
-.active{
+.activeNB{
     border-right: 3px solid rgb(138, 43, 226);
 }
 
-.active .nav-menu-project{
+.activeNB .nav-menu-project{
     color: rgb(138, 43, 226);
 }
 
@@ -250,3 +252,192 @@ header{
 }
 
 .popuperr.active {opacity: 1; transform: scale(1);}
+
+/* Inputs */
+
+input[type="file"]{
+    display: none;
+}
+
+.btn-submit{
+    position: relative;
+    display: inline-block;
+    padding: 0.625em 1.25em;
+    color: white;
+    background:rgb(11, 11, 66);
+    letter-spacing: 0.063em;
+    font-size: 1.25em;
+    overflow: hidden;
+    transition: 0.2s;
+    border-radius: 1.563em;
+}
+
+.btn-submit:hover{
+    background: -webkit-linear-gradient(to right, #7329eb, #eb2fde); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #7329eb, #eb2fde); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    box-shadow: 0 0 10px #a945c7, 0 0 40px #a945c7, 0 0 80px #a945c7;
+    transition: 1s;
+}
+
+/*Otros*/
+/*Boton ventana 1*/
+
+.boton-modal label {
+    padding: 0.625em 0.938em;
+    background-color: rgb(240, 79, 79);
+    color: white;
+    border-radius: 0.25em;
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+.boton-modal label:hover{
+    background-color: rgb(250, 20, 20);
+}
+
+#btn-modal{
+    display: none;
+}
+
+.container-modal{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    background-color: rgba(144, 148, 150, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+#btn-modal:checked ~ .container-modal{
+    display: flex;
+}
+
+.content-modal{
+    width: 100%;
+    max-width: 25em;
+    padding: 1.25em;
+    background-color: white;
+    border-radius: 0.25em;
+}
+
+.content-modal h2 {
+    margin-bottom: 0.938em;
+}
+
+.content-modal p {
+    padding: 0.938em 0em;
+    border-top: 0.063em solid #dbdbdb;
+    border-bottom: 0.063em solid #dbdbdb;
+}
+
+.content-modal .btn-cerrar{
+    width: 100%;
+    margin-top: 0.938em;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.content-modal .btn-cerrar label{
+    padding: 0.438em 0.625em;
+    background-color: rgb(90, 116, 247);
+    color: white;
+    border-radius: 0.20em;
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+.content-modal .btn-cerrar label:hover{
+    background-color: rgb(31, 27, 254);
+}
+
+.cerrar-modal{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0; left: 0;
+    z-index: -1;
+}
+
+/*Boton ventana 2*/
+
+.boton-modal2 label {
+    padding: 0.625em 0.938em;
+    background-color: rgb(240, 79, 79);
+    color: white;
+    border-radius: 0.25em;
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+.boton-modal2 label:hover{
+    background-color: rgb(250, 20, 20);
+}
+
+#btn-modal2{
+    display: none;
+}
+
+.container-modal2{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    background-color: rgba(144, 148, 150, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+#btn-modal2:checked ~ .container-modal2{
+    display: flex;
+}
+
+.content-modal2{
+    width: 100%;
+    max-width: 25em;
+    padding: 1.25em;
+    background-color: white;
+    border-radius: 0.25em;
+}
+
+.content-modal2 h2 {
+    margin-bottom: 0.938em;
+}
+
+.content-modal2 p {
+    padding: 0.938em 0em;
+    border-top: 0.063em solid #dbdbdb;
+    border-bottom: 0.063em solid #dbdbdb;
+}
+
+.content-modal2 .btn-cerrar2{
+    width: 100%;
+    margin-top: 0.938em;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.content-modal2 .btn-cerrar2 label{
+    padding: 0.438em 0.625em;
+    background-color: rgb(90, 116, 247);
+    color: white;
+    border-radius: 0.25em;
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+.content-modal2 .btn-cerrar2 label:hover{
+    background-color: rgb(31, 27, 254);
+}
+
+.cerrar-modal2{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0; left: 0;
+    z-index: -1;
+}

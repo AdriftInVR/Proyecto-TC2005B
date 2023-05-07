@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const session = require('express-session');
 const csrf = require('csurf');
@@ -10,7 +11,6 @@ require('dotenv').config();
 
 
 const app = express();
-
 
 const config = {
     authRequired: false,
@@ -42,7 +42,8 @@ app.get('/profile', requiresAuth(), (req, res) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
-
+app.use(cookieParser());
+app.use(bodyParser.json());
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
         callback(null,'public/files');
@@ -58,8 +59,10 @@ app.set('views', 'views');
 
 //Middleware
 const gaiaRoutes = require('./routes/gaia.routes');
+const dataRoutes = require('./routes/data.routes');
 const { response } = require('express');
 app.use('/gaia', gaiaRoutes);
+app.use('/data', dataRoutes);
 
 console.log('Is running...')
 app.listen(3000);
